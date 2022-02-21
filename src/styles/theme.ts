@@ -1,32 +1,40 @@
 import { extendTheme } from '@chakra-ui/react';
 
-export const theme = extendTheme({
+export const themes = extendTheme({
     colors: {
-        gray: {
-            '900': '#181B23',
-            '800': '#1F2029',
-            '700': '#353656',
-            '600': '#4B4D63',
-            '500': '#616480',
-            '400': '#797D9A',
-            '300': '#9699B0',
-            '200': '#B3B5C6',
-            '100': '#D1D2DC',
-            '50': '#EEEEF2',
-        },
         howdyColors: {
-            'mainBlack': '#'
+            'mainBlue': '#6A7DFF',
+            'mainBlack': '#303135',
+            'mainWhite': '#F2F2F2',
+            'mainGreen': '#29B995',
+            'mainRed': '#FA383E',
+            'lightBlue': '#2EC4F3',
+            'noob': '#428C49',
+            'master': '#7A00F3',
+            'notSelection': '#939393',
+            'beginner': '#CD7F32',
+            'amateur': '#C9CCCB',
+            'experient': '#FFD700',
+            'veteran': '#DA4244',
+            'greenLight': '#5EF2CD',
+            'brownHowdyCoin': '#CA7D33',
+            'correct': '#0FA958',
+            'howdyCoinBackground': '#FFCC4D',
+         
         }
     },
     fonts: {
         heading: 'Roboto',
-        body: 'Roboto',
+        body: {
+            'usualFont':'Roboto',
+            'rarelyFont':'Bungee'
+        }
     },
     styles: {
         global: {
             body: {
-                bg: 'gray.900',
-                color: 'gray.50',
+                bg: 'mainWhite',
+                color: 'mainBlack',
             },
         },
     },

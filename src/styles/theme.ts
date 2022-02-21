@@ -19,7 +19,7 @@ export const themes = extendTheme({
             'greenLight': '#5EF2CD',
             'brownHowdyCoin': '#CA7D33',
             'correct': '#0FA958',
-            'howdyCoinBackground': '#FFCC4D',
+            'howdyCoinBackground': '#CFFC4D',
          
         }
     },
@@ -33,8 +33,8 @@ export const themes = extendTheme({
     styles: {
         global: {
             body: {
-                bg: 'mainWhite',
-                color: 'mainBlack',
+                bg: '',
+                color: '',
             },
         },
     },

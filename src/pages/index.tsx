@@ -1,8 +1,16 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Api from '../api'
 
 export default function Home() {
+
+  const actionLoginGoogle =async () => {
+
+    let result = Api.googleLogInto();
+    
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -15,6 +23,8 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <button onClick={actionLoginGoogle}>LOGAR COM O GOOGLE</button>
 
         <p className={styles.description}>
           Get started by editing{' '}

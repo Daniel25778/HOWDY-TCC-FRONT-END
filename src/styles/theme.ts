@@ -20,15 +20,13 @@ export const themes = extendTheme({
             'brownHowdyCoin': '#CA7D33',
             'correct': '#0FA958',
             'howdyCoinBackground': '#CFFC4D',
+            'colorGoogle': '#EA4335',
          
         }
     },
     fonts: {
-        heading: 'Roboto',
-        body: {
-            'usualFont':'Roboto',
-            'rarelyFont':'Bungee'
-        }
+        Text: 'Roboto, sans-serif',
+        body: 'Roboto, sans-serif',
     },
     styles: {
         global: {

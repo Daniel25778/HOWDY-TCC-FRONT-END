@@ -1,0 +1,45 @@
+1ºround:
+{
+
+IRMAO JOAO --> 9330
+
+EVELYN --> 10660
+
+ESTEFANNY --> 8334
+
+FELIPE --> 8600
+
+IRMAO WILSON --> 9971
+
+}
+
+2ºround:
+{
+
+IRMAO JOAO --> 8181
+
+EVELYN --> 10225
+
+ESTEFANNY -->9610
+
+FELIPE --> 7381
+
+IRMAO WILSON --> 7678
+
+}
+
+3ºround:
+{
+
+IRMAO JOAO --> 
+
+EVELYN --> 10946
+
+ESTEFANNY -->
+
+FELIPE --> 
+
+IRMAO WILSON --> 
+
+}
+

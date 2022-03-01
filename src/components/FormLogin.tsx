@@ -14,6 +14,7 @@ import {
   import {themes} from '../styles/theme'
 
 import {actionLoginGoogle} from '../pages/api/actionLogWithGoogle';
+import {actionLoginFacebook} from '../pages/api/actionLoginFacebook';
 export  function FormLogin(props:any) {
 return(
 
@@ -98,7 +99,7 @@ return(
 
         <Button 
             
-            onClick={actionLoginGoogle} 
+            onClick={actionLoginFacebook} 
             marginBottom="6"
             colorScheme='facebook'
             leftIcon={<BsFacebook />} >

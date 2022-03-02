@@ -1,21 +1,39 @@
-import { Button, Flex, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
-import { GrGoogle, GrSecure } from 'react-icons/gr';
+import { Button, Flex, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
+import { Input } from '../../components/Form/Input';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { GrGoogle } from 'react-icons/gr';
 import { MdOutlineMailOutline } from 'react-icons/md';
 import { BsFacebook } from 'react-icons/bs';
 import { GiPadlock } from 'react-icons/gi';
-import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/react';
 import { actionLoginGoogle } from '../../pages/api/actionLogWithGoogle';
 import { actionLoginFacebook } from '../../pages/api/actionLoginFacebook';
-import { actionLoginEmailAndPassword } from '../../pages/api/actionLoginEmailAndPassword';
-import { FormEvent, useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import * as React from 'react';
 
-export function FormLogin() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+type SignInFormData = {
+    email: string;
+    password: string;
+};
 
-    function handleSignUp(event: FormEvent) {
+const signInFormSchema = yup.object().shape({
+    email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
+    password: yup.string().required('Senha é obrigatória'),
+});
+
+export function FormLogin() {
+    const { register, handleSubmit, formState } = useForm({
+        resolver: yupResolver(signInFormSchema),
+    });
+    const { errors } = formState;
+
+    const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        const { email, password } = values;
+
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
@@ -28,12 +46,12 @@ export function FormLogin() {
                 const errorMessage = error.message;
                 // ..
             });
-    }
+    };
 
     return (
         <Flex
             as="form"
-            onSubmit={handleSignUp}
+            onSubmit={handleSubmit(handleSignIn)}
             height="600"
             width="100%"
             maxWidth={510}
@@ -45,19 +63,12 @@ export function FormLogin() {
         >
             <InputGroup width={400} variant="filled" marginBottom="4">
                 <InputLeftElement pointerEvents="none" children={<MdOutlineMailOutline color="#6A7DFF" />} />
-                <Input value={email} onchange={(e) => setEmail(e.target.value)} type="email" placeholder="E-mail" />
+                <Input name="email" type="email" error={errors.email} {...register('email')} />
             </InputGroup>
 
             <InputGroup width={400} variant="filled" marginBottom="6">
                 <InputLeftElement pointerEvents="none" children={<GiPadlock color="#6A7DFF" />} />
-                <Input
-                    value={password}
-                    onchange={(e) => setPassword(e.target.value)}
-                    type="password"
-                    placeholder="Senha"
-
-                    mas olha só, esse input é do chakra
-                />
+                <Input name="password" type="password" error={errors.password} {...register('password')} />
             </InputGroup>
 
             <Text color="howdyColors.mainBlue"> Esqueci minha senha </Text>
@@ -70,7 +81,8 @@ export function FormLogin() {
                 marginBottom="6"
                 bg="#CBD2FF"
                 color="howdyColors.mainBlue"
-                onClick={handleSignUp}
+                type="submit"
+                isLoading={formState.isSubmitting}
             >
                 <Text>ENTRAR</Text>
             </Button>
@@ -91,6 +103,7 @@ export function FormLogin() {
                 </Text>
 
                 <Button
+                    type="button"
                     _hover={{ bg: '#F86559' }}
                     onClick={actionLoginGoogle}
                     marginBottom="6"
@@ -102,7 +115,13 @@ export function FormLogin() {
                     <Text>GOOGLE</Text>
                 </Button>
 
-                <Button onClick={actionLoginFacebook} marginBottom="6" colorScheme="facebook" leftIcon={<BsFacebook />}>
+                <Button
+                    type="button"
+                    onClick={actionLoginFacebook}
+                    marginBottom="6"
+                    colorScheme="facebook"
+                    leftIcon={<BsFacebook />}
+                >
                     <Text>FACEBOOK</Text>
                 </Button>
             </Flex>

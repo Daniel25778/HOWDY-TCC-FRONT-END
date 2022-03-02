@@ -8,7 +8,7 @@ import 'firebase/compat/database';
 
 import firebaseConfig from './services/firebaseConfig';
 
-// const firebaseApp = initializeApp(firebaseConfig);
+
 
 export default {
     facebookLogInto: async () => {

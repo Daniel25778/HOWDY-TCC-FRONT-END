@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
-import { FormLogin } from '../components/Login/FormLogin';
+import { FormLogin } from '../components/Form/FormLogin';
 import { PageLogin } from './PageLogin';
 import { Flex } from '@chakra-ui/react';
 

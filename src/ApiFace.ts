@@ -6,9 +6,9 @@ import { api } from '../src/services/api';
 import firebase from 'firebase/app';
 import 'firebase/compat/database';
 
-import firebaseConfig from './firebaseConfig';
+import firebaseConfig from './services/firebaseConfig';
 
-const firebaseApp = initializeApp(firebaseConfig);
+// const firebaseApp = initializeApp(firebaseConfig);
 
 export default {
     facebookLogInto: async () => {

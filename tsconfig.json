@@ -101,7 +101,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/components/Login/FormLogin.tsx"  ],
   "exclude": [
     "node_modules"
   ]

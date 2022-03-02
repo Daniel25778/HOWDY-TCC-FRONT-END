@@ -1,6 +1,6 @@
-import Api from '../../Api';
+import Api from '../../ApiGoogle';
 import { api } from '../../services/api';
 
 export async function actionLoginGoogle() {
-    let resultGoogle = Api.googleLogInto();
+    // let resultGoogle = Api.googleLogInto();
 }

@@ -63,12 +63,12 @@ export function FormLogin() {
         >
             <InputGroup width={400} variant="filled" marginBottom="4">
                 <InputLeftElement pointerEvents="none" children={<MdOutlineMailOutline color="#6A7DFF" />} />
-                <Input name="email" type="email" error={errors.email} {...register('email')} />
+                <Input name="email" placeholder='E-mail' type="email" error={errors.email} {...register('email')} />
             </InputGroup>
 
             <InputGroup width={400} variant="filled" marginBottom="6">
                 <InputLeftElement pointerEvents="none" children={<GiPadlock color="#6A7DFF" />} />
-                <Input name="password" type="password" error={errors.password} {...register('password')} />
+                <Input name="password" placeholder='Senha' type="password" error={errors.password} {...register('password')} />
             </InputGroup>
 
             <Text color="howdyColors.mainBlue"> Esqueci minha senha </Text>

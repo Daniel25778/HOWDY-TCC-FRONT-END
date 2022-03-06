@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.css';
 import { FormLogin } from '../components/Form/FormLogin';
 import { PageLogin } from './PageLogin';
 import { Flex } from '@chakra-ui/react';
+import PageCadastro from './PageCadastro';
 
 export default function Home() {
     return (
@@ -19,7 +20,9 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <PageLogin></PageLogin>
+            <PageCadastro></PageCadastro>
+
+            {/* <PageLogin></PageLogin> */}
         </Flex>
     );
 }

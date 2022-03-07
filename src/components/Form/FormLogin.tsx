@@ -12,6 +12,7 @@ import { GiPadlock } from 'react-icons/gi';
 import { actionLoginGoogle } from '../../pages/api/actionLogWithGoogle';
 import { actionLoginFacebook } from '../../pages/api/actionLoginFacebook';
 import * as React from 'react';
+import { Divider } from '@chakra-ui/react'
 
 type SignInFormData = {
     email: string;
@@ -62,12 +63,16 @@ export function FormLogin() {
             flexDir="column"
         >
             <InputGroup width={400} variant="filled" marginBottom="4">
-                <InputLeftElement pointerEvents="none" children={<MdOutlineMailOutline color="#6A7DFF" />} />
+                <InputLeftElement pointerEvents="none">
+                    <MdOutlineMailOutline color="#6A7DFF" />
+                </InputLeftElement>
                 <Input name="email" placeholder="E-mail" type="email" error={errors.email} {...register('email')} />
             </InputGroup>
 
             <InputGroup width={400} variant="filled" marginBottom="6">
-                <InputLeftElement pointerEvents="none" children={<GiPadlock color="#6A7DFF" />} />
+                <InputLeftElement pointerEvents="none"> 
+                    <GiPadlock color="#6A7DFF" /> 
+                </InputLeftElement>
                 <Input
                     name="password"
                     placeholder="Senha"
@@ -92,7 +97,7 @@ export function FormLogin() {
             >
                 <Text>ENTRAR</Text>
             </Button>
-
+            
             <Text color="howdyColors.mainBlue">Não tem uma conta? Registre-se</Text>
 
             <Flex

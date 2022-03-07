@@ -22,7 +22,7 @@ export default function Home() {
 
             <PageCadastro></PageCadastro>
 
-            {/* <PageLogin></PageLogin> */}
+             {/* <PageLogin></PageLogin>  */}
         </Flex>
     );
 }

@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { Image, Spacer } from '@chakra-ui/react';
 import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/react';
 import { FormLogin } from '../components/Form/FormLogin';
+import { Divider } from '@chakra-ui/react'
 
 export function PageLogin(props: any) {
     return (
@@ -24,6 +25,7 @@ export function PageLogin(props: any) {
                 <Spacer></Spacer>
                 <Image marginLeft={30} src="/images/illustrations/women-reading.svg" alt="howdy logo" />
             </Flex>
+            {/* <Divider></Divider> */}
             <FormLogin></FormLogin>
         </>
     );

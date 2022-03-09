@@ -26,14 +26,14 @@ export default function PageCadastro(props: any){
                    
                     <Flex  mb="20%" ml={0} align="center">
                         <Heading 
-                        fontSize={50}
+                        fontSize={{ base: '25px', md: '45px', lg: '70px' }}
                         color="howdyColors.mainWhite">Onde mais de 
                             <Heading 
                             letterSpacing={2} 
-                            fontSize={80} 
+                            fontSize={{ sm:'35px', md: '55px', lg: '80px' }}
                             color='howdyColors.mainGreenLight'>100 BILHÕES
                             </Heading>
-                            <Heading  fontSize={50}>
+                            <Heading  fontSize={{ sm:'25px', md: '45px', lg: '70px' }}>
                                 Já se cadastraram
                             </Heading>
                         </Heading>

@@ -1,5 +1,20 @@
 import { extendTheme, Heading } from '@chakra-ui/react';
 
+// 1. Import the utilities
+import { createBreakpoints } from '@chakra-ui/theme-tools'
+
+// 2. Update the breakpoints as key-value pairs
+const breakpoints = createBreakpoints({
+  sm: '500px',
+  md: '1700px',
+  lg: '2000px',
+  xl: '2500px',
+  '2xl': '2700px',
+})
+
+// 3. Extend the theme
+const theme = extendTheme()
+
 export const themes = extendTheme({
     colors: {
         howdyColors: {
@@ -25,6 +40,7 @@ export const themes = extendTheme({
          
         }
     },
+      breakpoints ,
     fonts: {
         heading: 'Roboto',
         body: 'Raleway, sans-serif',

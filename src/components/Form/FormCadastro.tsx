@@ -52,9 +52,9 @@ export function FormCadastro() {
         <Flex
             as="form"
             onSubmit={handleSubmit(handleSignIn)}
-            width="100%"
-            height="60%"
-            maxWidth={510}
+            width={650}
+            height={700}
+            maxWidth={750}
             bg="white"
             align="center"
             justify="center"

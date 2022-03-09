@@ -27,6 +27,22 @@ const signInFormSchema = yup.object().shape({
 });
 
 export function FormLogin() {
+
+    const saveDatasSendByGet = (parte) => {
+        const keyValue = parte.split('=')
+        const key = keyValue[0]
+        var value = keyValue[1]
+        datasByGet[key] = value
+    }
+    
+    //Coletando dados via GET e definindo categoria a ser editada
+    const query = location.search.slice(1)
+    const parts = query.split('&')
+    const datasByGet = {}
+    parts.forEach(saveDatasSendByGet)
+
+    console.log(datasByGet);
+
     const { register, handleSubmit, formState } = useForm({
         resolver: yupResolver(signInFormSchema),
     });

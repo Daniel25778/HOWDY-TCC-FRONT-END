@@ -17,6 +17,7 @@ type CreateUserFormData = {
     name: string;
 };
 
+
 const signInFormSchema = yup.object().shape({
     email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
     password: yup.string().required('Senha é obrigatória'),
@@ -24,6 +25,9 @@ const signInFormSchema = yup.object().shape({
 });
 
 export function FormCadastro() {
+ 
+    
+
     const { register, handleSubmit, formState } = useForm({
         resolver: yupResolver(signInFormSchema),
     });
@@ -52,22 +56,54 @@ export function FormCadastro() {
         <Flex
             as="form"
             onSubmit={handleSubmit(handleSignIn)}
-            width={650}
-            height={700}
-            maxWidth={750}
+            padding="20"
             bg="white"
             align="center"
             justify="center"
             borderRadius={8}
             flexDir="column"
         >
-            <InputGroup width={400} variant="filled" mt={20} marginBottom="4">
-                <InputLeftElement pointerEvents="none">
-                    <MdOutlineMailOutline color="#6A7DFF" />
-                </InputLeftElement>
-                <Input name="email" placeholder="Seu e-mail" type="email" error={errors.email} {...register('email')} />
-            </InputGroup>
 
+        {true && (
+            <>
+            
+                <InputGroup width={400} variant="filled"  marginBottom="4">
+                    <InputLeftElement pointerEvents="none">
+                        <MdOutlineMailOutline color="#6A7DFF" />
+                    </InputLeftElement>
+                    <Input name="email" placeholder="Seu e-mail" type="email" error={errors.email} {...register('email')} />
+                </InputGroup>
+
+                <InputGroup width={400} variant="filled" marginBottom="6">
+                    <InputLeftElement pointerEvents="none"> 
+                        <GiPadlock color="#6A7DFF" /> 
+                    </InputLeftElement>
+                    <Input
+                        name="password"
+                        placeholder="Sua senha"
+                        type="password"
+                        error={errors.password}
+                        {...register('password')}
+                    />
+                </InputGroup>
+
+                <InputGroup width={400} variant="filled" marginBottom="6">
+                <InputLeftElement pointerEvents="none"> 
+                    <GiPadlock color="#6A7DFF" /> 
+                </InputLeftElement>
+                <Input
+                    name="password"
+                    placeholder="Confirme sua senha"
+                    type="password"
+                    error={errors.password}
+                    {...register('password')}
+                />
+            </InputGroup>
+               
+            
+            </>
+            )}
+           
             <InputGroup width={400} variant="filled" marginBottom="6">
                 <InputLeftElement pointerEvents="none"> 
                     <BsPerson color="#6A7DFF" /> 
@@ -75,7 +111,7 @@ export function FormCadastro() {
                 <Input
                     name="password"
                     placeholder="Seu nome"
-                    type="password"
+                    type='text'
                     error={errors.password}
                     {...register('password')}
                 />
@@ -86,9 +122,9 @@ export function FormCadastro() {
                     <FaBaby color="#6A7DFF" /> 
                 </InputLeftElement>
                 <Input
-                    name="password"
+                    name="nativeLanguage"
                     placeholder="Seu idioma nativo"
-                    type="password"
+                    type="text"
                     error={errors.password}
                     {...register('password')}
                 />
@@ -99,35 +135,9 @@ export function FormCadastro() {
                     <BiTargetLock color="#6A7DFF" /> 
                 </InputLeftElement>
                 <Input
-                    name="password"
+                    name="targetLanguage"
                     placeholder="Seu idioma de interesse"
-                    type="password"
-                    error={errors.password}
-                    {...register('password')}
-                />
-            </InputGroup>
-
-            <InputGroup width={400} variant="filled" marginBottom="6">
-                <InputLeftElement pointerEvents="none"> 
-                    <GiPadlock color="#6A7DFF" /> 
-                </InputLeftElement>
-                <Input
-                    name="password"
-                    placeholder="Sua senha"
-                    type="password"
-                    error={errors.password}
-                    {...register('password')}
-                />
-            </InputGroup>
-
-            <InputGroup width={400} variant="filled" marginBottom="6">
-                <InputLeftElement pointerEvents="none"> 
-                    <GiPadlock color="#6A7DFF" /> 
-                </InputLeftElement>
-                <Input
-                    name="password"
-                    placeholder="Confirme sua senha"
-                    type="password"
+                    type="text"
                     error={errors.password}
                     {...register('password')}
                 />
@@ -148,7 +158,7 @@ export function FormCadastro() {
             </Button>
 
             <Flex
-                marginTop="20"
+               
                 width="100%"
                 maxWidth={510}
                 align="center"

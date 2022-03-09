@@ -25,7 +25,6 @@ export function PageLogin(props: any) {
                 <Spacer></Spacer>
                 <Image marginLeft={30} src="/images/illustrations/women-reading.svg" alt="howdy logo" />
             </Flex>
-            {/* <Divider></Divider> */}
             <FormLogin></FormLogin>
         </>
     );

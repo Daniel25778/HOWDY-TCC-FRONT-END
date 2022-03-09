@@ -9,6 +9,7 @@ import { setCookie, parseCookies  } from 'nookies';
 
 import firebaseConfig from './services/firebaseConfig';
 import { useEffect } from 'react';
+import  Router  from 'next/router';
 
 initializeApp(firebaseConfig);
 
@@ -18,18 +19,29 @@ export default {
     
     
     googleLogInto: async () => {
-         
+
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
         let result = await signInWithPopup(auth, provider);
-        let { token } = await auth?.currentUser?.getIdTokenResult();
-        console.log(token);
+        let token = await result.user.getIdToken();
 
         setCookie( undefined, 'firebase', token, {
             maxAge : 60 * 60 * 24 * 30,
             path: '/'
         })
 
-        api.get(`users/isMyUidExternalRegistered`).then((data) => console.log(data));
+        api.defaults.headers['Authorization'] = `${token}`
+
+        try {
+            api.get(`users/isMyUidExternalRegistered`).then((response) => {
+                const {data} = response
+                if (data === 'This user does not have an account in our system') {
+                    Router.push('/PageCadastro?isLogged=true');  
+                }
+            });
+        } catch (error) {
+           
+        }
+       
     },
 };

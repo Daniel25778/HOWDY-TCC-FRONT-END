@@ -10,7 +10,12 @@ import { FormCadastro } from '../components/Form/FormCadastro';
 
 export default function PageCadastro(props: any){
     return(
-        <>
+        <Flex
+            w="100vw"
+            h="100vh"
+            align="center"
+            bgGradient="linear(to-t, howdyColors.mainWhite, #F2F2F2,howdyColors.mainWhite)">
+                
             <Flex height="100%" width="35%" bg="howdyColors.mainBlue"  justify="center" align="center" flexDir="column" mr={40}>
                 <Flex width="80%" align="center" height="80%"  flexDir="column">
                     <Image
@@ -54,6 +59,6 @@ export default function PageCadastro(props: any){
             <Center  width="50%" height="100%">
                 <FormCadastro></FormCadastro>
             </Center>
-        </> 
+        </Flex>
     );
 }

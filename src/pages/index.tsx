@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css';
 import { FormLogin } from '../components/Form/FormLogin';
 import { PageLogin } from './PageLogin';
 import { Flex } from '@chakra-ui/react';
-import PageCadastro from './PageCadastro';
+import PageCadastro from './[isLogged]';
 
 export default function Home() {
     return (

@@ -17,7 +17,6 @@ const {'firebase.token': token } = parseCookies()
 
 export default { 
     
-    
     googleLogInto: async () => {
 
         const auth = getAuth();
@@ -36,7 +35,7 @@ export default {
             api.get(`users/isMyUidExternalRegistered`).then((response) => {
                 const {data} = response
                 if (data === 'This user does not have an account in our system') {
-                    Router.push('/PageCadastro?isLogged=true');  
+                    Router.push('/isLogged');  
                 }
             });
         } catch (error) {

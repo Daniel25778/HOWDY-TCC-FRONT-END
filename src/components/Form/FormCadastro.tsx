@@ -1,16 +1,19 @@
-import { Button, Flex, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
+import { Button, Flex, InputGroup, InputLeftElement, Text, Select } from '@chakra-ui/react';
 import { Input } from '../../components/Form/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { MdOutlineMailOutline } from 'react-icons/md';
+import { MdOutlineMailOutline,MdArrowDropDown } from 'react-icons/md';
 import { BsPerson } from 'react-icons/bs';
 import { GiPadlock } from 'react-icons/gi'; 
 import { FaBaby } from 'react-icons/fa';
 import { BiTargetLock } from 'react-icons/bi';
 import * as React from 'react';
 
+interface FormCadastroProps {
+    isLogged : string
+}
 type CreateUserFormData = {
     email: string;
     password: string;
@@ -24,10 +27,11 @@ const signInFormSchema = yup.object().shape({
     name: yup.string().required('O nome é obrigatório'),
 });
 
-export function FormCadastro() {
- 
-    
+export function FormCadastro(props: FormCadastroProps) {
+    const {isLogged} = props
 
+    const showAllInputs = isLogged !== 'isLogged'
+ 
     const { register, handleSubmit, formState } = useForm({
         resolver: yupResolver(signInFormSchema),
     });
@@ -64,7 +68,7 @@ export function FormCadastro() {
             flexDir="column"
         >
 
-        {true && (
+        {showAllInputs && (
             <>
             
                 <InputGroup width={400} variant="filled"  marginBottom="4">
@@ -130,18 +134,12 @@ export function FormCadastro() {
                 />
             </InputGroup>
 
-            <InputGroup width={400} variant="filled" marginBottom="6">
-                <InputLeftElement pointerEvents="none"> 
-                    <BiTargetLock color="#6A7DFF" /> 
-                </InputLeftElement>
-                <Input
-                    name="targetLanguage"
-                    placeholder="Seu idioma de interesse"
-                    type="text"
-                    error={errors.password}
-                    {...register('password')}
-                />
-            </InputGroup>
+            <Select  placeholder='Lingua de interesse' variant='filled' iconColor="howdyColors.mainBlue" icon={<MdArrowDropDown />} >
+            
+                <option value='option1'>Ingles</option>
+            </Select>
+
+            
 
             <Button
                 _hover={{ bg: '#B9C2FD' }}

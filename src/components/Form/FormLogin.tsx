@@ -1,4 +1,4 @@
-import { Button, Flex, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
+import { Button, Flex, InputGroup, InputLeftElement, propNames, Text } from '@chakra-ui/react';
 import { Input } from '../../components/Form/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -12,7 +12,7 @@ import { GiPadlock } from 'react-icons/gi';
 import { actionLoginGoogle } from '../../pages/api/actionLogWithGoogle';
 import { actionLoginFacebook } from '../../pages/api/actionLoginFacebook';
 import * as React from 'react';
-import { Divider } from '@chakra-ui/react'
+
 
 
 
@@ -27,21 +27,6 @@ const signInFormSchema = yup.object().shape({
 });
 
 export function FormLogin() {
-
-    const saveDatasSendByGet = (parte) => {
-        const keyValue = parte.split('=')
-        const key = keyValue[0]
-        var value = keyValue[1]
-        datasByGet[key] = value
-    }
-    
-    //Coletando dados via GET e definindo categoria a ser editada
-    const query = location.search.slice(1)
-    const parts = query.split('&')
-    const datasByGet = {}
-    parts.forEach(saveDatasSendByGet)
-
-    console.log(datasByGet);
 
     const { register, handleSubmit, formState } = useForm({
         resolver: yupResolver(signInFormSchema),

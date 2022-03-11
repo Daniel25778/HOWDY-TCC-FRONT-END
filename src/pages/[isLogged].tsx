@@ -1,5 +1,6 @@
 
 import { Center, Flex } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
 import { Image, Spacer } from '@chakra-ui/react';
 import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/react';
 import { FormLogin } from '../components/Form/FormLogin';
@@ -8,7 +9,14 @@ import '@fontsource/roboto/400.css'
 import { FormCadastro } from '../components/Form/FormCadastro';
 
 
-export default function PageCadastro(props: any){
+interface PageCadastroProps {
+       isLogged : string
+}
+
+export default function PageCadastro(props: PageCadastroProps){
+
+    const  {isLogged} = props
+    console.log(isLogged)
     return(
         <Flex
             w="100vw"
@@ -57,8 +65,16 @@ export default function PageCadastro(props: any){
                
             </Flex>
             <Center  width="50%" height="100%">
-                <FormCadastro></FormCadastro>
+                <FormCadastro isLogged={isLogged} ></FormCadastro>
             </Center>
         </Flex>
     );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+    const { isLogged } = params;
+
+    return {
+        props: { isLogged },
+    };
+};

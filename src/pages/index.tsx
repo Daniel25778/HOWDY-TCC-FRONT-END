@@ -4,7 +4,8 @@ import styles from '../styles/Home.module.css';
 import { FormLogin } from '../components/Form/FormLogin';
 import { PageLogin } from './PageLogin';
 import { Flex } from '@chakra-ui/react';
-import PageCadastro from './cadastro/[isLogged]';
+import PageCadastro from './register/[isLogged]';
+import { HeaderWeb } from '../components/Header/Header';
 
 export default function Home() {
     return (
@@ -20,7 +21,9 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-             <PageLogin></PageLogin> 
+            <HeaderWeb></HeaderWeb>
+
+             {/* <PageLogin></PageLogin>  */}
         </Flex>
     );
 }

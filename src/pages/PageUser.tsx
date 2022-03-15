@@ -6,9 +6,11 @@ import { Divider } from '@chakra-ui/react';
 import { IoPersonAddOutline } from 'react-icons/io5';
 import Head from 'next/head';
 import { HeaderWeb } from '../components/Header/Header';
-import { BsFillSuitHeartFill, BsPersonDash } from 'react-icons/bs';
+import { BsFillSuitHeartFill, BsPersonDash, BsPersonPlus } from 'react-icons/bs';
+import { MdOutlinePersonAddDisabled } from 'react-icons/md';
 import { BiCheck } from 'react-icons/bi';
 import { FaHeart } from 'react-icons/fa';
+import { FriendshipButton } from '../components/Button/FriendshipButton';
 
 export default function UserPage(props: any) {
     return (
@@ -26,7 +28,7 @@ export default function UserPage(props: any) {
                         maxH="25vw"
                         src="/images/Tests/backgroundImage.png"
                     />
-                    <Flex w="100%" position="relative" bottom="4vw" pl="100px">
+                    <Flex w="100%" position="relative" bottom="4vw" pl="8vw">
                         <Center borderRadius="100%" w="12.5vw" h="12.5vw" bg="white">
                             <Image
                                 w="12vw"
@@ -37,47 +39,15 @@ export default function UserPage(props: any) {
                             />
                         </Center>
                         <Box color="howdyColors.mainBlack" flex="1" ml="10%" mt="5vw">
-                            <Heading wordBreak="break-all" fontSize="5xl">
+                            <Heading wordBreak="break-all" fontSize="4xl">
                                 Helena Pena Rodrigues dos Santos
                             </Heading>
-                            <Text mt="20px" fontSize="2xl" color="howdyColors.mainBlack">
+                            <Text mt="20px" fontSize="xl" color="howdyColors.mainBlack">
                                 Olá! Me chamo Helena, XXXXX é meu idioma nativo, e desejo aprender a me comunicar em
                                 XXXX.
                             </Text>
                         </Box>
-                        {false ? (
-                            <IconButton
-                                h="100px"
-                                w="100px"
-                                mt="5vw"
-                                ml="10%"
-                                borderRadius="100%"
-                                variant="unstyled"
-                                aria-label="Open navigation"
-                                bg="howdyColors.mainGreenTransparent"
-                                color="howdyColors.mainGreen"
-                                pt="10px"
-                                fontSize="50px"
-                                icon={<Icon opacity="2" as={IoPersonAddOutline} fontWeight="black" />}
-                            />
-                        ) : (
-                            true && (
-                                <IconButton
-                                    h="100px"
-                                    w="100px"
-                                    mt="5vw"
-                                    ml="10%"
-                                    borderRadius="100%"
-                                    variant="unstyled"
-                                    aria-label="Open navigation"
-                                    bg="howdyColors.mainRedTransparent"
-                                    color="howdyColors.mainRed"
-                                    pt="10px"
-                                    fontSize="50px"
-                                    icon={<Icon opacity="2" as={BsPersonDash} fontWeight="black" />}
-                                />
-                            )
-                        )}
+                        <FriendshipButton idUser={1} />
                     </Flex>
                 </Box>
             </Box>

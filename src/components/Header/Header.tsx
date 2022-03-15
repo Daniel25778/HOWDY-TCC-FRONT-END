@@ -1,7 +1,8 @@
 import { useColorMode } from '@chakra-ui/core';
-import { Box, Button, Center, color, Flex, Image, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Center, color, Flex, Icon, Image, Input, Text } from '@chakra-ui/react';
 import '@fontsource/roboto/400.css';
 import { FiSearch } from 'react-icons/fi';
+import { IoMdAdd } from 'react-icons/io';
 
 export function HeaderWeb() {
     return (
@@ -22,31 +23,46 @@ export function HeaderWeb() {
                 left="0"
                 w="70%"
                 h="5rem"
-                //  bg="howdyColors.mainRed"
+                bg="howdyColors.mainRed"
                 align="center"
             >
-                <Flex marginLeft="9" width="100%">
-                    <Box marginRight="5">
-                        <FiSearch size={30} color="#F2F2F2" />
-                    </Box>
+                <Flex  width="100%" align="center" px="10" justify="space-between" >
+                    <Flex width="50%" >
+                        <Box marginRight="5">
+                            <FiSearch size={30} color="#F2F2F2" />
+                        </Box>
 
-                    <Input
-                        marginRight="45"
-                        bg="howdyColors.main"
-                        focusBorderColor="howdyColors.mainWhite"
-                        placeholder="Descubra pessoas ou atividades..."
-                        borderRadius="0px 100px 100px 0px"
-                        width="43%"
-                    ></Input>
-                    <Flex bg="#F2F2F2" width="10%">
-                        <Image
-                            height="4rem"
-                            src="/images/howdy-images/howdy-coin/Howdy coin.svg"
-                            alt="howdy coin"
-                        ></Image>
-                        <Text></Text>
-                        <Button></Button>
+                        <Input
+                        
+                            bg="howdyColors.main"
+                            focusBorderColor="howdyColors.mainWhite"
+                            placeholder="Descubra pessoas ou atividades..."
+                            borderRadius="0px 100px 100px 0px"
+                            width="100%"
+                        ></Input>
                     </Flex>
+
+                    <Flex width="45%" bgColor={'bisque'} justify={'space-between'}>
+                        <Flex  gap="5"  borderRadius="60px 40px 40px 60px"  bg="howdyColors.mainYellow"  align="center">
+                            <Image
+                                height="2.5rem"
+                                src="/images/howdy-images/howdy-coin/Howdy coin.svg"
+                                alt="howdy coin"
+                            ></Image>
+                            <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">200</Text>
+                            <Button opacity={"70%"} bgColor="howdyColors.brownHowdyCoin" borderRadius="0px 15px 15px 0px"><IoMdAdd size="1.5rem" color='#ffffff'/></Button>
+                        </Flex>
+
+                        <Flex height="100%">
+
+                            <Image borderRadius="100%"  height="3rem" objectFit='cover' src="/images/Tests/profilePhoto.png" alt="howdy coin"></Image>
+                            <Text></Text>
+                            <Icon></Icon>
+
+                        </Flex>
+                    </Flex>
+
+                    
                 </Flex>
 
                 <Flex

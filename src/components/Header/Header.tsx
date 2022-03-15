@@ -15,52 +15,55 @@ export function HeaderWeb() {
                 h="5rem"
                 bg="howdyColors.mainBlue"
             >
-                <Flex
-                    position="absolute"
-                    bottom="-2rem"
-                    w="60%"
-                    h="4rem"
-                    bg="gray.100"
-                    borderRadius="10px"
-                    boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
-                    paddingX={20}
-                    justify="space-between"
-                    align="center"
-                >
-                    <Image height="3rem" src="/images/howdy-images/logo/Logo row.svg" alt="howdy logo"></Image>
+                <Flex>
 
-                    <Center w="50%" justifyContent={'space-between'}>
-                        <Text
-                            _hover={{ color: 'howdyColors.mainBlue' }}
-                            cursor={'pointer'}
-                            color="howdyColors.mainBlack"
-                            fontWeight="semibold"
-                            opacity="70%"
-                            fontSize={22}
-                        >
-                            Ranking
-                        </Text>
-                        <Text
-                            _hover={{ color: 'howdyColors.mainBlue' }}
-                            cursor={'pointer'}
-                            color="howdyColors.mainBlack"
-                            fontWeight="semibold"
-                            opacity="70%"
-                            fontSize={22}
-                        >
-                            Postagens
-                        </Text>
-                        <Text
-                            _hover={{ color: 'howdyColors.mainBlue' }}
-                            cursor={'pointer'}
-                            color="howdyColors.mainBlack"
-                            fontWeight="semibold"
-                            opacity="70%"
-                            fontSize={22}
-                        >
-                            Aprenda
-                        </Text>
-                    </Center>
+                    <Flex
+                        position="absolute"
+                        bottom="-3rem"
+                        w="60%"
+                        h="5rem"
+                        bg="gray.100"
+                        borderRadius="10px"
+                        boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+                        paddingX={20}
+                        justify="space-between"
+                        align="center"
+                    >
+                        <Image height="3rem" src="/images/howdy-images/logo/Logo row.svg" alt="howdy logo"></Image>
+
+                        <Center w="50%" justifyContent={'space-between'}>
+                            <Text
+                                _hover={{ color: 'howdyColors.mainBlue' }}
+                                cursor={'pointer'}
+                                color="howdyColors.mainBlack"
+                                fontWeight="semibold"
+                                opacity="70%"
+                                fontSize={["sm",  "xl", "xx-large"]}
+                            >
+                                Ranking
+                            </Text>
+                            <Text
+                                _hover={{ color: 'howdyColors.mainBlue' }}
+                                cursor={'pointer'}
+                                color="howdyColors.mainBlack"
+                                fontWeight="semibold"
+                                opacity="70%"
+                                fontSize={["sm",  "xl", "xx-large"]}
+                            >
+                                Postagens
+                            </Text>
+                            <Text
+                                _hover={{ color: 'howdyColors.mainBlue' }}
+                                cursor={'pointer'}
+                                color="howdyColors.mainBlack"
+                                fontWeight="semibold"
+                                opacity="70%"
+                                fontSize={["sm",  "xl", "xx-large"]}
+                            >
+                                Aprenda
+                            </Text>
+                        </Center>
+                    </Flex> 
                 </Flex>
             </Flex>
         </>

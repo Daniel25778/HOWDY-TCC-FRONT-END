@@ -34,7 +34,7 @@ const signInFormSchema = yup.object().shape({
     email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
     name: yup.string().required('O nome é obrigatório'),
     birthDate: yup.string().required('A data de nascimento é obrigatória'),
-    // password: yup.string().required('Senha é obrigatória'),
+    password: yup.string().required('Senha é obrigatória'),
     targetLanguage: yup.string().required('Idioma de interesse é obrigatório'),
     nativeLanguage: yup.string().required('Idioma nativo é obrigatório'),
 });
@@ -54,7 +54,7 @@ interface FormCadastroProps {
 }
 
 export function FormCadastro(props: FormCadastroProps) {
-    var { isLogged } = props;
+    const { isLogged } = props;
 
     const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
     useEffect(() => {

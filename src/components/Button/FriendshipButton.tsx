@@ -11,19 +11,19 @@ interface FriendshipButtonProps {
 export function FriendshipButton({ idUser }: FriendshipButtonProps) {
     return (
         <>
-            {false ? (
+            {true ? (
                 <IconPageUserButton
                     bg="howdyColors.mainGreenTransparent"
                     color="howdyColors.mainGreen"
                     icon={<Icon opacity="2" as={BsPersonPlus} fontWeight="black" />}
                 />
-            ) : false ? (
+            ) : true ? (
                 <IconPageUserButton
                     bg="howdyColors.mainRedTransparent"
                     color="howdyColors.mainRed"
                     icon={<Icon opacity="2" as={BsPersonDash} fontWeight="black" />}
                 />
-            ) : false ? (
+            ) : true ? (
                 <IconPageUserButton
                     bg="howdyColors.mainRedTransparent"
                     color="howdyColors.mainRed"

@@ -1,8 +1,10 @@
 import { useColorMode } from '@chakra-ui/core';
-import { Box, Button, Center, color, Flex, Icon, Image, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Center, color, Flex, Icon, IconButton, Image, Input, Text } from '@chakra-ui/react';
 import '@fontsource/roboto/400.css';
 import { FiSearch } from 'react-icons/fi';
-import { IoMdAdd } from 'react-icons/io';
+import { FaRegBell } from 'react-icons/fa';
+import { IoMdAdd,IoMdArrowDropdown } from 'react-icons/io';
+
 
 export function HeaderWeb() {
     return (
@@ -23,7 +25,6 @@ export function HeaderWeb() {
                 left="0"
                 w="70%"
                 h="5rem"
-                bg="howdyColors.mainRed"
                 align="center"
             >
                 <Flex  width="100%" align="center" px="10" justify="space-between" >
@@ -42,8 +43,8 @@ export function HeaderWeb() {
                         ></Input>
                     </Flex>
 
-                    <Flex width="45%" bgColor={'bisque'} justify={'space-between'}>
-                        <Flex  gap="5"  borderRadius="60px 40px 40px 60px"  bg="howdyColors.mainYellow"  align="center">
+                    <Flex align="center" width="45%" height="70" gap="10%" >
+                        <Flex height="65%" gap="5"  borderRadius="60px 40px 40px 60px"  bg="howdyColors.mainYellow"  align="center">
                             <Image
                                 height="2.5rem"
                                 src="/images/howdy-images/howdy-coin/Howdy coin.svg"
@@ -53,12 +54,20 @@ export function HeaderWeb() {
                             <Button opacity={"70%"} bgColor="howdyColors.brownHowdyCoin" borderRadius="0px 15px 15px 0px"><IoMdAdd size="1.5rem" color='#ffffff'/></Button>
                         </Flex>
 
-                        <Flex height="100%">
+                        <Flex height="100%" align="center" gap="2rem">
 
                             <Image borderRadius="100%"  height="3rem" objectFit='cover' src="/images/Tests/profilePhoto.png" alt="howdy coin"></Image>
-                            <Text></Text>
-                            <Icon></Icon>
-
+                            <Text  fontSize={['sm','','medium','x-large']} color="howdyColors.mainWhite">Helena Pena</Text>
+                            <Icon color="howdyColors.mainWhite"><IoMdArrowDropdown size="30"></IoMdArrowDropdown></Icon>
+                            <IconButton
+                                h="60px"
+                                w="60px"
+                                borderRadius="100%"
+                                aria-label="Open navigation"
+                                bg="howdyColors.mainWhite"
+                                color="howdyColors.mainBlack"
+                                icon={<Icon fontSize="xx-large" opacity="2" as={FaRegBell} fontWeight="black" />}
+                            />
                         </Flex>
                     </Flex>
 

@@ -1,4 +1,13 @@
-import { Button, Flex, InputGroup, InputLeftElement, Text, Select } from '@chakra-ui/react';
+import {
+    Button,
+    Flex,
+    InputGroup,
+    InputLeftElement,
+    Text,
+    Select,
+    FormControl,
+    FormErrorMessage,
+} from '@chakra-ui/react';
 import { Input } from '../../components/Form/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -12,25 +21,22 @@ import { BiTargetLock } from 'react-icons/bi';
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 
-interface FormCadastroProps {
-    isLogged: string;
-}
 type CreateUserFormData = {
     email?: string;
     password?: string;
     name: string;
     birthDate: string;
-    idTargetLanguage: number;
-    idNativeLanguage: number;
+    targetLanguage: string;
+    nativeLanguage: string;
 };
 
 const signInFormSchema = yup.object().shape({
-    // email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
+    email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
     name: yup.string().required('O nome é obrigatório'),
     birthDate: yup.string().required('A data de nascimento é obrigatória'),
     // password: yup.string().required('Senha é obrigatória'),
-    // idTargetLanguage: yup.string().required('Idioma de interesse é obrigatório'),
-    // idNativeLanguage: yup.string().required('Idioma nativo é obrigatório'),
+    targetLanguage: yup.string().required('Idioma de interesse é obrigatório'),
+    nativeLanguage: yup.string().required('Idioma nativo é obrigatório'),
 });
 
 interface TargetLanguage {
@@ -42,6 +48,9 @@ interface NativeLanguage {
     idNativeLanguage: number;
     nativeLanguageName: string;
     nativeLanguageTranslatorName: string;
+}
+interface FormCadastroProps {
+    isLogged: string;
 }
 
 export function FormCadastro(props: FormCadastroProps) {
@@ -68,22 +77,20 @@ export function FormCadastro(props: FormCadastroProps) {
         console.log('chegou');
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        const { email, password, name, birthDate, idTargetLanguage, idNativeLanguage } = values;
-        console.log({ email, password, name, birthDate, idTargetLanguage, idNativeLanguage });
+        let { email, password, name, birthDate, targetLanguage, nativeLanguage } = values;
+
+        targetLanguage = JSON.parse(targetLanguage);
+        nativeLanguage = JSON.parse(nativeLanguage);
+
+        console.log({ email, password, name, birthDate, targetLanguage, nativeLanguage });
 
         if (isLogged) {
             try {
                 api.post('users', {
                     userName: name,
                     birthDate,
-                    nativeLanguage: {
-                        idNativeLanguage: 1,
-                        nativeLanguageName: 'teste',
-                    },
-                    targetLanguage: {
-                        idTargetLanguage: 2,
-                        targetLanguageName: 'teste',
-                    },
+                    nativeLanguage: nativeLanguage,
+                    targetLanguage: targetLanguage,
                 }).then((response) => console.log(response));
             } catch {
                 console.log('Error on creating an user');
@@ -110,7 +117,7 @@ export function FormCadastro(props: FormCadastroProps) {
         <Flex
             as="form"
             onSubmit={handleSubmit(handleSignUp)}
-            padding="20"
+            padding="10"
             bg="white"
             align="center"
             justify="center"
@@ -152,37 +159,47 @@ export function FormCadastro(props: FormCadastroProps) {
                 />
             </InputGroup>
 
-            <Select
-                mb="10px"
-                placeholder="Lingua nativa"
-                variant="filled"
-                iconColor="howdyColors.mainBlue"
-                icon={<MdArrowDropDown />}
-                {...register('idTargetLanguage')}
-            >
-                {nativeLanguages &&
-                    nativeLanguages.map((nativeLanguage) => (
-                        <option key={nativeLanguage.idNativeLanguage} value={nativeLanguage.idNativeLanguage}>
-                            {nativeLanguage.nativeLanguageName}
-                        </option>
-                    ))}
-            </Select>
+            <FormControl isInvalid={!!errors.nativeLanguage}>
+                <Select
+                    mb="10px"
+                    placeholder="Selecione a língua nativa"
+                    variant="filled"
+                    iconColor="howdyColors.mainBlue"
+                    icon={<MdArrowDropDown />}
+                    {...register('nativeLanguage')}
+                    name={'nativeLanguage'}
+                    id={'nativeLanguage'}
+                >
+                    {nativeLanguages &&
+                        nativeLanguages.map((nativeLanguage) => (
+                            <option key={nativeLanguage.idNativeLanguage} value={JSON.stringify(nativeLanguage)}>
+                                {nativeLanguage.nativeLanguageName}
+                            </option>
+                        ))}
+                </Select>
+                {!!errors && <FormErrorMessage>{errors?.nativeLanguage?.message}</FormErrorMessage>}
+            </FormControl>
 
-            <Select
-                mb="10px"
-                placeholder="Lingua de interesse"
-                variant="filled"
-                iconColor="howdyColors.mainBlue"
-                icon={<MdArrowDropDown />}
-                {...register('idNativeLanguage')}
-            >
-                {targetLanguages &&
-                    targetLanguages.map((targetLanguage) => (
-                        <option key={targetLanguage.idTargetLanguage} value={targetLanguage.idTargetLanguage}>
-                            {targetLanguage.targetLanguageName}
-                        </option>
-                    ))}
-            </Select>
+            <FormControl isInvalid={!!errors.targetLanguage}>
+                <Select
+                    mb="10px"
+                    placeholder="Selecione sua língua de interesse"
+                    variant="filled"
+                    iconColor="howdyColors.mainBlue"
+                    icon={<MdArrowDropDown />}
+                    {...register('targetLanguage')}
+                    name={'targetLanguage'}
+                    id={'targetLanguage'}
+                >
+                    {targetLanguages &&
+                        targetLanguages.map((targetLanguage) => (
+                            <option key={targetLanguage.idTargetLanguage} value={JSON.stringify(targetLanguage)}>
+                                {targetLanguage.targetLanguageName}
+                            </option>
+                        ))}
+                </Select>
+                {!!errors && <FormErrorMessage>{errors?.targetLanguage?.message}</FormErrorMessage>}
+            </FormControl>
 
             {showAllInputs && (
                 <>

@@ -2,12 +2,17 @@ import { Center, Flex } from '@chakra-ui/react';
 import { Image, Spacer } from '@chakra-ui/react';
 import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/react';
 import { FormLogin } from '../components/Form/FormLogin';
-import { Divider } from '@chakra-ui/react'
+import { Divider } from '@chakra-ui/react';
 
-export function PageLogin(props: any) {
+export default function PageLogin(props: any) {
     return (
-        <>
-            <Flex height="100%" width="40%" bg="howdyColors.mainBlue" align="center" flexDir="column" >
+        <Flex
+            w="100%"
+            h="100vh"
+            align="center"
+            bgGradient="linear(to-t, howdyColors.mainWhite, #F2F2F2,howdyColors.mainWhite)"
+        >
+            <Flex height="100%" width="40%" bg="howdyColors.mainBlue" align="center" flexDir="column">
                 <Flex width="80%" height="50%" justify="center" align="center" flexDir="column">
                     <Image
                         width={400}
@@ -25,11 +30,10 @@ export function PageLogin(props: any) {
                 <Spacer></Spacer>
                 <Image src="/images/illustrations/women-reading.svg" alt="howdy logo" />
             </Flex>
-    
-            <Flex align='center' justifyContent='center' height="100%" width="70%">
-                    <FormLogin></FormLogin>
+
+            <Flex align="center" justifyContent="center" height="100%" width="70%">
+                <FormLogin />
             </Flex>
-  
-        </>
+        </Flex>
     );
 }

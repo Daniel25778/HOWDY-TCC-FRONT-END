@@ -15,9 +15,9 @@ export default function Home() {
             align="center"
             bgGradient="linear(to-t, howdyColors.mainWhite, #F2F2F2,howdyColors.mainWhite)"
         >
-            <HeaderWeb></HeaderWeb>
+            {/* <HeaderWeb></HeaderWeb> */}
 
-            {/* <PageLogin></PageLogin>  */}
+            <PageLogin></PageLogin> 
         </Flex>
     );
 }

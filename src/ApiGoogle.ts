@@ -33,7 +33,7 @@ export default {
             api.get(`users/isMyUidExternalRegistered`).then((response) => {
                 const { data } = response;
                 if (data === 'This user does not have an account in our system') {
-                    Router.push('cadastro/isLogged');
+                    Router.push('register/isLogged');
                 }
             });
         } catch (error) {}

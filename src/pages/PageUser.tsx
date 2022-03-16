@@ -29,7 +29,7 @@ export default function UserPage(props: any) {
                         src="/images/Tests/backgroundImage.png"
                     />
                     <Flex w="100%" position="relative" bottom="4vw" pl="8vw">
-                        <Center borderRadius="100%" w="12.5vw" h="12.5vw" bg="white">
+                        <Center position="relative" borderRadius="100%" w="12.5vw" h="12.5vw" bg="white">
                             <Image
                                 w="12vw"
                                 h="12vw"
@@ -37,9 +37,38 @@ export default function UserPage(props: any) {
                                 objectFit="cover"
                                 src="/images/Tests/profilePhoto.png"
                             />
+
+                            <Flex role="group" position="absolute" bottom="0" right="0">
+                                <Image
+                                    cursor="pointer"
+                                    zIndex="1"
+                                    w="4vw"
+                                    src="/images/howdy-images/class/class-master.svg"
+                                />
+                                <Text
+                                    px="15px"
+                                    py="2px"
+                                    fontWeight="black"
+                                    color="white"
+                                    bg="howdyColors.master"
+                                    borderRadius="0 10px 10px 0"
+                                    position="absolute"
+                                    bottom=".5vw"
+                                    zIndex="-1"
+                                    right="-1vw"
+                                    transition="right 1s, z-index .5s"
+                                    fontSize={['sm', 'md']}
+                                    _groupHover={{
+                                        right: '-4.5vw',
+                                        zIndex: '0',
+                                    }}
+                                >
+                                    Master
+                                </Text>
+                            </Flex>
                         </Center>
                         <Box color="howdyColors.mainBlack" flex="1" ml="10%" mt="5vw">
-                            <Heading wordBreak="break-all" fontSize="4xl">
+                            <Heading wordBreak="break-word" fontSize="4xl">
                                 Helena Pena Rodrigues dos Santos
                             </Heading>
                             <Text mt="20px" fontSize="xl" color="howdyColors.mainBlack">

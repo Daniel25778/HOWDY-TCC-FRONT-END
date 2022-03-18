@@ -1,5 +1,5 @@
 import { Center, Flex } from '@chakra-ui/react';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetStaticPaths } from 'next';
 import { Image, Spacer } from '@chakra-ui/react';
 import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/react';
 import { FormLogin } from '../../components/Form/FormLogin';
@@ -13,7 +13,6 @@ interface PageCadastroProps {
 
 export default function PageCadastro(props: PageCadastroProps) {
     const { isLogged } = props;
-    console.log(isLogged);
     return (
         <Flex
             w="100vw"
@@ -65,6 +64,13 @@ export default function PageCadastro(props: PageCadastroProps) {
         </Flex>
     );
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    return {
+        paths: [],
+        fallback: true,
+    };
+};
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const { isLogged } = params;

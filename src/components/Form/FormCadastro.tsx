@@ -7,12 +7,19 @@ import {
     Select,
     FormControl,
     FormErrorMessage,
+    useToast,
 } from '@chakra-ui/react';
 import { Input } from '../../components/Form/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    deleteUser,
+    browserSessionPersistence,
+    setPersistence,
+} from 'firebase/auth';
 import { MdOutlineMailOutline, MdArrowDropDown, MdOutlineCake } from 'react-icons/md';
 import { BsPerson } from 'react-icons/bs';
 import { GiPadlock } from 'react-icons/gi';
@@ -20,21 +27,37 @@ import { FaBaby } from 'react-icons/fa';
 import { BiTargetLock } from 'react-icons/bi';
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
+import { initializeApp } from 'firebase/app';
+import firebaseConfig from '../../services/firebaseConfig';
+import { setCookie } from 'nookies';
+import Router from 'next/router';
 
 type CreateUserFormData = {
     email?: string;
     password?: string;
+    passwordConfirm?: string;
     name: string;
     birthDate: string;
-    targetLanguage: string;
-    nativeLanguage: string;
+    targetLanguage: any;
+    nativeLanguage: any;
 };
+
+const signInLoggedFormSchema = yup.object().shape({
+    name: yup.string().required('O nome é obrigatório'),
+    birthDate: yup.string().required('A data de nascimento é obrigatória'),
+    targetLanguage: yup.string().required('Idioma de interesse é obrigatório'),
+    nativeLanguage: yup.string().required('Idioma nativo é obrigatório'),
+});
 
 const signInFormSchema = yup.object().shape({
     email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
     name: yup.string().required('O nome é obrigatório'),
     birthDate: yup.string().required('A data de nascimento é obrigatória'),
-    password: yup.string().required('Senha é obrigatória'),
+    password: yup.string().required('Senha é obrigatória').min(4, 'A senha deve possuir ao menos 6 caracteres'),
+    passwordConfirm: yup
+        .string()
+        .required('Confirmação de senha é obrigatória')
+        .oneOf([yup.ref('password')], 'As senhas devem ser iguais'),
     targetLanguage: yup.string().required('Idioma de interesse é obrigatório'),
     nativeLanguage: yup.string().required('Idioma nativo é obrigatório'),
 });
@@ -54,7 +77,10 @@ interface FormCadastroProps {
 }
 
 export function FormCadastro(props: FormCadastroProps) {
-    const { isLogged } = props;
+    const { isLogged: getData } = props;
+    const isLogged = getData === 'isLogged';
+
+    initializeApp(firebaseConfig);
 
     const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
     useEffect(() => {
@@ -66,51 +92,107 @@ export function FormCadastro(props: FormCadastroProps) {
         api.get('nativeLanguages').then((response) => setNativeLanguages(response.data));
     }, []);
 
-    const showAllInputs = isLogged !== 'isLogged';
+    const resolver = isLogged ? yupResolver(signInLoggedFormSchema) : yupResolver(signInFormSchema);
 
     const { register, handleSubmit, formState } = useForm({
-        resolver: yupResolver(signInFormSchema),
+        resolver: resolver,
     });
     const { errors } = formState;
 
+    const toast = useToast();
+
     const handleSignUp: SubmitHandler<CreateUserFormData> = async (values) => {
-        console.log('chegou');
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        let { email, password, name, birthDate, targetLanguage, nativeLanguage } = values;
-
+        let { email, password, passwordConfirm, name, birthDate, targetLanguage, nativeLanguage } = values;
         targetLanguage = JSON.parse(targetLanguage);
         nativeLanguage = JSON.parse(nativeLanguage);
 
-        console.log({ email, password, name, birthDate, targetLanguage, nativeLanguage });
+        if (nativeLanguage.idNativeLanguage === targetLanguage.idTargetLanguage) {
+            return toast({
+                title: 'O IDIOMA NATIVO, E O IDIOMA DE INTERESSE DEVEM SER DIFERENTES.',
+                status: 'error',
+                isClosable: true,
+                position: 'top-right',
+            });
+        }
 
         if (isLogged) {
-            try {
+            return api
+                .post('users', {
+                    userName: name,
+                    birthDate,
+                    nativeLanguage,
+                    targetLanguage,
+                })
+                .then((response: any) => {
+                    toast({
+                        title: 'CONTA CRIADA COM SUCESSO',
+                        status: 'success',
+                        isClosable: true,
+                        position: 'top',
+                    });
+
+                    Router.push('../PageUser');
+                })
+                .catch((error: any) => {
+                    toast({
+                        title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                        status: 'error',
+                        isClosable: true,
+                        position: 'top-right',
+                    });
+                });
+        }
+
+        const auth = getAuth();
+        setPersistence(auth, browserSessionPersistence);
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential: any) => {
+                const { user } = userCredential;
+                const { accessToken: idToken } = user;
+
+                setCookie(undefined, 'firebase', idToken, {
+                    maxAge: 60 * 60 * 24 * 30,
+                    path: '/',
+                });
+
+                api.defaults.headers['Authorization'] = `${idToken}`;
+
                 api.post('users', {
                     userName: name,
                     birthDate,
-                    nativeLanguage: nativeLanguage,
-                    targetLanguage: targetLanguage,
-                }).then((response) => console.log(response));
-            } catch {
-                console.log('Error on creating an user');
-            }
-        }
+                    nativeLanguage,
+                    targetLanguage,
+                })
+                    .then((response: any) => {
+                        toast({
+                            title: 'CONTA CRIADA COM SUCESSO',
+                            status: 'success',
+                            isClosable: true,
+                            position: 'top',
+                        });
+                    })
+                    .catch((error: any) => {
+                        toast({
+                            title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top-right',
+                        });
 
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        // const auth = getAuth();
-        // createUserWithEmailAndPassword(auth, email, password)
-        //     .then((userCredential) => {
-        //         // Signed in
-        //         const user = userCredential.user;
-        //         // ...
-        //     })
-        //     .catch((error) => {
-        //         const errorCode = error.code;
-        //         const errorMessage = error.message;
-        //         // ..
-        //     });
+                        deleteUser(user);
+                    });
+            })
+            .catch((error) => {
+                toast({
+                    title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                    status: 'error',
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            });
     };
 
     return (
@@ -124,7 +206,7 @@ export function FormCadastro(props: FormCadastroProps) {
             borderRadius={8}
             flexDir="column"
         >
-            {showAllInputs && (
+            {!isLogged && (
                 <InputGroup width={400} variant="filled" marginBottom="10px">
                     <InputLeftElement pointerEvents="none">
                         <MdOutlineMailOutline color="#6A7DFF" />
@@ -143,7 +225,7 @@ export function FormCadastro(props: FormCadastroProps) {
                 <InputLeftElement pointerEvents="none">
                     <BsPerson color="#6A7DFF" />
                 </InputLeftElement>
-                <Input name="password" placeholder="Seu nome" type="text" error={errors.name} {...register('name')} />
+                <Input name="name" placeholder="Seu nome" type="text" error={errors.name} {...register('name')} />
             </InputGroup>
 
             <InputGroup width={400} variant="filled" marginBottom="10px">
@@ -201,7 +283,7 @@ export function FormCadastro(props: FormCadastroProps) {
                 {!!errors && <FormErrorMessage>{errors?.targetLanguage?.message}</FormErrorMessage>}
             </FormControl>
 
-            {showAllInputs && (
+            {!isLogged && (
                 <>
                     <InputGroup width={400} variant="filled" marginBottom="10px">
                         <InputLeftElement pointerEvents="none">
@@ -221,11 +303,11 @@ export function FormCadastro(props: FormCadastroProps) {
                             <GiPadlock color="#6A7DFF" />
                         </InputLeftElement>
                         <Input
-                            name="password"
+                            name="passwordConfirm"
                             placeholder="Confirme sua senha"
                             type="password"
-                            error={errors.password}
-                            {...register('password')}
+                            error={errors.passwordConfirm}
+                            {...register('passwordConfirm')}
                         />
                     </InputGroup>
                 </>

@@ -44,7 +44,7 @@ export function HeaderWeb() {
                     </Flex>
 
                     <Flex align="center" width="45%" height="70" gap="10%" >
-                        <Flex height="65%" gap="5"  borderRadius="60px 40px 40px 60px"  bg="howdyColors.mainYellow"  align="center">
+                        <Flex  gap="5"  borderRadius="60px 40px 40px 60px"  bg="howdyColors.mainYellow"  align="center">
                             <Image
                                 height="2.5rem"
                                 src="/images/howdy-images/howdy-coin/Howdy coin.svg"
@@ -60,8 +60,6 @@ export function HeaderWeb() {
                             <Text  fontSize={['sm','','medium','x-large']} color="howdyColors.mainWhite">Helena Pena</Text>
                             <Icon color="howdyColors.mainWhite"><IoMdArrowDropdown size="30"></IoMdArrowDropdown></Icon>
                             <IconButton
-                                h="60px"
-                                w="60px"
                                 borderRadius="100%"
                                 aria-label="Open navigation"
                                 bg="howdyColors.mainWhite"

@@ -1,9 +1,7 @@
 import { Center, Flex } from '@chakra-ui/react';
-import { GetServerSideProps, GetStaticPaths } from 'next';
-import { Image, Spacer } from '@chakra-ui/react';
-import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/react';
-import { FormLogin } from '../../components/Form/FormLogin';
-import { Divider } from '@chakra-ui/react';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { Image } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import '@fontsource/roboto/400.css';
 import { FormCadastro } from '../../components/Form/FormCadastro';
 
@@ -65,7 +63,14 @@ export default function PageCadastro(props: PageCadastroProps) {
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+    return {
+        paths: [],
+        fallback: true, //true, false, 'blocking'
+    };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { isLogged } = params;
 
     return {

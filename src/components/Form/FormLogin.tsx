@@ -1,4 +1,4 @@
-import { Button, Flex, InputGroup, InputLeftElement, propNames, Text } from '@chakra-ui/react';
+import { Button, Flex, InputGroup, InputLeftElement, Link as ChakraLink, propNames, Text } from '@chakra-ui/react';
 import { Input } from '../../components/Form/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -12,9 +12,7 @@ import { GiPadlock } from 'react-icons/gi';
 import { actionLoginGoogle } from '../../pages/api/actionLogWithGoogle';
 import { actionLoginFacebook } from '../../pages/api/actionLoginFacebook';
 import * as React from 'react';
-
-
-
+import Link from 'next/link';
 
 type SignInFormData = {
     email: string;
@@ -27,7 +25,6 @@ const signInFormSchema = yup.object().shape({
 });
 
 export function FormLogin() {
-
     const { register, handleSubmit, formState } = useForm({
         resolver: yupResolver(signInFormSchema),
     });
@@ -43,7 +40,7 @@ export function FormLogin() {
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
-                console.log(user)
+                console.log(user);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -73,8 +70,8 @@ export function FormLogin() {
             </InputGroup>
 
             <InputGroup width={400} variant="filled" marginBottom="6">
-                <InputLeftElement pointerEvents="none"> 
-                    <GiPadlock color="#6A7DFF" /> 
+                <InputLeftElement pointerEvents="none">
+                    <GiPadlock color="#6A7DFF" />
                 </InputLeftElement>
                 <Input
                     name="password"
@@ -100,8 +97,10 @@ export function FormLogin() {
             >
                 <Text>ENTRAR</Text>
             </Button>
-            
-            <Text color="howdyColors.mainBlue">Não tem uma conta? Registre-se</Text>
+
+            <Link href="/register/false">
+                <ChakraLink color="howdyColors.mainBlue">Não tem uma conta? Registre-se</ChakraLink>
+            </Link>
 
             <Flex
                 marginTop="20"

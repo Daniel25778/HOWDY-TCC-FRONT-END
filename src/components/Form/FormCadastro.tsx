@@ -31,13 +31,14 @@ import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../../services/firebaseConfig';
 import { setCookie } from 'nookies';
 import Router from 'next/router';
+import { formatDateToBackend } from '../../functions/formatDateToBackEnd';
 
 type CreateUserFormData = {
     email?: string;
     password?: string;
     passwordConfirm?: string;
     name: string;
-    birthDate: string;
+    birthDate: Date;
     targetLanguage: any;
     nativeLanguage: any;
 };
@@ -53,7 +54,7 @@ const signInFormSchema = yup.object().shape({
     email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
     name: yup.string().required('O nome é obrigatório'),
     birthDate: yup.date().required('A data de nascimento é obrigatória'),
-    password: yup.string().required('Senha é obrigatória').min(4, 'A senha deve possuir ao menos 6 caracteres'),
+    password: yup.string().required('Senha é obrigatória').min(6, 'A senha deve possuir ao menos 6 caracteres'),
     passwordConfirm: yup
         .string()
         .required('Confirmação de senha é obrigatória')
@@ -104,9 +105,13 @@ export function FormCadastro(props: FormCadastroProps) {
     const handleSignUp: SubmitHandler<CreateUserFormData> = async (values) => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        let { email, password, passwordConfirm, name, birthDate, targetLanguage, nativeLanguage } = values;
+        let { email, password, name, birthDate, targetLanguage, nativeLanguage } = values;
+
         targetLanguage = JSON.parse(targetLanguage);
         nativeLanguage = JSON.parse(nativeLanguage);
+
+        const birthDateFormatted = formatDateToBackend(birthDate);
+        console.log(birthDateFormatted);
 
         if (nativeLanguage.idNativeLanguage === targetLanguage.idTargetLanguage) {
             return toast({
@@ -121,7 +126,7 @@ export function FormCadastro(props: FormCadastroProps) {
             return api
                 .post('users', {
                     userName: name,
-                    birthDate,
+                    birthDate: birthDateFormatted,
                     nativeLanguage,
                     targetLanguage,
                 })
@@ -146,53 +151,53 @@ export function FormCadastro(props: FormCadastroProps) {
         }
 
         const auth = getAuth();
-        setPersistence(auth, browserSessionPersistence);
+        setPersistence(auth, browserSessionPersistence).then(() => {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential: any) => {
+                    const { user } = userCredential;
+                    const { accessToken: idToken } = user;
 
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential: any) => {
-                const { user } = userCredential;
-                const { accessToken: idToken } = user;
-
-                setCookie(undefined, 'firebase', idToken, {
-                    maxAge: 60 * 60 * 24 * 30,
-                    path: '/',
-                });
-
-                api.defaults.headers['Authorization'] = `${idToken}`;
-
-                api.post('users', {
-                    userName: name,
-                    birthDate,
-                    nativeLanguage,
-                    targetLanguage,
-                })
-                    .then((response: any) => {
-                        toast({
-                            title: 'CONTA CRIADA COM SUCESSO',
-                            status: 'success',
-                            isClosable: true,
-                            position: 'top',
-                        });
-                    })
-                    .catch((error: any) => {
-                        toast({
-                            title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
-                            status: 'error',
-                            isClosable: true,
-                            position: 'top-right',
-                        });
-
-                        deleteUser(user);
+                    setCookie(undefined, 'firebase', idToken, {
+                        maxAge: 60 * 60 * 24 * 30,
+                        path: '/',
                     });
-            })
-            .catch((error) => {
-                toast({
-                    title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
-                    status: 'error',
-                    isClosable: true,
-                    position: 'top-right',
+
+                    api.defaults.headers['Authorization'] = `${idToken}`;
+
+                    api.post('users', {
+                        userName: name,
+                        birthDate: birthDateFormatted,
+                        nativeLanguage,
+                        targetLanguage,
+                    })
+                        .then((response: any) => {
+                            toast({
+                                title: 'CONTA CRIADA COM SUCESSO',
+                                status: 'success',
+                                isClosable: true,
+                                position: 'top',
+                            });
+                        })
+                        .catch((error: any) => {
+                            toast({
+                                title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                                status: 'error',
+                                isClosable: true,
+                                position: 'top',
+                            });
+
+                            deleteUser(user);
+                        });
+                })
+                .catch((error) => {
+                    toast({
+                        title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                        status: 'error',
+                        isClosable: true,
+                        position: 'top',
+                    });
                 });
-            });
+        });
     };
 
     return (

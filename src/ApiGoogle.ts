@@ -42,7 +42,7 @@ export default {
                 if (data === 'This user does not have an account in our system') {
                     Router.push('register/isLogged');
                 } else {
-                    Router.push('PageUser');
+                    Router.push('UserPage');
                 }
             });
         } catch (error) {

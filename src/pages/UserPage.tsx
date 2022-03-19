@@ -1,24 +1,22 @@
-import { Box, Center, Flex, Icon, IconButton } from '@chakra-ui/react';
-import { GetServerSideProps } from 'next';
-import { Image, Spacer } from '@chakra-ui/react';
-import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Icon } from '@chakra-ui/react';
+import { GetStaticProps } from 'next';
+import { Image } from '@chakra-ui/react';
+import { Heading, Text } from '@chakra-ui/react';
 import { Divider } from '@chakra-ui/react';
-import { IoPersonAddOutline } from 'react-icons/io5';
 import Head from 'next/head';
 import { HeaderWeb } from '../components/Header/Header';
-import { BsFillSuitHeartFill, BsPersonDash, BsPersonPlus } from 'react-icons/bs';
-import { MdOutlinePersonAddDisabled } from 'react-icons/md';
 import { BiTargetLock } from 'react-icons/bi';
-import { FaBaby, FaHeart } from 'react-icons/fa';
+import { FaBaby } from 'react-icons/fa';
 import { FriendshipButton } from '../components/Button/FriendshipButton';
-import  ChartWeb  from "../components/Chart/Chart";
 import dynamic from 'next/dynamic';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
-    ssr: false
-})
+    ssr: false,
+});
 
 export default function UserPage(props: any) {
+    console.log(props.uid);
     return (
         <>
             <Head>
@@ -34,7 +32,7 @@ export default function UserPage(props: any) {
                         maxH="25vw"
                         src="/images/Tests/backgroundImage.png"
                     />
-                    <Flex w="100%" position="relative" bottom="4vw" pl="8vw" >
+                    <Flex w="100%" position="relative" bottom="4vw" pl="8vw">
                         <Center position="relative" borderRadius="100%" w="12.5vw" h="12.5vw" bg="white">
                             <Image
                                 w="12vw"
@@ -88,24 +86,40 @@ export default function UserPage(props: any) {
                 </Box>
                 <Flex>
                     <Flex gap="8%" width="100%">
-                        <Text fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>Desempenho</Text>
-                        <Flex filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"  width="10%" alignItems="center" justifyContent="center" bgColor="howdyColors.mainGreenTransparent" borderRadius="10"  p="2">
-                            <Text color="howdyColors.mainGreen" fontWeight={'bold'} fontSize={['sm', 'md', 'xx-large']}>20000 XP</Text>
-                            </Flex>
-                        <Flex gap="10" justify={'center'} align={'center'}>
-                            <Icon color="howdyColors.mainGreen" fontSize="x-large"><BiTargetLock></BiTargetLock>
-                            </Icon><Text color="howdyColors.mainGreen">Inglês</Text>
+                        <Text fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
+                            Desempenho
+                        </Text>
+                        <Flex
+                            filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
+                            width="10%"
+                            alignItems="center"
+                            justifyContent="center"
+                            bgColor="howdyColors.mainGreenTransparent"
+                            borderRadius="10"
+                            p="2"
+                        >
+                            <Text color="howdyColors.mainGreen" fontWeight={'bold'} fontSize={['sm', 'md', 'xx-large']}>
+                                20000 XP
+                            </Text>
                         </Flex>
                         <Flex gap="10" justify={'center'} align={'center'}>
-                            <Icon color="howdyColors.mainGreen" fontSize="x-large"><FaBaby></FaBaby></Icon>
+                            <Icon color="howdyColors.mainGreen" fontSize="x-large">
+                                <BiTargetLock></BiTargetLock>
+                            </Icon>
+                            <Text color="howdyColors.mainGreen">Inglês</Text>
+                        </Flex>
+                        <Flex gap="10" justify={'center'} align={'center'}>
+                            <Icon color="howdyColors.mainGreen" fontSize="x-large">
+                                <FaBaby></FaBaby>
+                            </Icon>
                             <Text color="howdyColors.mainGreen">Português</Text>
                         </Flex>
                     </Flex>
                 </Flex>
-                <Flex p="9%" justify={'center'} align={"center"}> 
-                    <Flex w='50%'>
+                <Flex p="9%" justify={'center'} align={'center'}>
+                    <Flex w="50%">
                         <Text>DESEMPENHO SEMANAL</Text>
-                        <ChartWeb></ChartWeb>
+                        {/* <ChartWeb></ChartWeb> */}
                     </Flex>
                     <Flex w="50%">
                         <Text>DESEMPENHO MENSAL</Text>
@@ -114,4 +128,18 @@ export default function UserPage(props: any) {
             </Box>
         </>
     );
+}
+
+export async function GetStaticProps() {
+    const auth = getAuth();
+
+    onAuthStateChanged(auth, (user) => {
+        console.log(user);
+    });
+
+    return {
+        props: {
+            // uid,
+        },
+    };
 }

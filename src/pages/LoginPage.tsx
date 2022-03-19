@@ -3,6 +3,7 @@ import { Image, Spacer } from '@chakra-ui/react';
 import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/react';
 import { FormLogin } from '../components/Form/FormLogin';
 import { Divider } from '@chakra-ui/react';
+import { GetStaticPaths } from 'next';
 
 export default function PageLogin(props: any) {
     return (

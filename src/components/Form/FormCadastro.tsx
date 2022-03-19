@@ -44,7 +44,7 @@ type CreateUserFormData = {
 
 const signInLoggedFormSchema = yup.object().shape({
     name: yup.string().required('O nome é obrigatório'),
-    birthDate: yup.string().required('A data de nascimento é obrigatória'),
+    birthDate: yup.date().required('A data de nascimento é obrigatória'),
     targetLanguage: yup.string().required('Idioma de interesse é obrigatório'),
     nativeLanguage: yup.string().required('Idioma nativo é obrigatório'),
 });
@@ -52,7 +52,7 @@ const signInLoggedFormSchema = yup.object().shape({
 const signInFormSchema = yup.object().shape({
     email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
     name: yup.string().required('O nome é obrigatório'),
-    birthDate: yup.string().required('A data de nascimento é obrigatória'),
+    birthDate: yup.date().required('A data de nascimento é obrigatória'),
     password: yup.string().required('Senha é obrigatória').min(4, 'A senha deve possuir ao menos 6 caracteres'),
     passwordConfirm: yup
         .string()
@@ -235,7 +235,8 @@ export function FormCadastro(props: FormCadastroProps) {
                 <Input
                     name="birthDate"
                     placeholder="Sua data de nascimento"
-                    type="date"
+                    onFocus={() => document.getElementById('birthDate').setAttribute('type', 'date')}
+                    type="text"
                     error={errors.birthDate}
                     {...register('birthDate')}
                 />

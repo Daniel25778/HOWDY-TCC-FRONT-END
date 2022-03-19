@@ -214,7 +214,7 @@ export function FormCadastro(props: FormCadastroProps) {
                     <Input
                         name="email"
                         placeholder="Seu e-mail"
-                        type="email"
+                        type="text"
                         error={errors.email}
                         {...register('email')}
                     />

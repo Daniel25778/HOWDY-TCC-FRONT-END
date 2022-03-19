@@ -45,7 +45,7 @@ export const themes = extendTheme({
     breakpoints,
     fonts: {
         heading: 'Roboto',
-        body: 'Raleway, sans-serif',
+        body: 'Roboto, sans-serif',
     },
     styles: {
         global: {

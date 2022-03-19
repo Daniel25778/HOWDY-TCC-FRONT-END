@@ -65,13 +65,6 @@ export default function PageCadastro(props: PageCadastroProps) {
     );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    return {
-        paths: [],
-        fallback: true,
-    };
-};
-
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const { isLogged } = params;
 

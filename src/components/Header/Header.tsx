@@ -3,14 +3,13 @@ import { Box, Button, Center, color, Flex, Icon, IconButton, Image, Input, Text 
 import '@fontsource/roboto/400.css';
 import { FiSearch } from 'react-icons/fi';
 import { FaRegBell } from 'react-icons/fa';
-import { IoMdAdd,IoMdArrowDropdown } from 'react-icons/io';
+import { IoMdAdd, IoMdArrowDropdown } from 'react-icons/io';
 
-
-export function HeaderWeb() {
+export function Header() {
     return (
         <Flex
             position="fixed"
-            zIndex="1"
+            zIndex="10"
             as="header"
             top="0"
             left="0"
@@ -19,22 +18,14 @@ export function HeaderWeb() {
             h="7rem"
             bg="howdyColors.mainBlue"
         >
-            <Flex
-                position="relative"
-                top="0"
-                left="0"
-                w="70%"
-                h="5rem"
-                align="center"
-            >
-                <Flex  width="100%" align="center" px="10" justify="space-between" >
-                    <Flex width="50%" >
+            <Flex position="relative" top="0" left="0" w="70%" h="5rem" align="center">
+                <Flex width="100%" align="center" px="10" justify="space-between">
+                    <Flex width="50%">
                         <Box marginRight="5">
                             <FiSearch size={30} color="#F2F2F2" />
                         </Box>
 
                         <Input
-                        
                             bg="howdyColors.main"
                             focusBorderColor="howdyColors.mainWhite"
                             placeholder="Descubra pessoas ou atividades..."
@@ -43,22 +34,39 @@ export function HeaderWeb() {
                         ></Input>
                     </Flex>
 
-                    <Flex align="center" width="45%" height="70" gap="10%" >
-                        <Flex  gap="5"  borderRadius="60px 40px 40px 60px"  bg="howdyColors.mainYellow"  align="center">
+                    <Flex align="center" width="45%" height="70" gap="10%">
+                        <Flex gap="5" borderRadius="60px 40px 40px 60px" bg="howdyColors.mainYellow" align="center">
                             <Image
                                 height="2.5rem"
                                 src="/images/howdy-images/howdy-coin/Howdy coin.svg"
                                 alt="howdy coin"
                             ></Image>
-                            <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">200</Text>
-                            <Button opacity={"70%"} bgColor="howdyColors.brownHowdyCoin" borderRadius="0px 15px 15px 0px"><IoMdAdd size="1.5rem" color='#ffffff'/></Button>
+                            <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">
+                                200
+                            </Text>
+                            <Button
+                                opacity={'70%'}
+                                bgColor="howdyColors.brownHowdyCoin"
+                                borderRadius="0px 15px 15px 0px"
+                            >
+                                <IoMdAdd size="1.5rem" color="#ffffff" />
+                            </Button>
                         </Flex>
 
                         <Flex height="100%" align="center" gap="2rem">
-
-                            <Image borderRadius="100%"  height="3rem" objectFit='cover' src="/images/Tests/profilePhoto.png" alt="howdy coin"></Image>
-                            <Text  fontSize={['sm','','medium','x-large']} color="howdyColors.mainWhite">Helena Pena</Text>
-                            <Icon color="howdyColors.mainWhite"><IoMdArrowDropdown size="30"></IoMdArrowDropdown></Icon>
+                            <Image
+                                borderRadius="100%"
+                                height="3rem"
+                                objectFit="cover"
+                                src="/images/Tests/profilePhoto.png"
+                                alt="howdy coin"
+                            ></Image>
+                            <Text fontSize={['sm', '', 'medium', 'x-large']} color="howdyColors.mainWhite">
+                                Helena Pena
+                            </Text>
+                            <Icon color="howdyColors.mainWhite">
+                                <IoMdArrowDropdown size="30"></IoMdArrowDropdown>
+                            </Icon>
                             <IconButton
                                 borderRadius="100%"
                                 aria-label="Open navigation"
@@ -68,8 +76,6 @@ export function HeaderWeb() {
                             />
                         </Flex>
                     </Flex>
-
-                    
                 </Flex>
 
                 <Flex

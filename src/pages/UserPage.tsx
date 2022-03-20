@@ -4,25 +4,66 @@ import { Image } from '@chakra-ui/react';
 import { Heading, Text } from '@chakra-ui/react';
 import { Divider } from '@chakra-ui/react';
 import Head from 'next/head';
-import { HeaderWeb } from '../components/Header/Header';
+import { Header } from '../components/Header/Header';
 import { BiTargetLock } from 'react-icons/bi';
 import { FaBaby } from 'react-icons/fa';
 import { FriendshipButton } from '../components/Button/FriendshipButton';
-import dynamic from 'next/dynamic';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
-const Chart = dynamic(() => import('react-apexcharts'), {
-    ssr: false,
-});
+import { Chart } from '../components/Chart/Chart';
+import { ApexOptions } from 'apexcharts';
 
 export default function UserPage(props: any) {
-    console.log(props.uid);
+    const options: ApexOptions = {
+        chart: {
+            toolbar: {
+                show: false,
+            },
+            zoom: {
+                enabled: false,
+            },
+            foreColor: '#29B995',
+        },
+        grid: {
+            show: false,
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        tooltip: {
+            enabled: true,
+        },
+        xaxis: {
+            type: 'category',
+            axisBorder: {
+                color: 'black',
+            },
+            axisTicks: {
+                color: 'black',
+            },
+        },
+        colors: ['#6A7DFF'],
+        fill: {
+            opacity: 0.3,
+            type: 'gradient',
+            gradient: {
+                shade: 'dark',
+                opacityFrom: 0.7,
+                opacityTo: 0.3,
+            },
+        },
+    };
+
+    const chartWeeklyCategories = ['Há 6 dias', '', 'Há 4 dias', '', 'Há 2 dias', '', 'Hoje'];
+    const weeklyChartOptions: ApexOptions = { ...options };
+    weeklyChartOptions.xaxis.categories = chartWeeklyCategories;
+
+    const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];
     return (
         <>
             <Head>
                 <title>HOWDY - USERNAME</title>
             </Head>
-            <HeaderWeb />
+            <Header />
             <Box pt="7rem" as="main" w="100%" h="100vh" px="100px" bgImg="/images/background.png">
                 <Box>
                     <Image
@@ -52,6 +93,7 @@ export default function UserPage(props: any) {
                                 <Text
                                     px="15px"
                                     py="2px"
+                                    w="90px"
                                     fontWeight="black"
                                     color="white"
                                     bg="howdyColors.master"
@@ -59,11 +101,13 @@ export default function UserPage(props: any) {
                                     position="absolute"
                                     bottom=".5vw"
                                     zIndex="-1"
-                                    right="-2vw"
-                                    transition="right 1s, z-index .5s"
-                                    fontSize={['2xl', 'md']}
+                                    left="0"
+                                    transition="left 1s, z-index .5s"
+                                    fontSize={['2xl', 'md', 'sm']}
+                                    wordBreak="keep-all"
+                                    textAlign="right"
                                     _groupHover={{
-                                        right: '-62%',
+                                        left: '3vw',
                                         zIndex: '0',
                                     }}
                                 >
@@ -118,11 +162,10 @@ export default function UserPage(props: any) {
                 </Flex>
                 <Flex p="9%" justify={'center'} align={'center'}>
                     <Flex w="50%">
-                        <Text>DESEMPENHO SEMANAL</Text>
-                        {/* <ChartWeb></ChartWeb> */}
+                        <Chart title="DESEMPENHO SEMANAL" options={weeklyChartOptions} series={weeklyXpSeries} />
                     </Flex>
                     <Flex w="50%">
-                        <Text>DESEMPENHO MENSAL</Text>
+                        <Chart title="DESEMPENHO SEMANAL" options={weeklyChartOptions} series={weeklyXpSeries} />
                     </Flex>
                 </Flex>
             </Box>

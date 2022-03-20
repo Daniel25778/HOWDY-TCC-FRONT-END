@@ -1,24 +1,23 @@
-import Chart from "react-apexcharts"
+import { Box, Text } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 
+interface ChartProps {
+    title: string;
+    options;
+    series;
+}
 
-export default function ChartWeb(){
+export function Chart({ title, options, series }: ChartProps) {
+    const Chart = dynamic(() => import('react-apexcharts'), {
+        ssr: false, //server side rendering
+    });
 
-    const options = {};
-    const series =  [
-    ]
-
-    return(
-        <>
-        
-            <Chart type="area" 
-                   height={160}
-                   options={options}
-                   series={series}
-            >
-
-            </Chart>
-        
-        </>
-       
+    return (
+        <Box p={['6', '8']} bg="white" borderRadius={8} pb="4">
+            <Text fontSize="lg" mb="4">
+                {title}
+            </Text>
+            <Chart options={options} series={series} type="area" height={160} />
+        </Box>
     );
 }

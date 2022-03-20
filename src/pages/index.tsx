@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css';
 import { FormLogin } from '../components/Form/FormLogin';
 import { Flex } from '@chakra-ui/react';
 import PageCadastro from './register/[isLogged]';
-import { HeaderWeb } from '../components/Header/Header';
+import { Header } from '../components/Header/Header';
 
 export default function Home() {
     return (

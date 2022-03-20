@@ -18,9 +18,9 @@ export function Header() {
             h="7rem"
             bg="howdyColors.mainBlue"
         >
-            <Flex position="relative" top="0" left="0" w="70%" h="5rem" align="center">
+            <Flex position="relative" top="0" left="0" w="100%" pl="15%" pr="7%" h="5rem" align="center">
                 <Flex width="100%" align="center" px="10" justify="space-between">
-                    <Flex width="50%">
+                    <Flex mr="auto">
                         <Box marginRight="5">
                             <FiSearch size={30} color="#F2F2F2" />
                         </Box>
@@ -30,12 +30,12 @@ export function Header() {
                             focusBorderColor="howdyColors.mainWhite"
                             placeholder="Descubra pessoas ou atividades..."
                             borderRadius="0px 100px 100px 0px"
-                            width="100%"
+                            width="350px"
                         ></Input>
                     </Flex>
 
-                    <Flex align="center" width="45%" height="70" gap="10%">
-                        <Flex gap="5" borderRadius="60px 40px 40px 60px" bg="howdyColors.mainYellow" align="center">
+                    <Flex align="center" width="45%" height="70">
+                        <Flex gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
                             <Image
                                 height="2.5rem"
                                 src="/images/howdy-images/howdy-coin/Howdy coin.svg"
@@ -44,16 +44,18 @@ export function Header() {
                             <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">
                                 200
                             </Text>
-                            <Button
-                                opacity={'70%'}
-                                bgColor="howdyColors.brownHowdyCoin"
+                            <IconButton
+                                variant="unstyled"
+                                aria-label="Open navigation"
+                                fontSize="2rem"
+                                bg="howdyColors.brownHowdyCoin"
                                 borderRadius="0px 15px 15px 0px"
-                            >
-                                <IoMdAdd size="1.5rem" color="#ffffff" />
-                            </Button>
+                                color="white"
+                                icon={<Icon opacity="2" as={IoMdAdd} fontWeight="black" />}
+                            />
                         </Flex>
 
-                        <Flex height="100%" align="center" gap="2rem">
+                        <Flex ml="10%" height="100%" align="center">
                             <Image
                                 borderRadius="100%"
                                 height="3rem"
@@ -61,18 +63,25 @@ export function Header() {
                                 src="/images/Tests/profilePhoto.png"
                                 alt="howdy coin"
                             ></Image>
-                            <Text fontSize={['sm', '', 'medium', 'x-large']} color="howdyColors.mainWhite">
+                            <Text fontSize={['sm', '', 'medium', 'x-large']} w="12vw" color="howdyColors.mainWhite">
                                 Helena Pena
                             </Text>
-                            <Icon color="howdyColors.mainWhite">
-                                <IoMdArrowDropdown size="30"></IoMdArrowDropdown>
-                            </Icon>
+                            <IconButton
+                                variant="unstyled"
+                                aria-label="Open navigation"
+                                color="white"
+                                fontSize="1.5rem"
+                                icon={<Icon opacity="2" as={IoMdArrowDropdown} fontWeight="black" />}
+                            />
                             <IconButton
                                 borderRadius="100%"
                                 aria-label="Open navigation"
                                 bg="howdyColors.mainWhite"
                                 color="howdyColors.mainBlack"
-                                icon={<Icon fontSize="xx-large" opacity="2" as={FaRegBell} fontWeight="black" />}
+                                fontWeight="black"
+                                fontSize="1.5rem"
+                                transform="rotate(-15deg)"
+                                icon={<Icon opacity="60%" as={FaRegBell} />}
                             />
                         </Flex>
                     </Flex>
@@ -81,7 +90,7 @@ export function Header() {
                 <Flex
                     position="absolute"
                     bottom="-5rem"
-                    w="100%"
+                    w="70%"
                     h="5rem"
                     bg="gray.100"
                     borderRadius="10px"

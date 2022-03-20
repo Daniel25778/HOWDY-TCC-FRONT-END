@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Icon } from '@chakra-ui/react';
+import { Box, Center, Flex, Icon, SimpleGrid } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
 import { Image } from '@chakra-ui/react';
 import { Heading, Text } from '@chakra-ui/react';
@@ -10,8 +10,10 @@ import { FaBaby } from 'react-icons/fa';
 import { FriendshipButton } from '../components/Button/FriendshipButton';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { WeeklyChart } from '../components/Chart/WeeklyChart';
-import { ApexOptions } from 'apexcharts';
 import { MonthlyChart } from '../components/Chart/MonthlyChart';
+import StarRatings from 'react-star-ratings';
+import firebaseConfig from '../services/firebaseConfig';
+import { initializeApp } from 'firebase/app';
 
 export default function UserPage(props: any) {
     const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];
@@ -32,7 +34,7 @@ export default function UserPage(props: any) {
                 <title>HOWDY - USERNAME</title>
             </Head>
             <Header />
-            <Box pt="7rem" as="main" w="100%" h="100vh" px="100px" bgImg="/images/background.png">
+            <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
                 <Box>
                     <Image
                         filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
@@ -94,48 +96,65 @@ export default function UserPage(props: any) {
                         </Box>
                         <FriendshipButton idUser={1} />
                     </Flex>
-                    <Divider mb="70"></Divider>
+                    <Box bg="howdyColors.divider" h="1px" w="100%" mb="70" />
                 </Box>
                 <Box>
                     <Flex>
-                        <Flex gap="8%" width="100%">
-                            <Text fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
+                        <Flex width="100%">
+                            <Text
+                                color="howdyColors.mainBlack"
+                                fontWeight={'bold'}
+                                fontSize={['sm', 'xx-large', 'xxx-large']}
+                            >
                                 Desempenho
                             </Text>
                             <Flex
                                 filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
-                                width="10%"
+                                ml="6%"
+                                w="100px"
                                 alignItems="center"
                                 justifyContent="center"
                                 bgColor="howdyColors.mainGreenTransparent"
                                 borderRadius="10"
                                 p="2"
+                                color="howdyColors.mainGreen"
+                                fontWeight={'bold'}
+                                fontSize={['sm', 'md', 'xx-large']}
                             >
-                                <Text
-                                    color="howdyColors.mainGreen"
-                                    fontWeight={'bold'}
-                                    fontSize={['sm', 'md', 'xx-large']}
-                                >
-                                    20000 XP
-                                </Text>
+                                20000 XP
                             </Flex>
-                            <Flex gap="10" justify={'center'} align={'center'}>
+                            <Flex gap="5%" ml="6%" justify={'center'} align={'center'}>
                                 <Icon color="howdyColors.mainGreen" fontSize="x-large">
-                                    <BiTargetLock></BiTargetLock>
+                                    <BiTargetLock />
                                 </Icon>
                                 <Text color="howdyColors.mainGreen">Inglês</Text>
                             </Flex>
-                            <Flex gap="10" justify={'center'} align={'center'}>
+                            <Flex gap="5%" ml="6%" justify={'center'} align={'center'}>
                                 <Icon color="howdyColors.mainGreen" fontSize="x-large">
-                                    <FaBaby></FaBaby>
+                                    <FaBaby />
                                 </Icon>
                                 <Text color="howdyColors.mainGreen">Português</Text>
                             </Flex>
                         </Flex>
                     </Flex>
-                    <Flex pl="10%" gap="3%" dir="row">
+                    <SimpleGrid pl="10%" flex="1" gap="4" minChildWidth="320px">
                         <WeeklyChart title="DESEMPENHO MENSAL" series={weeklyXpSeries} />
                         <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />
+                    </SimpleGrid>
+                    <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
+                </Box>
+                <Box>
+                    <Text
+                        mb="5"
+                        color="howdyColors.mainBlack"
+                        fontWeight={'bold'}
+                        fontSize={['sm', 'xx-large', 'xxx-large']}
+                    >
+                        Nota média de suas atividades
+                    </Text>
+                    <Flex>
+                        <Box w="10%"></Box>
+                        <StarRatings rating={2} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
                     </Flex>
                 </Box>
             </Box>
@@ -143,16 +162,14 @@ export default function UserPage(props: any) {
     );
 }
 
-export async function GetStaticProps() {
-    const auth = getAuth();
-
-    onAuthStateChanged(auth, (user) => {
-        console.log(user);
-    });
-
-    return {
-        props: {
-            // uid,
-        },
-    };
-}
+// export async function getStaticProps() {
+//     const auth = getAuth();
+//     onAuthStateChanged(auth, (user) => {
+//         console.log(user);
+//     });
+//     return {
+//         props: {
+//             // uid,
+//         },
+//     };
+// }

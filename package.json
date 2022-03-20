@@ -21,6 +21,7 @@
     "@hookform/resolvers": "^2.8.8",
     "@types/firebase": "^3.2.1",
     "@types/react-router-dom": "^5.3.3",
+    "@types/react-star-ratings": "^2.3.0",
     "apexcharts": "^3.33.2",
     "axios": "^0.26.0",
     "emotion-theming": "^11.0.0",
@@ -35,6 +36,7 @@
     "react-hook-form": "^7.27.1",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.2",
+    "react-star-ratings": "^2.3.0",
     "use-react-router": "^1.0.7",
     "yup": "^0.32.11"
   },

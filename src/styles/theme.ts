@@ -40,6 +40,7 @@ export const themes = extendTheme({
             correct: '#0FA958',
             howdyCoinBackground: '#CFFC4D',
             colorGoogle: '#EA4335',
+            divider: '#C4C4C4',
         },
     },
     breakpoints,

@@ -9,55 +9,23 @@ import { BiTargetLock } from 'react-icons/bi';
 import { FaBaby } from 'react-icons/fa';
 import { FriendshipButton } from '../components/Button/FriendshipButton';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { Chart } from '../components/Chart/Chart';
+import { WeeklyChart } from '../components/Chart/WeeklyChart';
 import { ApexOptions } from 'apexcharts';
+import { MonthlyChart } from '../components/Chart/MonthlyChart';
 
 export default function UserPage(props: any) {
-    const options: ApexOptions = {
-        chart: {
-            toolbar: {
-                show: false,
-            },
-            zoom: {
-                enabled: false,
-            },
-            foreColor: '#29B995',
-        },
-        grid: {
-            show: false,
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        tooltip: {
-            enabled: true,
-        },
-        xaxis: {
-            type: 'category',
-            axisBorder: {
-                color: 'black',
-            },
-            axisTicks: {
-                color: 'black',
-            },
-        },
-        colors: ['#6A7DFF'],
-        fill: {
-            opacity: 0.3,
-            type: 'gradient',
-            gradient: {
-                shade: 'dark',
-                opacityFrom: 0.7,
-                opacityTo: 0.3,
-            },
-        },
-    };
-
-    const chartWeeklyCategories = ['Há 6 dias', '', 'Há 4 dias', '', 'Há 2 dias', '', 'Hoje'];
-    const weeklyChartOptions: ApexOptions = { ...options };
-    weeklyChartOptions.xaxis.categories = chartWeeklyCategories;
-
     const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];
+
+    const monthlyXpSeries = [
+        {
+            name: 'monthlyXpSeries',
+            data: [
+                31, 120, 10, 28, 61, 18, 109, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61,
+                61, 61, 61, 61, 61, 61,
+            ],
+        },
+    ];
+
     return (
         <>
             <Head>
@@ -128,46 +96,48 @@ export default function UserPage(props: any) {
                     </Flex>
                     <Divider mb="70"></Divider>
                 </Box>
-                <Flex>
-                    <Flex gap="8%" width="100%">
-                        <Text fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
-                            Desempenho
-                        </Text>
-                        <Flex
-                            filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
-                            width="10%"
-                            alignItems="center"
-                            justifyContent="center"
-                            bgColor="howdyColors.mainGreenTransparent"
-                            borderRadius="10"
-                            p="2"
-                        >
-                            <Text color="howdyColors.mainGreen" fontWeight={'bold'} fontSize={['sm', 'md', 'xx-large']}>
-                                20000 XP
+                <Box>
+                    <Flex>
+                        <Flex gap="8%" width="100%">
+                            <Text fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
+                                Desempenho
                             </Text>
-                        </Flex>
-                        <Flex gap="10" justify={'center'} align={'center'}>
-                            <Icon color="howdyColors.mainGreen" fontSize="x-large">
-                                <BiTargetLock></BiTargetLock>
-                            </Icon>
-                            <Text color="howdyColors.mainGreen">Inglês</Text>
-                        </Flex>
-                        <Flex gap="10" justify={'center'} align={'center'}>
-                            <Icon color="howdyColors.mainGreen" fontSize="x-large">
-                                <FaBaby></FaBaby>
-                            </Icon>
-                            <Text color="howdyColors.mainGreen">Português</Text>
+                            <Flex
+                                filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
+                                width="10%"
+                                alignItems="center"
+                                justifyContent="center"
+                                bgColor="howdyColors.mainGreenTransparent"
+                                borderRadius="10"
+                                p="2"
+                            >
+                                <Text
+                                    color="howdyColors.mainGreen"
+                                    fontWeight={'bold'}
+                                    fontSize={['sm', 'md', 'xx-large']}
+                                >
+                                    20000 XP
+                                </Text>
+                            </Flex>
+                            <Flex gap="10" justify={'center'} align={'center'}>
+                                <Icon color="howdyColors.mainGreen" fontSize="x-large">
+                                    <BiTargetLock></BiTargetLock>
+                                </Icon>
+                                <Text color="howdyColors.mainGreen">Inglês</Text>
+                            </Flex>
+                            <Flex gap="10" justify={'center'} align={'center'}>
+                                <Icon color="howdyColors.mainGreen" fontSize="x-large">
+                                    <FaBaby></FaBaby>
+                                </Icon>
+                                <Text color="howdyColors.mainGreen">Português</Text>
+                            </Flex>
                         </Flex>
                     </Flex>
-                </Flex>
-                <Flex p="9%" justify={'center'} align={'center'}>
-                    <Flex w="50%">
-                        <Chart title="DESEMPENHO SEMANAL" options={weeklyChartOptions} series={weeklyXpSeries} />
+                    <Flex pl="10%" gap="3%" dir="row">
+                        <WeeklyChart title="DESEMPENHO MENSAL" series={weeklyXpSeries} />
+                        <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />
                     </Flex>
-                    <Flex w="50%">
-                        <Chart title="DESEMPENHO SEMANAL" options={weeklyChartOptions} series={weeklyXpSeries} />
-                    </Flex>
-                </Flex>
+                </Box>
             </Box>
         </>
     );

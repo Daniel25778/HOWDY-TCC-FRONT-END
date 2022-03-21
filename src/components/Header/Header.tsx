@@ -1,5 +1,20 @@
 import { useColorMode } from '@chakra-ui/core';
-import { Box, Button, Center, color, Flex, Icon, IconButton, Image, Input, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Center,
+    color,
+    Flex,
+    Icon,
+    IconButton,
+    Image,
+    Input,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
+    Text,
+} from '@chakra-ui/react';
 import '@fontsource/roboto/400.css';
 import { FiSearch } from 'react-icons/fi';
 import { FaRegBell } from 'react-icons/fa';
@@ -30,7 +45,7 @@ export function Header() {
                             focusBorderColor="howdyColors.mainWhite"
                             placeholder="Descubra pessoas ou atividades..."
                             borderRadius="0px 100px 100px 0px"
-                            width="350px"
+                            width="35vw"
                         ></Input>
                     </Flex>
 
@@ -63,26 +78,56 @@ export function Header() {
                                 src="/images/Tests/profilePhoto.png"
                                 alt="howdy coin"
                             ></Image>
-                            <Text  fontSize={['sm', '', 'medium', 'x-large']}  color="howdyColors.mainWhite">
+                            <Text
+                                ml="10px"
+                                w="200px"
+                                fontSize={['sm', '', 'medium', 'x-large']}
+                                color="howdyColors.mainWhite"
+                            >
                                 Helena Pena
+                                <Menu>
+                                    <MenuButton
+                                        bg="howdyColors.mainBlue"
+                                        fontSize="20px"
+                                        w="20px"
+                                        as={Button}
+                                        rightIcon={<IoMdArrowDropdown />}
+                                    />
+                                    <MenuList color="howdyColors.mainBlack">
+                                        <MenuItem>Perfil</MenuItem>
+                                        <MenuItem>Confirações de perfil</MenuItem>
+                                        <MenuItem>Sair</MenuItem>
+                                    </MenuList>
+                                </Menu>
                             </Text>
-                            <IconButton
-                                variant="unstyled"
-                                aria-label="Open navigation"
-                                color="white"
-                                fontSize="1.5rem"
-                                icon={<Icon opacity="2" as={IoMdArrowDropdown} fontWeight="black" />}
-                            />
-                            <IconButton
-                                borderRadius="100%"
-                                aria-label="Open navigation"
-                                bg="howdyColors.mainWhite"
-                                color="howdyColors.mainBlack"
-                                fontWeight="black"
-                                fontSize="1.5rem"
-                                transform="rotate(-15deg)"
-                                icon={<Icon opacity="60%" as={FaRegBell} />}
-                            />
+
+                            <Box position="relative">
+                                <IconButton
+                                    position="relative"
+                                    borderRadius="100%"
+                                    aria-label="Open navigation"
+                                    bg="howdyColors.mainWhite"
+                                    color="howdyColors.mainBlack"
+                                    fontWeight="black"
+                                    fontSize="1.5rem"
+                                    transform="rotate(-15deg)"
+                                    icon={<Icon opacity="60%" as={FaRegBell} />}
+                                />
+
+                                <Center
+                                    color="howdyColors.mainWhite"
+                                    position="absolute"
+                                    top="-.5rem"
+                                    right="-.8vw"
+                                    w="30px"
+                                    h="20px"
+                                    borderRadius="35%"
+                                    bg="howdyColors.mainRed"
+                                    fontSize="1rem"
+                                >
+                                    +9
+                                </Center>
+                            </Box>
                         </Flex>
                     </Flex>
                 </Flex>

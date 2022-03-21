@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Grid, Icon, SimpleGrid } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Grid, Icon, IconButton, SimpleGrid } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
 import { Image } from '@chakra-ui/react';
 import { Heading, Text } from '@chakra-ui/react';
@@ -6,6 +6,9 @@ import { Divider } from '@chakra-ui/react';
 import Head from 'next/head';
 import { Header } from '../components/Header/Header';
 import { BiTargetLock } from 'react-icons/bi';
+import { AiOutlineMessage, AiOutlineHeart} from 'react-icons/ai';
+
+import { MdTranslate } from 'react-icons/md';
 import { FaBaby } from 'react-icons/fa';
 import { FriendshipButton } from '../components/Button/FriendshipButton';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -111,7 +114,7 @@ export default function UserPage(props: any) {
                             <Flex
                                 filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
                                 ml="6%"
-                                w="100px"
+                                w="20%"
                                 alignItems="center"
                                 justifyContent="center"
                                 bgColor="howdyColors.mainGreenTransparent"
@@ -156,7 +159,7 @@ export default function UserPage(props: any) {
                         <Flex
                                     filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
                                     ml="6%"
-                                    w="150px"
+                                    w="20%"
                                     alignItems="center"
                                     justifyContent="center"
                                     bgColor="howdyColors.mainGreenTransparent"
@@ -174,15 +177,173 @@ export default function UserPage(props: any) {
                 </Flex>
                 <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
                 <Grid templateColumns='repeat(4, 1fr)' gap={6}>
-                    <Box> 
-                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
+                    <Button bgColor="howdyColors.mainBlue" color="howdyColors.mainWhite" borderRadius="15">
+                        <Text color="howdyColors.mainWhite" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
                             Postagens
                         </Text>
-                    </Box>
-                    <Box w='70px' h='10' bg='blue.500' />
-                    <Box w='70px' h='10' bg='blue.500' />
-                    <Box w='70px' h='10' bg='blue.500' />
+                    </Button>
+                    
+                    <Button bgColor="#e9e9e9" color="howdyColors.mainWhite" borderRadius="15">
+                        <Text color="howdyColors.notSelection" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
+                           Amigos
+                        </Text>
+                    </Button>
+            
+                    <Button bgColor="howdyColors.mainBlue" color="howdyColors.mainWhite" borderRadius="15">
+                        <Text color="howdyColors.mainWhite" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
+                            Aprendizado
+                        </Text>
+                    </Button>
+                    
+                    <Button bgColor="howdyColors.mainBlue" color="howdyColors.mainWhite" borderRadius="15">
+                        <Text color="howdyColors.mainWhite" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
+                        Ensinamentos
+                        </Text>
+                    </Button>
                 </Grid>
+                <Flex width="100%" align={'center'} mt="5%" flexDir="column">
+                    <Flex mb="1%" gap="3%" width="40%" >
+                        <Flex>
+                            <Image
+                                    borderRadius="100%"
+                                    height="5rem"
+                                    objectFit="cover"
+                                    src="/images/Tests/profilePhoto.png"
+                                    alt="profilePhoto"
+                            ></Image>
+                        </Flex>
+                        <Flex>
+                           <Flex flexDir="column">
+                                <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>Helena Pena </Text>
+                                <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']} >Amet minim mollit non dese Amet minim mollit non deserunt ullamco est sit</Text>
+                                <IconButton
+                                w="10%"
+                                aria-label="Open navigation"
+                                bgColor="howdyColors.mainBlue"
+                                borderRadius="15"
+                                icon={<Icon opacity="2" as={MdTranslate} color="howdyColors.mainWhite" fontSize={'x-large'} />}
+                                >
+                                </IconButton>
+                           </Flex>
+                        </Flex>
+                    </Flex>
+                    <Flex mb="1%">
+                            <Image
+                                borderRadius="50"
+                                height="30rem"
+                                objectFit="cover"
+                                src="/images/Tests/Rectangle 23.svg"
+                                alt="profilePhoto"
+                            ></Image>
+                    </Flex>
+                    <Flex  justify="space-between" align="center"  width="20%">
+                        <Flex align="center" gap="10%"  w="20%">
+                            <AiOutlineMessage color="howdyColors.mainBlack" size={30}></AiOutlineMessage>
+                            <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>2 mil</Text>
+                        </Flex>
+                       
+                         <Flex gap="10%"  w="20%" align="center">
+                            <AiOutlineHeart color="howdyColors.mainBlack" size={30}></AiOutlineHeart>
+                            <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>1 mil</Text>
+                         </Flex>
+                    </Flex>
+                </Flex>
+                <Flex width="100%" align={'center'} mt="5%" flexDir="column">
+                    <Flex mb="1%" gap="3%" width="40%" >
+                        <Flex>
+                            <Image
+                                    borderRadius="100%"
+                                    height="5rem"
+                                    objectFit="cover"
+                                    src="/images/Tests/profilePhoto.png"
+                                    alt="profilePhoto"
+                            ></Image>
+                        </Flex>
+                        <Flex>
+                           <Flex flexDir="column">
+                                <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>Helena Pena </Text>
+                                <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']} >Amet minim mollit non dese Amet minim mollit non deserunt ullamco est sit</Text>
+                                <IconButton
+                                w="10%"
+                                aria-label="Open navigation"
+                                bgColor="howdyColors.mainBlue"
+                                borderRadius="15"
+                                icon={<Icon opacity="2" as={MdTranslate} color="howdyColors.mainWhite" fontSize={'x-large'} />}
+                                >
+                                </IconButton>
+                           </Flex>
+                        </Flex>
+                    </Flex>
+                    <Flex mb="1%">
+                            <Image
+                                borderRadius="50"
+                                height="30rem"
+                                objectFit="cover"
+                                src="/images/Tests/Rectangle 23.svg"
+                                alt="profilePhoto"
+                            ></Image>
+                    </Flex>
+                    <Flex  justify="space-between" align="center"  width="20%">
+                        <Flex align="center" gap="10%"  w="20%">
+                            <AiOutlineMessage color="howdyColors.mainBlack" size={30}></AiOutlineMessage>
+                            <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>2 mil</Text>
+                        </Flex>
+                       
+                         <Flex gap="10%"  w="20%" align="center">
+                            <AiOutlineHeart color="howdyColors.mainBlack" size={30}></AiOutlineHeart>
+                            <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>1 mil</Text>
+                         </Flex>
+                    </Flex>
+                </Flex>
+<Flex width="100%" align={'center'} mt="5%" flexDir="column">
+                    <Flex mb="1%" gap="3%" width="40%" >
+                        <Flex>
+                            <Image
+                                    borderRadius="100%"
+                                    height="5rem"
+                                    objectFit="cover"
+                                    src="/images/Tests/profilePhoto.png"
+                                    alt="profilePhoto"
+                            ></Image>
+                        </Flex>
+                        <Flex>
+                           <Flex flexDir="column">
+                                <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>Helena Pena </Text>
+                                <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']} >Amet minim mollit non dese Amet minim mollit non deserunt ullamco est sit</Text>
+                                <IconButton
+                                w="10%"
+                                aria-label="Open navigation"
+                                bgColor="howdyColors.mainBlue"
+                                borderRadius="15"
+                                icon={<Icon opacity="2" as={MdTranslate} color="howdyColors.mainWhite" fontSize={'x-large'} />}
+                                >
+                                </IconButton>
+                           </Flex>
+                        </Flex>
+                    </Flex>
+                    <Flex mb="1%">
+                            <Image
+                                borderRadius="50"
+                                height="30rem"
+                                objectFit="cover"
+                                src="/images/Tests/Rectangle 23.svg"
+                                alt="profilePhoto"
+                            ></Image>
+                    </Flex>
+                    <Flex  justify="space-between" align="center"  width="20%">
+                        <Flex align="center" gap="10%"  w="20%">
+                            <AiOutlineMessage color="howdyColors.mainBlack" size={30}></AiOutlineMessage>
+                            <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>2 mil</Text>
+                        </Flex>
+                       
+                         <Flex gap="10%"  w="20%" align="center">
+                            <AiOutlineHeart color="howdyColors.mainBlack" size={30}></AiOutlineHeart>
+                            <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>1 mil</Text>
+                         </Flex>
+                    </Flex>
+                </Flex>
+                
+
             </Box>
         </>
     );

@@ -63,7 +63,7 @@ export function Header() {
                                 src="/images/Tests/profilePhoto.png"
                                 alt="howdy coin"
                             ></Image>
-                            <Text fontSize={['sm', '', 'medium', 'x-large']} w="12vw" color="howdyColors.mainWhite">
+                            <Text  fontSize={['sm', '', 'medium', 'x-large']}  color="howdyColors.mainWhite">
                                 Helena Pena
                             </Text>
                             <IconButton

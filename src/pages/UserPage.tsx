@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Icon, SimpleGrid } from '@chakra-ui/react';
+import { Box, Center, Flex, Grid, Icon, SimpleGrid } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
 import { Image } from '@chakra-ui/react';
 import { Heading, Text } from '@chakra-ui/react';
@@ -143,20 +143,46 @@ export default function UserPage(props: any) {
                     </SimpleGrid>
                     <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
                 </Box>
-                <Box>
-                    <Text
-                        mb="5"
-                        color="howdyColors.mainBlack"
-                        fontWeight={'bold'}
-                        fontSize={['sm', 'xx-large', 'xxx-large']}
-                    >
-                        Nota média de suas atividades
-                    </Text>
-                    <Flex>
-                        <Box w="10%"></Box>
-                        <StarRatings rating={2} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
+                <Flex flexDir="column">
+                    <Flex flexDir="row">
+                        <Text
+                            mb="5"
+                            color="howdyColors.mainBlack"
+                            fontWeight={'bold'}
+                            fontSize={['sm', 'xx-large', 'xxx-large']}
+                        >
+                            Nota média de suas atividades
+                        </Text>
+                        <Flex
+                                    filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
+                                    ml="6%"
+                                    w="150px"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    bgColor="howdyColors.mainGreenTransparent"
+                                    borderRadius="10"
+                                    p="1"
+                                    color="howdyColors.mainGreen"
+                                    fontWeight={'bold'}
+                                    fontSize={['sm', 'md', 'xx-large']}
+                                >
+                                    EXCELENTE 
+                        </Flex>
                     </Flex>
-                </Box>
+                    <Box w="10%"></Box>
+                    <StarRatings rating={2} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
+                </Flex>
+                <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
+                <Grid templateColumns='repeat(4, 1fr)' gap={6}>
+                    <Box> 
+                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
+                            Postagens
+                        </Text>
+                    </Box>
+                    <Box w='70px' h='10' bg='blue.500' />
+                    <Box w='70px' h='10' bg='blue.500' />
+                    <Box w='70px' h='10' bg='blue.500' />
+                </Grid>
             </Box>
         </>
     );

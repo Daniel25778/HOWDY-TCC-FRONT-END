@@ -20,6 +20,7 @@ export const themes = extendTheme({
         howdyColors: {
             mainBlue: '#6A7DFF',
             mainBlack: '#303135',
+            mainBlackTransparent: '#30313533',
             mainWhite: '#F2F2F2',
             mainGreen: '#29B995',
             mainYellow: '#FFCC4D',
@@ -41,6 +42,7 @@ export const themes = extendTheme({
             howdyCoinBackground: '#CFFC4D',
             colorGoogle: '#EA4335',
             divider: '#C4C4C4',
+            dividerTransparent: '#C4C4C433',
         },
     },
     breakpoints,

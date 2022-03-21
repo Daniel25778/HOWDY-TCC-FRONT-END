@@ -9,6 +9,7 @@ import {
     IconButton,
     Image,
     Input,
+    Link as ChakraLink,
     Menu,
     MenuButton,
     MenuItem,
@@ -19,6 +20,7 @@ import '@fontsource/roboto/400.css';
 import { FiSearch } from 'react-icons/fi';
 import { FaRegBell } from 'react-icons/fa';
 import { IoMdAdd, IoMdArrowDropdown } from 'react-icons/io';
+import { NavLink } from './NavLink';
 
 export function Header() {
     return (
@@ -100,7 +102,6 @@ export function Header() {
                                     </MenuList>
                                 </Menu>
                             </Text>
-
                             <Box position="relative">
                                 <IconButton
                                     position="relative"
@@ -142,41 +143,18 @@ export function Header() {
                     boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
                     paddingX={20}
                     justify="space-between"
-                    align="center"
                 >
-                    <Image height="3rem" src="/images/howdy-images/logo/Logo row.svg" alt="howdy logo"></Image>
+                    <Image
+                        my="auto"
+                        height="3rem"
+                        src="/images/howdy-images/logo/Logo row.svg"
+                        alt="howdy logo"
+                    ></Image>
 
                     <Center w="50%" justifyContent={'space-between'}>
-                        <Text
-                            _hover={{ color: 'howdyColors.mainBlue' }}
-                            cursor={'pointer'}
-                            color="howdyColors.mainBlack"
-                            fontWeight="semibold"
-                            opacity="70%"
-                            fontSize={['sm', 'xl', 'xx-large']}
-                        >
-                            Ranking
-                        </Text>
-                        <Text
-                            _hover={{ color: 'howdyColors.mainBlue' }}
-                            cursor={'pointer'}
-                            color="howdyColors.mainBlack"
-                            fontWeight="semibold"
-                            opacity="70%"
-                            fontSize={['sm', 'xl', 'xx-large']}
-                        >
-                            Postagens
-                        </Text>
-                        <Text
-                            _hover={{ color: 'howdyColors.mainBlue' }}
-                            cursor={'pointer'}
-                            color="howdyColors.mainBlack"
-                            fontWeight="semibold"
-                            opacity="70%"
-                            fontSize={['sm', 'xl', 'xx-large']}
-                        >
-                            Aprenda
-                        </Text>
+                        <NavLink href="/RankingPage" title="Ranking" />
+                        <NavLink href="/PostPage" title="Postagens" />
+                        <NavLink href="/LearnPage" title="Aprenda" />
                     </Center>
                 </Flex>
             </Flex>

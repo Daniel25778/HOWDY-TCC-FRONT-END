@@ -12,18 +12,14 @@ import { api } from './services/api';
 import firebase from 'firebase/app';
 import 'firebase/compat/database';
 import { setCookie, parseCookies } from 'nookies';
-
-import firebaseConfig from './services/firebaseConfig';
 import { useEffect } from 'react';
 import Router from 'next/router';
-
-initializeApp(firebaseConfig);
+import { auth } from './services/firebaseConfig';
 
 const { 'firebase.token': token } = parseCookies();
 
 export default {
     googleLogInto: async () => {
-        const auth = getAuth();
         setPersistence(auth, browserSessionPersistence);
         const provider = new GoogleAuthProvider();
         let result = await signInWithPopup(auth, provider);

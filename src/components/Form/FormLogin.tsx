@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { GrGoogle } from 'react-icons/gr';
 import { MdOutlineMailOutline } from 'react-icons/md';
 import { BsFacebook } from 'react-icons/bs';
@@ -13,6 +13,7 @@ import { actionLoginGoogle } from '../../pages/api/actionLogWithGoogle';
 import { actionLoginFacebook } from '../../pages/api/actionLoginFacebook';
 import * as React from 'react';
 import Link from 'next/link';
+import { auth } from '../../services/firebaseConfig';
 
 type SignInFormData = {
     email: string;
@@ -35,7 +36,6 @@ export function FormLogin() {
 
         const { email, password } = values;
 
-        const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in

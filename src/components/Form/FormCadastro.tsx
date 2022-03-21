@@ -28,10 +28,10 @@ import { BiTargetLock } from 'react-icons/bi';
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import { initializeApp } from 'firebase/app';
-import firebaseConfig from '../../services/firebaseConfig';
 import { setCookie } from 'nookies';
 import Router from 'next/router';
 import { formatDateToBackend } from '../../functions/formatDateToBackEnd';
+import { auth } from '../../services/firebaseConfig';
 
 type CreateUserFormData = {
     email?: string;
@@ -80,8 +80,6 @@ interface FormCadastroProps {
 export function FormCadastro(props: FormCadastroProps) {
     const { isLogged: getData } = props;
     const isLogged = getData === 'isLogged';
-
-    initializeApp(firebaseConfig);
 
     const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
     useEffect(() => {
@@ -150,7 +148,6 @@ export function FormCadastro(props: FormCadastroProps) {
                 });
         }
 
-        const auth = getAuth();
         setPersistence(auth, browserSessionPersistence).then(() => {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential: any) => {

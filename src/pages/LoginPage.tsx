@@ -4,6 +4,8 @@ import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/reac
 import { FormLogin } from '../components/Form/FormLogin';
 import { Divider } from '@chakra-ui/react';
 import { GetStaticPaths } from 'next';
+import { auth } from '../services/firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function PageLogin(props: any) {
     return (
@@ -37,4 +39,16 @@ export default function PageLogin(props: any) {
             </Flex>
         </Flex>
     );
+}
+
+export async function getStaticProps() {
+    console.log(auth);
+    // onAuthStateChanged(auth, (user) => {
+    //     console.log(user);
+    // });
+    return {
+        props: {
+            // uid,
+        },
+    };
 }

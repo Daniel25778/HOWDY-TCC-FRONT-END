@@ -11,13 +11,10 @@ import { api } from '../src/services/api';
 
 import firebase from 'firebase/app';
 import 'firebase/compat/database';
-
-import firebaseConfig from './services/firebaseConfig';
+import { auth } from './services/firebaseConfig';
 
 export default {
     facebookLogInto: async () => {
-        const auth = getAuth();
-
         setPersistence(auth, browserSessionPersistence);
 
         const provider = new FacebookAuthProvider();

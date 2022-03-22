@@ -16,6 +16,7 @@ import { WeeklyChart } from '../components/Chart/WeeklyChart';
 import { MonthlyChart } from '../components/Chart/MonthlyChart';
 import StarRatings from 'react-star-ratings';
 import { initializeApp } from 'firebase/app';
+import { NavLink } from '../components/NavLink/UserPage/NavLink';
 
 export default function UserPage(props: any) {
     const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];
@@ -175,30 +176,11 @@ export default function UserPage(props: any) {
                     <StarRatings rating={2} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
                 </Flex>
                 <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
-                <Grid templateColumns='repeat(4, 1fr)' gap={6}>
-                    <Button bgColor="howdyColors.mainBlue" color="howdyColors.mainWhite" borderRadius="15">
-                        <Text color="howdyColors.mainWhite" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
-                            Postagens
-                        </Text>
-                    </Button>
-                    
-                    <Button bgColor="#e9e9e9" color="howdyColors.mainWhite" borderRadius="15">
-                        <Text color="howdyColors.notSelection" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
-                           Amigos
-                        </Text>
-                    </Button>
-            
-                    <Button bgColor="howdyColors.mainBlue" color="howdyColors.mainWhite" borderRadius="15">
-                        <Text color="howdyColors.mainWhite" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
-                            Aprendizado
-                        </Text>
-                    </Button>
-                    
-                    <Button bgColor="howdyColors.mainBlue" color="howdyColors.mainWhite" borderRadius="15">
-                        <Text color="howdyColors.mainWhite" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
-                        Ensinamentos
-                        </Text>
-                    </Button>
+                <Grid  templateColumns='repeat(4, 1fr)' gap={6}>
+                    <NavLink href="/UserPage" title="Postagens"></NavLink>
+                    <NavLink href="/UserPage/FriendsPage" title="Amigos"></NavLink>
+                    <NavLink href="/LearnPage" title="Aprendizado"></NavLink>
+                    <NavLink href="/TeachPage" title="Ensinamentos"></NavLink>
                 </Grid>
                 <Flex width="100%" align={'center'} mt="5%" flexDir="column">
                     <Flex mb="1%" gap="3%" width="40%" >

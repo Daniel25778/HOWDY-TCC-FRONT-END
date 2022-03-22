@@ -20,7 +20,7 @@ import '@fontsource/roboto/400.css';
 import { FiSearch } from 'react-icons/fi';
 import { FaRegBell } from 'react-icons/fa';
 import { IoMdAdd, IoMdArrowDropdown } from 'react-icons/io';
-import { NavLink } from './NavLink';
+import { NavLink } from '../NavLink/Header/NavLink';
 
 export function Header() {
     return (

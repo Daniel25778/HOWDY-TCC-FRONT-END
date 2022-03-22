@@ -1,4 +1,4 @@
-import { Link as ChakraLink, LinkProps as ChakraLinkProps, Box, Button,Text } from '@chakra-ui/react';
+import { Link as ChakraLink, LinkProps as ChakraLinkProps, Box, Button,Text,Grid } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -19,29 +19,14 @@ export function NavLink({ href, title }: NavLinkProps) {
     }
 
     return (
-        <Link href={href}>
-            <ChakraLink
-                _hover={{ color: 'howdyColors.mainBlue' }}
-                h="100%"
-                w="7vw"
-                borderRadius="15%"
-                display="flex"
-                flexDir="column"
-                alignItems="center"
-                justifyContent="center"
-                cursor={'pointer'}
-                fontWeight="semibold"
-                fontSize={['sm', 'xl', 'xx-large']}
-                opacity={'70%'}
-                color={isActive ? 'howdyColors.mainBlue' : 'howdyColors.mainBlack'}
-                bg={isActive ? 'howdyColors.dividerTransparent' : 'none'}
-            >
-               <Button bgColor="howdyColors.mainBlue" color="howdyColors.mainWhite" borderRadius="15">
-                        <Text color="howdyColors.mainWhite" fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
-                            Postagens
+            <Link href={href}>
+                <ChakraLink w='100%'>
+                    <Button w="100%" bgColor={isActive ? "howdyColors.mainBlue" : "#E9E9E9"} color="howdyColors.mainWhite" borderRadius="15">
+                        <Text color={isActive ? "howdyColors.mainWhite" : "howdyColors.notSelection"} fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
+                            {title}
                         </Text>
-               </Button> 
-            </ChakraLink>
-        </Link>
+                    </Button>
+                </ChakraLink>
+            </Link>
     );
 }

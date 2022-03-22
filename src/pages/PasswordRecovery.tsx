@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, InputGroup, InputLeftElement, toast, useToast } from '@chakra-ui/react';
 import { Image } from '@chakra-ui/react';
 import { Heading, Text } from '@chakra-ui/react';
 import { auth } from '../services/firebaseConfig';
@@ -7,6 +7,8 @@ import * as yup from 'yup';
 import Link from 'next/link';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { Input } from '../components/Form/Input';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 const passwordRecoveryFormSchema = yup.object().shape({
     email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
@@ -23,8 +25,43 @@ export default function PasswordRecovery(props: any) {
     });
     const { errors } = formState;
 
+    const toast = useToast();
+
     const handleRecoverPassoword: SubmitHandler<RecoverPasswordFormData> = async (values) => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        const { email } = values;
+
+        sendPasswordResetEmail(auth, email)
+            .then((result) => {
+                // Password reset email sent!
+                toast({
+                    title: 'SUCESSO! SE VOCÊ REALMENTE POSSUIR UMA CONTA COM ESTE E-MAIL, SERÁ POSSÍVEL ALTERAR SUA SENHA',
+                    status: 'success',
+                    isClosable: true,
+                    position: 'top',
+                    duration: 20000,
+                });
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+
+                if (errorCode === 'auth/user-not-found') {
+                    return toast({
+                        title: 'USUÁRIO NÃO ENCONTRADO',
+                        status: 'error',
+                        isClosable: true,
+                        position: 'top',
+                    });
+                }
+                return toast({
+                    title: 'OPS... UM ERRO INESPERADO OCORREU, TENTE NOVAMENTE!',
+                    status: 'error',
+                    isClosable: true,
+                    position: 'top',
+                });
+            });
     };
 
     return (
@@ -52,7 +89,8 @@ export default function PasswordRecovery(props: any) {
                     mt="30px"
                     as="form"
                     onSubmit={handleSubmit(handleRecoverPassoword)}
-                    padding="10"
+                    p="10"
+                    pb="30"
                     w="500px"
                     h="300px"
                     bg="white"

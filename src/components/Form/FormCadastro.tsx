@@ -130,7 +130,7 @@ export function FormCadastro(props: FormCadastroProps) {
                 })
                 .then((response: any) => {
                     toast({
-                        title: 'CONTA CRIADA COM SUCESSO',
+                        title: 'CONTA CRIADA COM SUCESSO!',
                         status: 'success',
                         isClosable: true,
                         position: 'top',
@@ -169,7 +169,7 @@ export function FormCadastro(props: FormCadastroProps) {
                     })
                         .then((response: any) => {
                             toast({
-                                title: 'CONTA CRIADA COM SUCESSO',
+                                title: 'CONTA CRIADA COM SUCESSO!',
                                 status: 'success',
                                 isClosable: true,
                                 position: 'top',

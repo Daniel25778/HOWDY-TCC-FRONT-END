@@ -22,15 +22,15 @@ export default function PageLogin(props: any) {
                         maxWidth={400}
                         objectFit="cover"
                         marginBottom={8}
-                        src="/images/howdy-images/logo/logo-howdy-row.svg"
+                        src="/images/howdy-images/logo/logo-white-howdy-row.svg"
                         alt="howdy logo"
                     />
 
-                    <Text fontSize={50} color="howdyColors.mainWhite">
+                    <Text fontWeight="medium" fontSize={50} color="howdyColors.mainWhite">
                         Realize seu login
                     </Text>
                 </Flex>
-                <Spacer></Spacer>
+                <Spacer />
                 <Image src="/images/illustrations/women-reading.svg" alt="howdy logo" />
             </Flex>
 

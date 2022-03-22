@@ -32,6 +32,7 @@ export const themes = extendTheme({
             noob: '#428C49',
             master: '#7A00F3',
             notSelection: '#939393',
+            notSelectionTransparent: '#e9e9e9',
             beginner: '#CD7F32',
             amateur: '#C9CCCB',
             experient: '#FFD700',

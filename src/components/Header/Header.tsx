@@ -147,7 +147,7 @@ export function Header() {
                     <Image
                         my="auto"
                         height="3rem"
-                        src="/images/howdy-images/logo/Logo row.svg"
+                        src="/images/howdy-images/logo/logo-blue-howdy-row.svg"
                         alt="howdy logo"
                     ></Image>
 

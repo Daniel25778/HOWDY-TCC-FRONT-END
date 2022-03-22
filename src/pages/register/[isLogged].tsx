@@ -29,7 +29,7 @@ export default function PageCadastro(props: PageCadastroProps) {
                         maxWidth={500}
                         objectFit="cover"
                         bg="howdyColors.mainGreens"
-                        src="/images/howdy-images/logo/logo-howdy-row.svg"
+                        src="/images/howdy-images/logo/logo-white-howdy-row.svg"
                         alt="howdy logo"
                         mb="15%"
                     />

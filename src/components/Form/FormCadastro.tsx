@@ -214,6 +214,7 @@ export function FormCadastro(props: FormCadastroProps) {
                         <MdOutlineMailOutline color="#6A7DFF" />
                     </InputLeftElement>
                     <Input
+                        fontWeight="medium"
                         name="email"
                         placeholder="Seu e-mail"
                         type="text"
@@ -227,7 +228,14 @@ export function FormCadastro(props: FormCadastroProps) {
                 <InputLeftElement pointerEvents="none">
                     <BsPerson color="#6A7DFF" />
                 </InputLeftElement>
-                <Input name="name" placeholder="Seu nome" type="text" error={errors.name} {...register('name')} />
+                <Input
+                    fontWeight="medium"
+                    name="name"
+                    placeholder="Seu nome"
+                    type="text"
+                    error={errors.name}
+                    {...register('name')}
+                />
             </InputGroup>
 
             <InputGroup width={400} variant="filled" marginBottom="10px">
@@ -235,6 +243,7 @@ export function FormCadastro(props: FormCadastroProps) {
                     <MdOutlineCake color="#6A7DFF" />
                 </InputLeftElement>
                 <Input
+                    fontWeight="medium"
                     name="birthDate"
                     placeholder="Sua data de nascimento"
                     onFocus={() => document.getElementById('birthDate').setAttribute('type', 'date')}
@@ -293,6 +302,7 @@ export function FormCadastro(props: FormCadastroProps) {
                             <GiPadlock color="#6A7DFF" />
                         </InputLeftElement>
                         <Input
+                            fontWeight="medium"
                             name="password"
                             placeholder="Sua senha"
                             type="password"
@@ -306,6 +316,7 @@ export function FormCadastro(props: FormCadastroProps) {
                             <GiPadlock color="#6A7DFF" />
                         </InputLeftElement>
                         <Input
+                            fontWeight="medium"
                             name="passwordConfirm"
                             placeholder="Confirme sua senha"
                             type="password"
@@ -327,7 +338,7 @@ export function FormCadastro(props: FormCadastroProps) {
                 type="submit"
                 isLoading={formState.isSubmitting}
             >
-                <Text>CADASTRAR</Text>
+                CADASTRAR
             </Button>
 
             <Flex width="100%" maxWidth={510} align="center" justify="center" borderRadius={8} flexDir="row"></Flex>

@@ -6,7 +6,7 @@ import { Divider } from '@chakra-ui/react';
 import Head from 'next/head';
 import { Header } from '../components/Header/Header';
 import { BiTargetLock } from 'react-icons/bi';
-import { AiOutlineMessage, AiOutlineHeart} from 'react-icons/ai';
+import { AiOutlineMessage, AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
 
 import { MdTranslate } from 'react-icons/md';
 import { FaBaby } from 'react-icons/fa';
@@ -317,14 +317,15 @@ export default function UserPage(props: any) {
                         </Flex>
                        
                          <Flex gap="10%"  w="20%" align="center">
-                            <IconButton 
-                                        w="10%"
-                                        aria-label="Open navigation"
-                                        bgColor="#ffffff33"
-                                        borderRadius="15"
-                                        icon={<Icon opacity="2" as={AiOutlineHeart} color="howdyColors.mainBlue" fontSize={'x-large'} />}
-                                        >
-                                        </IconButton> 
+                               
+                                     <IconButton 
+                                     w="10%"
+                                     aria-label="Open navigation"
+                                     bgColor="#ffffff33"
+                                     borderRadius="15"
+                                     icon={true ? <Icon opacity="2" as={AiFillHeart} color="howdyColors.mainRed" fontSize={'x-large'} /> : <Icon opacity="2" as={AiOutlineHeart} color="howdyColors.mainBlue" fontSize={'x-large'} />}
+                                     >
+                                    </IconButton> 
                             <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>1 mil</Text>
                          </Flex>
                     </Flex>
@@ -390,7 +391,7 @@ export default function UserPage(props: any) {
                                         borderRadius="15"
                                         icon={<Icon opacity="2" as={AiOutlineHeart} color="howdyColors.mainBlue" fontSize={'x-large'} />}
                                         >
-                                        </IconButton> 
+                            </IconButton> 
                             <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>1 mil</Text>
                          </Flex>
                     </Flex>

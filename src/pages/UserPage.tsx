@@ -15,7 +15,6 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { WeeklyChart } from '../components/Chart/WeeklyChart';
 import { MonthlyChart } from '../components/Chart/MonthlyChart';
 import StarRatings from 'react-star-ratings';
-import firebaseConfig from '../services/firebaseConfig';
 import { initializeApp } from 'firebase/app';
 
 export default function UserPage(props: any) {

@@ -19,9 +19,11 @@ export function NavLink({ href, title }: NavLinkProps) {
     }
 
     return (
-            <Link href={href}>
-                <ChakraLink w='100%'>
-                    <Button w="100%" bgColor={isActive ? "howdyColors.mainBlue" : "#E9E9E9"} color="howdyColors.mainWhite" borderRadius="15">
+            <Link prefetch href={href}>
+                <ChakraLink w='100%'
+                 _hover={{bgColor: '#ffffff33'}}
+                 >
+                    <Button _hover={{opacity : "80%"}} w="100%" bgColor={isActive ? "howdyColors.mainBlue" : "#E9E9E9"} color="howdyColors.mainWhite" borderRadius="15">
                         <Text color={isActive ? "howdyColors.mainWhite" : "howdyColors.notSelection"} fontWeight={'bold'} fontSize={['sm', 'md', 'x-large']}>
                             {title}
                         </Text>

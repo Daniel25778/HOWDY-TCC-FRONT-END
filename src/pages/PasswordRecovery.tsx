@@ -1,15 +1,32 @@
 import { Box, Button, Center, Flex, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
-import { Image, Spacer } from '@chakra-ui/react';
-import { ChakraProvider, Container, Stack, Heading, Text } from '@chakra-ui/react';
-import { FormLogin } from '../components/Form/FormLogin';
-import { Divider } from '@chakra-ui/react';
-import { GetStaticPaths } from 'next';
+import { Image } from '@chakra-ui/react';
+import { Heading, Text } from '@chakra-ui/react';
 import { auth } from '../services/firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth';
 import { MdOutlineMailOutline } from 'react-icons/md';
+import * as yup from 'yup';
 import Link from 'next/link';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+const passwordRecoveryFormSchema = yup.object().shape({
+    email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
+});
+
+type RecoverPasswordFormData = {
+    email: string;
+    password: string;
+};
 
 export default function PasswordRecovery(props: any) {
+    const { register, handleSubmit, formState } = useForm({
+        resolver: yupResolver(passwordRecoveryFormSchema),
+    });
+    const { errors } = formState;
+
+    const handleRecoverPassoword: SubmitHandler<RecoverPasswordFormData> = async (values) => {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+    };
+
     return (
         <>
             <Center
@@ -31,7 +48,17 @@ export default function PasswordRecovery(props: any) {
                 Recupere sua conta
             </Center>
             <Flex justify="center" fontWeight="medium" minH="65vh" w="100%" bgColor="howdyColors.mainBlue">
-                <Box mt="30px" as="form" padding="10" w="500px" h="300px" bg="white" borderRadius="1%" flexDir="column">
+                <Box
+                    mt="30px"
+                    as="form"
+                    onSubmit={handleSubmit(handleRecoverPassoword)}
+                    padding="10"
+                    w="500px"
+                    h="300px"
+                    bg="white"
+                    borderRadius="1%"
+                    flexDir="column"
+                >
                     <Heading color="howdyColors.mainBlack" fontSize="1.7rem">
                         Insira seu e-mail
                     </Heading>
@@ -47,8 +74,8 @@ export default function PasswordRecovery(props: any) {
                             name="email"
                             placeholder="E-mail"
                             type="text"
-                            //error={errors.email}
-                            //{...register('email')}
+                            error={errors.email}
+                            {...register('email')}
                         />
                     </InputGroup>
                     <Flex marginTop="6" marginBottom="6" justify="right" w="100%">
@@ -69,7 +96,7 @@ export default function PasswordRecovery(props: any) {
                             bg="#CBD2FF"
                             color="howdyColors.mainBlue"
                             type="submit"
-                            //isLoading={formState.isSubmitting}
+                            isLoading={formState.isSubmitting}
                         >
                             PRÓXIMO
                         </Button>

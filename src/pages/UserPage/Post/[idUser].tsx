@@ -29,9 +29,9 @@ export default function PostPage(){
                 <UserDataPage></UserDataPage>
                 <Grid  templateColumns='repeat(4, 1fr)' gap={6}>
                     <NavLink href="/UserPage/Post/1" title="Postagens"></NavLink>
-                    <NavLink href="/UserPage/FriendsPage/1" title="Amigos"></NavLink>
-                    <NavLink href="/LearnPage/1" title="Aprendizado"></NavLink>
-                    <NavLink href="/TeachPage/1" title="Ensinamentos"></NavLink>
+                    <NavLink href="/UserPage/Friends/1" title="Amigos"></NavLink>
+                    <NavLink href="/UserPage/Learn/1" title="Aprendizado"></NavLink>
+                    <NavLink href="/UserPage/Teach/1" title="Ensinamentos"></NavLink>
                 </Grid>
                 <Flex width="100%" align={'center'} mt="5%" flexDir="column">
                     <Flex mb="1%" gap="3%" width="40%" >

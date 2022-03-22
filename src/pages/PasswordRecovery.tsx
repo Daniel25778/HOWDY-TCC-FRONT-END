@@ -7,6 +7,7 @@ import { GetStaticPaths } from 'next';
 import { auth } from '../services/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { MdOutlineMailOutline } from 'react-icons/md';
+import Link from 'next/link';
 
 export default function PasswordRecovery(props: any) {
     return (
@@ -51,16 +52,17 @@ export default function PasswordRecovery(props: any) {
                         />
                     </InputGroup>
                     <Flex marginTop="6" marginBottom="6" justify="right" w="100%">
-                        <Button
-                            _hover={{ bg: '#B9C2FD' }}
-                            ml="5"
-                            bg="howdyColors.notSelectionTransparent"
-                            color="howdyColors.notSelection"
-                            type="button"
-                            //isLoading={formState.isSubmitting}
-                        >
-                            CANCELAR
-                        </Button>
+                        <Link href="/LoginPage" passHref prefetch>
+                            <Button
+                                _hover={{ bg: '#B9C2FD' }}
+                                ml="5"
+                                bg="howdyColors.notSelectionTransparent"
+                                color="howdyColors.notSelection"
+                                type="button"
+                            >
+                                CANCELAR
+                            </Button>
+                        </Link>
                         <Button
                             _hover={{ bg: '#B9C2FD' }}
                             ml="5"

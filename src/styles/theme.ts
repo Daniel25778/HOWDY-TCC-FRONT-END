@@ -48,7 +48,7 @@ export const themes = extendTheme({
     },
     breakpoints,
     fonts: {
-        heading: 'Roboto',
+        heading: 'Roboto, sans-serif',
         body: 'Roboto, sans-serif',
     },
     styles: {

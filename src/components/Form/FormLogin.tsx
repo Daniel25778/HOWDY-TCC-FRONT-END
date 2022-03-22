@@ -83,7 +83,9 @@ export function FormLogin() {
             </InputGroup>
 
             <ChakraLink w={400} alignSelf="left" fontWeight="medium" color="howdyColors.mainBlue">
-                <Link href="/PasswordRecovery">Esqueci minha senha</Link>
+                <Link prefetch href="/PasswordRecovery">
+                    Esqueci minha senha
+                </Link>
             </ChakraLink>
 
             <Button
@@ -100,14 +102,14 @@ export function FormLogin() {
                 <Text>ENTRAR</Text>
             </Button>
 
-            <Link href="/register/false">
-                <ChakraLink display="flex" fontWeight="medium" color="howdyColors.mainBlue">
-                    <Text pr="5px" color="howdyColors.mainBlack">
-                        Não tem uma conta?
-                    </Text>{' '}
-                    Registre-se
-                </ChakraLink>
-            </Link>
+            <Text display="flex" fontWeight="medium" color="howdyColors.mainBlack">
+                Não tem uma conta?
+                <Link prefetch href="/register/false">
+                    <ChakraLink pl="5px" color="howdyColors.mainBlue">
+                        Registre-se
+                    </ChakraLink>
+                </Link>
+            </Text>
 
             <Flex
                 marginTop="20"

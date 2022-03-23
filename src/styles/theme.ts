@@ -1,4 +1,7 @@
 import { extendTheme, Heading } from '@chakra-ui/react';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 // 1. Import the utilities
 import { createBreakpoints } from '@chakra-ui/theme-tools';

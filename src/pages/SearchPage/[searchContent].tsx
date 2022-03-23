@@ -1,8 +1,9 @@
-import { Box, Text, Grid, Flex, Image } from '@chakra-ui/react';
+import { Box, Text, Grid, Flex, Image, Heading, Center, Table, Thead, Tr, Th, Tbody, Icon } from '@chakra-ui/react';
 import Head from 'next/head';
 import { Header } from '../../components/Header/Header';
 import { NavLink } from '../../components/NavLink/Header/NavLink';
 import UserDataPage from '../../components/UserDataPage/UserDataPage';
+import { BiTargetLock } from 'react-icons/bi';
 
 export default function SearchPage() {
     // const router = useRouter();
@@ -18,114 +19,98 @@ export default function SearchPage() {
     return (
         <>
             <Head>
-                <title>HOWDY - USER PAGE</title>
+                <title>HOWDY - Resultadosd de XXXX</title>
             </Head>
             <Header />
-            <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
-                <UserDataPage />
-                <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-                    <NavLink href="/UserPage/Post/1" title="Postagens" />
-                    <NavLink href="/UserPage/Friends/1" title="Amigos" />
-                    <NavLink href="/UserPage/Learn/1" title="Aprendizado" />
-                    <NavLink href="/UserPage/Teach/1" title="Ensinamentos" />
-                </Grid>
-                <Flex width="100%" mt="5%" flexDir="column">
-                    <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
-                        Total : {/*{userFriends} */}
+            <Flex
+                flexDir="column"
+                alignItems="center"
+                pt="20rem"
+                as="main"
+                px="100px"
+                bg="red"
+                bgImg="/images/background.png"
+            >
+                <Center fontWeight="bold" fontSize="3rem" color="howdyColors.mainBlack" flexDir="column" w="100%">
+                    <Heading fontSize="3rem">Resultados da pesquisa:</Heading>
+                    <Text display="flex">
+                        " <Text color="howdyColors.mainBlue">XXXXXX</Text> "
                     </Text>
-                    <Grid mt="4%" justifyItems={'center'} templateColumns="repeat(3, 1fr)">
-                        <Flex>
-                            <Flex>
-                                <Image
-                                    borderRadius="20%"
-                                    height="15rem"
-                                    objectFit="cover"
-                                    src="/images/Tests/profilePhoto.png"
-                                    alt="profilePhoto"
-                                ></Image>
-                            </Flex>
-                            <Flex>
-                                <Text>Jenny Wilson</Text>
-                            </Flex>
-                        </Flex>
-
-                        <Flex>
-                            <Flex>
-                                <Image
-                                    borderRadius="20%"
-                                    height="15rem"
-                                    objectFit="cover"
-                                    src="/images/Tests/profilePhoto.png"
-                                    alt="profilePhoto"
-                                ></Image>
-                            </Flex>
-                            <Flex>
-                                <Text></Text>
-                            </Flex>
-                        </Flex>
-
-                        <Flex>
-                            <Flex>
-                                <Image
-                                    borderRadius="20%"
-                                    height="15rem"
-                                    objectFit="cover"
-                                    src="/images/Tests/profilePhoto.png"
-                                    alt="profilePhoto"
-                                ></Image>
-                            </Flex>
-                            <Flex>
-                                <Text></Text>
-                            </Flex>
-                        </Flex>
-
-                        <Flex>
-                            <Flex>
-                                <Image
-                                    borderRadius="20%"
-                                    height="15rem"
-                                    objectFit="cover"
-                                    src="/images/Tests/profilePhoto.png"
-                                    alt="profilePhoto"
-                                ></Image>
-                            </Flex>
-                            <Flex>
-                                <Text></Text>
-                            </Flex>
-                        </Flex>
-
-                        <Flex>
-                            <Flex>
-                                <Image
-                                    borderRadius="20%"
-                                    height="15rem"
-                                    objectFit="cover"
-                                    src="/images/Tests/profilePhoto.png"
-                                    alt="profilePhoto"
-                                ></Image>
-                            </Flex>
-                            <Flex>
-                                <Text></Text>
-                            </Flex>
-                        </Flex>
-
-                        <Flex>
-                            <Flex>
-                                <Image
-                                    borderRadius="20%"
-                                    height="15rem"
-                                    objectFit="cover"
-                                    src="/images/Tests/profilePhoto.png"
-                                    alt="profilePhoto"
-                                ></Image>
-                            </Flex>
-                            <Flex>
-                                <Text></Text>
-                            </Flex>
-                        </Flex>
-                    </Grid>
-                </Flex>
-            </Box>
+                </Center>
+                <Table mt="10" minW="800px" w="70%" bg="howdyColors.mainWhite">
+                    <Thead>
+                        <Tr>
+                            <Th
+                                pt="30px"
+                                pb="70px"
+                                textTransform="capitalize"
+                                color="howdyColors.mainBlack"
+                                fontSize="3rem"
+                            >
+                                Pessoas
+                            </Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        <Tr>
+                            <Box pl="50px">
+                                <Flex>
+                                    <Image
+                                        objectFit="cover"
+                                        borderRadius="100%"
+                                        w="8rem"
+                                        h="8rem"
+                                        src="/images/Tests/profilePhoto.png"
+                                    />
+                                    <Box ml="30px">
+                                        <Text color="howdyColors.mainBlack" fontSize="2rem" fontWeight="500">
+                                            XXXXXX Wilson
+                                        </Text>
+                                        <Flex mt="2rem">
+                                            <Center>
+                                                <Icon
+                                                    as={BiTargetLock}
+                                                    color="howdyColors.mainBlue"
+                                                    w="40px"
+                                                    h="40px"
+                                                />
+                                                <Text
+                                                    ml="5"
+                                                    fontWeight="thin"
+                                                    fontSize="2xl"
+                                                    color="howdyColors.mainBlue"
+                                                >
+                                                    Inglês
+                                                </Text>
+                                            </Center>
+                                            <Center ml="10">
+                                                <Icon
+                                                    as={BiTargetLock}
+                                                    color="howdyColors.mainBlue"
+                                                    w="40px"
+                                                    h="40px"
+                                                />
+                                                <Text
+                                                    ml="5"
+                                                    fontWeight="thin"
+                                                    fontSize="2xl"
+                                                    color="howdyColors.mainBlue"
+                                                >
+                                                    Português
+                                                </Text>
+                                            </Center>
+                                        </Flex>
+                                    </Box>
+                                </Flex>
+                                <Box mt="15px" h="1px" w="70%" borderRadius="50px" bg="howdyColors.divider"></Box>
+                            </Box>
+                        </Tr>
+                        <Tr>oi</Tr>
+                        <Tr>oi</Tr>
+                        <Tr>oi</Tr>
+                    </Tbody>
+                </Table>
+            </Flex>
         </>
     );
 }

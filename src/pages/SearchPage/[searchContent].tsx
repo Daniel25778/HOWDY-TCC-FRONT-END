@@ -1,10 +1,10 @@
 import { Box, Text, Grid, Flex, Image } from '@chakra-ui/react';
 import Head from 'next/head';
-import { Header } from '../../../components/Header/Header';
-import { NavLink } from '../../../components/NavLink/UserPage/NavLink';
-import UserDataPage from '../../../components/UserDataPage/UserDataPage';
+import { Header } from '../../components/Header/Header';
+import { NavLink } from '../../components/NavLink/Header/NavLink';
+import UserDataPage from '../../components/UserDataPage/UserDataPage';
 
-export default function FriendsPage() {
+export default function SearchPage() {
     // const router = useRouter();
     // if (router.isFallback) {
     //   return (

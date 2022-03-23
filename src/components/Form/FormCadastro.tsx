@@ -83,14 +83,12 @@ export function FormCadastro(props: FormCadastroProps) {
 
     const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
     useEffect(() => {
-        api.get('targetLanguages')
-            .then((response) => setTargetLanguages(response.data))
-            .catch((error) => console.log('Ocorreu um erro na coleta de dados com o servidor'));
+        api.get('targetLanguages').then((response) => setTargetLanguages(response.data));
     }, []);
 
     const [nativeLanguages, setNativeLanguages] = useState<NativeLanguage[]>([]);
     useEffect(() => {
-        api.get('nativeLanguages').then((response) => setNativeLanguages(response.data)).catch((error)=> console.log('Ocorreu um erro na coleta de dados com o servidor'));
+        api.get('nativeLanguages').then((response) => setNativeLanguages(response.data));
     }, []);
 
     const resolver = isLogged ? yupResolver(signInLoggedFormSchema) : yupResolver(signInFormSchema);
@@ -138,7 +136,7 @@ export function FormCadastro(props: FormCadastroProps) {
                         position: 'top',
                     });
 
-                    Router.push('../PageUser');
+                    Router.push('User/Posts/1');
                 })
                 .catch((error: any) => {
                     toast({
@@ -189,6 +187,17 @@ export function FormCadastro(props: FormCadastroProps) {
                         });
                 })
                 .catch((error) => {
+                    const errorCode = error.code;
+                    console.log(errorCode);
+
+                    if (errorCode === 'auth/email-already-in-use') {
+                        return toast({
+                            title: 'ESTE E-MAIL JÁ ESTÁ SENDO UTILIZADO.',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                        });
+                    }
                     toast({
                         title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
                         status: 'error',

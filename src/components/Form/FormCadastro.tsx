@@ -83,12 +83,14 @@ export function FormCadastro(props: FormCadastroProps) {
 
     const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
     useEffect(() => {
-        api.get('targetLanguages').then((response) => setTargetLanguages(response.data));
+        api.get('targetLanguages')
+            .then((response) => setTargetLanguages(response.data))
+            .catch((error) => console.log('Ocorreu um erro na coleta de dados com o servidor'));
     }, []);
 
     const [nativeLanguages, setNativeLanguages] = useState<NativeLanguage[]>([]);
     useEffect(() => {
-        api.get('nativeLanguages').then((response) => setNativeLanguages(response.data));
+        api.get('nativeLanguages').then((response) => setNativeLanguages(response.data)).catch((error)=> console.log('Ocorreu um erro na coleta de dados com o servidor'));
     }, []);
 
     const resolver = isLogged ? yupResolver(signInLoggedFormSchema) : yupResolver(signInFormSchema);

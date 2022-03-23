@@ -20,27 +20,29 @@ const { 'firebase.token': token } = parseCookies();
 
 export default {
     googleLogInto: async () => {
-        setPersistence(auth, browserSessionPersistence);
-        const provider = new GoogleAuthProvider();
-        let result = await signInWithPopup(auth, provider);
-        let idToken = await result.user.getIdToken();
-
-        setCookie(undefined, 'firebase', idToken, {
-            maxAge: 60 * 60 * 24 * 30,
-            path: '/',
-        });
-
-        api.defaults.headers['Authorization'] = `${idToken}`;
-
         try {
-            api.get(`users/isMyUidExternalRegistered`).then((response) => {
-                const { data } = response;
-                if (data === 'This user does not have an account in our system') {
-                    Router.push('register/isLogged');
-                } else {
-                    Router.push('UserPage');
-                }
+            setPersistence(auth, browserSessionPersistence);
+            const provider = new GoogleAuthProvider();
+            let result = await signInWithPopup(auth, provider);
+            let idToken = await result.user.getIdToken();
+
+            setCookie(undefined, 'firebase', idToken, {
+                maxAge: 60 * 60 * 24 * 30,
+                path: '/',
             });
+
+            api.defaults.headers['Authorization'] = `${idToken}`;
+
+            api.get(`users/isMyUidExternalRegistered`)
+                .then((response) => {
+                    const { data } = response;
+                    if (data === 'This user does not have an account in our system') {
+                        Router.push('register/isLogged');
+                    } else {
+                        Router.push('UserPage');
+                    }
+                })
+                .catch(() => console.log('Erro ao se conectar com o servidor'));
         } catch (error) {
             console.log(error);
         }

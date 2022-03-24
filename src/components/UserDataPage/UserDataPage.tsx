@@ -17,6 +17,7 @@ import StarRatings from 'react-star-ratings';
 import { initializeApp } from 'firebase/app';
 import { NavLink } from '../NavLink/UserPage/NavLink';
 import { auth } from '../../services/firebaseConfig';
+import ProfilePhotoAndPatent from '../ProfilePhotoAndPatent/ProfilePhotoAndPatent';
 
 export default function UserDataPage(props: any) {
     const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];
@@ -42,47 +43,7 @@ export default function UserDataPage(props: any) {
                     src="/images/Tests/backgroundImage.png"
                 />
                 <Flex w="100%" position="relative" bottom="4vw" pl="8vw">
-                    <Center position="relative" borderRadius="100%" w="12.5vw" h="12.5vw" bg="white">
-                        <Image
-                            w="12vw"
-                            h="12vw"
-                            borderRadius="100%"
-                            objectFit="cover"
-                            src="/images/Tests/profilePhoto.png"
-                        />
-
-                        <Flex role="group" position="absolute" bottom="0" right="0">
-                            <Image
-                                cursor="pointer"
-                                zIndex="1"
-                                w="4vw"
-                                src="/images/howdy-images/class/class-master.svg"
-                            />
-                            <Text
-                                px="15px"
-                                py="2px"
-                                w="90px"
-                                fontWeight="black"
-                                color="white"
-                                bg="howdyColors.master"
-                                borderRadius="0 10px 10px 0"
-                                position="absolute"
-                                bottom=".5vw"
-                                zIndex="-1"
-                                left="0"
-                                transition="left 1s, z-index .5s"
-                                fontSize={['2xl', 'md', 'sm']}
-                                wordBreak="keep-all"
-                                textAlign="right"
-                                _groupHover={{
-                                    left: '3vw',
-                                    zIndex: '0',
-                                }}
-                            >
-                                Master
-                            </Text>
-                        </Flex>
-                    </Center>
+                    <ProfilePhotoAndPatent whiteBorder={true} size="12.5vw" />
                     <Box color="howdyColors.mainBlack" flex="1" ml="10%" mt="5vw">
                         <Heading wordBreak="break-word" fontSize="4xl">
                             Helena Pena Rodrigues dos Santos

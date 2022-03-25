@@ -140,7 +140,7 @@ export function FormCadastro(props: FormCadastroProps) {
                         position: 'top',
                     });
 
-                    Router.push('User/Posts/1');
+                    Router.push('UserPage/Post/1');
                 })
                 .catch((error: any) => {
                     toast({

@@ -26,7 +26,7 @@ export default {
             let result = await signInWithPopup(auth, provider);
             let idToken = await result.user.getIdToken();
 
-            setCookie(undefined, 'firebase', idToken, {
+            setCookie(undefined, 'firebaseAccount', idToken, {
                 maxAge: 60 * 60 * 24 * 30,
                 path: '/',
             });
@@ -39,7 +39,7 @@ export default {
                     if (data === 'This user does not have an account in our system') {
                         Router.push('register/isLogged');
                     } else {
-                        Router.push('UserPage');
+                        Router.push('UserPage/Post/1');
                     }
                 })
                 .catch(() => console.log('Erro ao se conectar com o servidor'));

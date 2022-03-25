@@ -1,4 +1,4 @@
-import { Button, Flex, InputGroup, InputLeftElement, Link as ChakraLink, propNames, Text } from '@chakra-ui/react';
+import { Button, Flex, InputGroup, InputLeftElement, Link as ChakraLink, propNames, Text,  useToast,} from '@chakra-ui/react';
 import { Input } from '../../components/Form/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -14,11 +14,15 @@ import { actionLoginFacebook } from '../../pages/api/actionLoginFacebook';
 import * as React from 'react';
 import Link from 'next/link';
 import { auth } from '../../services/firebaseConfig';
+import Router from 'next/router';
+
 
 type SignInFormData = {
     email: string;
     password: string;
 };
+
+
 
 const signInFormSchema = yup.object().shape({
     email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
@@ -30,6 +34,7 @@ export function FormLogin() {
         resolver: yupResolver(signInFormSchema),
     });
     const { errors } = formState;
+    const toast = useToast();
 
     const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -40,11 +45,17 @@ export function FormLogin() {
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
-                console.log(user);
+                Router.push('UserPage/Post/1');
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                toast({
+                    title: 'EMAIL OU SENHA INCORRETOS!',
+                    status: 'error',
+                    isClosable: true,
+                    position: 'top',
+                });
                 // ..
             });
     };

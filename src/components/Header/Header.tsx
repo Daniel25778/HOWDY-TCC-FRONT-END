@@ -21,8 +21,22 @@ import { FiSearch } from 'react-icons/fi';
 import { FaRegBell } from 'react-icons/fa';
 import { IoMdAdd, IoMdArrowDropdown } from 'react-icons/io';
 import { NavLink } from '../NavLink/Header/NavLink';
+import Router from 'next/router';
+import { api } from '../../services/api';
+import { setCookie } from 'nookies';
+import nookies, { destroyCookie } from 'nookies'
 
 export function Header() {
+
+    const handleSignOut = ()=>{
+        setCookie(undefined, 'firebaseAccount', null, {
+            maxAge: 60 * 60 * 24 * 30,
+            path: '/',
+        });
+
+        api.defaults.headers['Authorization'] = null;
+        Router.push('/LoginPage');
+    }
     return (
         <Flex
             position="fixed"
@@ -98,7 +112,7 @@ export function Header() {
                                     <MenuList color="howdyColors.mainBlack">
                                         <MenuItem>Perfil</MenuItem>
                                         <MenuItem>Confirações de perfil</MenuItem>
-                                        <MenuItem>Sair</MenuItem>
+                                        <MenuItem onClick={handleSignOut}>Sair</MenuItem>
                                     </MenuList>
                                 </Menu>
                             </Text>
@@ -153,8 +167,8 @@ export function Header() {
 
                     <Center w="50%" justifyContent={'space-between'}>
                         <NavLink href="/RankingPage" title="Ranking" />
-                        <NavLink href="/PostPage" title="Postagens" />
-                        <NavLink href="/LearnPage" title="Aprenda" />
+                        <NavLink href="/UserPage/Post/1" title="Postagens" />
+                        <NavLink href="/UserPage/Learn/1" title="Aprenda" />
                     </Center>
                 </Flex>
             </Flex>

@@ -1,5 +1,6 @@
 import { Box, Flex, Grid, Icon, IconButton, Image, Text } from '@chakra-ui/react';
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
 import { MdTranslate } from 'react-icons/md';
 import useRouter from 'use-react-router';
@@ -7,8 +8,19 @@ import { Header } from '../../../components/Header/Header';
 import Loading from '../../../components/Loading/Loading';
 import { NavLink } from '../../../components/NavLink/UserPage/NavLink';
 import UserDataPage from '../../../components/UserDataPage/UserDataPage';
+import { getUserLogged } from '../../../functions/getUserLogged';
+import { api as apiFunction } from '../../../services/api';
 
 export default function PostPage() {
+    const api = apiFunction();
+    const [userLogged, setUserLogged] = useState<any>([]);
+
+    useEffect(() => {
+        getUserLogged(api).then((res) => {
+            setUserLogged(res);
+        });
+    }, []);
+
     // const router = useRouter();
     // if (router.isFallback) {
     //   return (
@@ -24,7 +36,7 @@ export default function PostPage() {
             <Head>
                 <title>HOWDY - USER PAGE</title>
             </Head>
-            <Header />
+            <Header user={userLogged} />
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
                 <UserDataPage></UserDataPage>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>

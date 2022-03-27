@@ -7,7 +7,7 @@ import {
     FacebookAuthProvider,
     signInWithPopup,
 } from '@firebase/auth';
-import { api } from './services/api';
+import { api as apiFunction } from './services/api';
 import {
     Button,
     Flex,
@@ -26,10 +26,9 @@ import { auth } from './services/firebaseConfig';
 import { setCookie } from 'nookies';
 import Router from 'next/router';
 
-export default {facebookLogInto: async () => {
-    
+export default {
+    facebookLogInto: async () => {
         try {
-            
             setPersistence(auth, browserSessionPersistence);
             const provider = new FacebookAuthProvider();
             let result = signInWithPopup(auth, provider);
@@ -40,25 +39,23 @@ export default {facebookLogInto: async () => {
                 path: '/',
             });
 
+            const api = apiFunction();
             api.defaults.headers['Authorization'] = `${idToken}`;
 
             api.get(`users/isMyUidExternalRegistered`)
                 .then((response) => {
                     const { data } = response;
                     if (data === 'This user does not have an account in our system') {
-                        Router.push('register/isLogged');
+                        Router.push('/register/isLogged');
                     } else {
-                        Router.push('UserPage/Post/1');
+                        Router.push('/UserPage/Post/1');
                     }
                 })
                 .catch(() => console.log('Erro ao se conectar com o servidor'));
-
         } catch (error) {
             const errorCode = error.code;
             if (errorCode === 'auth/account-exists-with-different-credential') {
-
             }
         }
-        
     },
 };

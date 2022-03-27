@@ -1,4 +1,13 @@
-import { Button, Flex, InputGroup, InputLeftElement, Link as ChakraLink, propNames, Text,  useToast,} from '@chakra-ui/react';
+import {
+    Button,
+    Flex,
+    InputGroup,
+    InputLeftElement,
+    Link as ChakraLink,
+    propNames,
+    Text,
+    useToast,
+} from '@chakra-ui/react';
 import { Input } from '../../components/Form/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -14,15 +23,14 @@ import { actionLoginFacebook } from '../../pages/api/actionLoginFacebook';
 import * as React from 'react';
 import Link from 'next/link';
 import { auth } from '../../services/firebaseConfig';
-import Router from 'next/router';
-
+import Router, { useRouter } from 'next/router';
+import { getUserLogged } from '../../functions/getUserLogged';
+import { setCookie } from 'nookies';
 
 type SignInFormData = {
     email: string;
     password: string;
 };
-
-
 
 const signInFormSchema = yup.object().shape({
     email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
@@ -42,10 +50,17 @@ export function FormLogin() {
         const { email, password } = values;
 
         signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then((userCredential: any) => {
                 // Signed in
-                const user = userCredential.user;
-                Router.push('UserPage/Post/1');
+                const { user } = userCredential;
+                const { accessToken: idToken } = user;
+
+                setCookie(undefined, 'firebaseAccount', idToken, {
+                    maxAge: 60 * 60 * 24 * 30,
+                    path: '/',
+                });
+
+                Router.push('/UserPage/Post/1');
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -94,7 +109,7 @@ export function FormLogin() {
             </InputGroup>
 
             <ChakraLink w={400} alignSelf="left" fontWeight="medium" color="howdyColors.mainBlue">
-                <Link prefetch href="/PasswordRecovery">
+                <Link href="/PasswordRecovery">
                     Esqueci minha senha
                 </Link>
             </ChakraLink>
@@ -115,7 +130,7 @@ export function FormLogin() {
 
             <Text display="flex" fontWeight="medium" color="howdyColors.mainBlack">
                 Não tem uma conta?
-                <Link prefetch href="/register/false">
+                <Link href="/register/false">
                     <ChakraLink pl="5px" color="howdyColors.mainBlue">
                         Registre-se
                     </ChakraLink>

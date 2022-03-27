@@ -22,21 +22,18 @@ import { FaRegBell } from 'react-icons/fa';
 import { IoMdAdd, IoMdArrowDropdown } from 'react-icons/io';
 import { NavLink } from '../NavLink/Header/NavLink';
 import Router from 'next/router';
-import { api } from '../../services/api';
+import { api as apiFunction } from '../../services/api';
 import { setCookie } from 'nookies';
-import nookies, { destroyCookie } from 'nookies'
+import nookies, { destroyCookie } from 'nookies';
+import { BiLogOut } from 'react-icons/bi';
+import { logOut } from '../../functions/logOut';
 
-export function Header() {
+interface HeaderProps {
+    user: any;
+}
 
-    const handleSignOut = ()=>{
-        setCookie(undefined, 'firebaseAccount', null, {
-            maxAge: 60 * 60 * 24 * 30,
-            path: '/',
-        });
-
-        api.defaults.headers['Authorization'] = null;
-        Router.push('/LoginPage');
-    }
+export function Header({ user }: HeaderProps) {
+    console.log(user);
     return (
         <Flex
             position="fixed"
@@ -73,7 +70,7 @@ export function Header() {
                                 alt="howdy coin"
                             ></Image>
                             <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">
-                                200
+                                {user.howdyCoin ? user.howdyCoin : 0}
                             </Text>
                             <IconButton
                                 variant="unstyled"
@@ -89,9 +86,14 @@ export function Header() {
                         <Flex ml="10%" height="100%" align="center">
                             <Image
                                 borderRadius="100%"
-                                height="3rem"
+                                h="3rem"
+                                w="3rem"
                                 objectFit="cover"
-                                src="/images/Tests/profilePhoto.png"
+                                src={
+                                    user.profilePhoto
+                                        ? user.profilePhoto
+                                        : '/images/default-images/default-profile-photo.svg'
+                                }
                                 alt="howdy coin"
                             ></Image>
                             <Text
@@ -100,7 +102,7 @@ export function Header() {
                                 fontSize={['sm', '', 'medium', 'x-large']}
                                 color="howdyColors.mainWhite"
                             >
-                                Helena Pena
+                                {user.userName}
                                 <Menu>
                                     <MenuButton
                                         bg="howdyColors.mainBlue"
@@ -112,7 +114,7 @@ export function Header() {
                                     <MenuList color="howdyColors.mainBlack">
                                         <MenuItem>Perfil</MenuItem>
                                         <MenuItem>Confirações de perfil</MenuItem>
-                                        <MenuItem onClick={handleSignOut}>Sair</MenuItem>
+                                        <MenuItem onClick={logOut}>Sair</MenuItem>
                                     </MenuList>
                                 </Menu>
                             </Text>

@@ -6,8 +6,17 @@ import { Divider } from '@chakra-ui/react';
 import { GetStaticPaths } from 'next';
 import { auth } from '../services/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
+import { api } from '../services/api';
+import { parseCookies } from 'nookies';
+import { getUserLogged } from '../functions/getUserLogged';
+import Router, { useRouter } from 'next/router';
 
 export default function PageLogin(props: any) {
+    const router = useRouter();
+    if (router.isFallback) {
+        return <h1>Carregando...</h1>;
+    }
+
     return (
         <Flex
             w="100%"
@@ -42,13 +51,9 @@ export default function PageLogin(props: any) {
 }
 
 export async function getStaticProps() {
-    console.log(auth);
-    // onAuthStateChanged(auth, (user) => {
-    //     console.log(user);
-    // });
     return {
         props: {
-            // uid,
+            api: 'a',
         },
     };
 }

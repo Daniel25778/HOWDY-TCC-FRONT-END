@@ -7,14 +7,13 @@ import {
     browserSessionPersistence,
     setPersistence,
 } from '@firebase/auth';
-import { api } from './services/api';
+import { api as apiFunction } from './services/api';
 
 import firebase from 'firebase/app';
 import 'firebase/compat/database';
 import { setCookie, parseCookies } from 'nookies';
-import { useEffect } from 'react';
-import Router from 'next/router';
 import { auth } from './services/firebaseConfig';
+import Router from 'next/router';
 
 const { 'firebase.token': token } = parseCookies();
 
@@ -31,15 +30,15 @@ export default {
                 path: '/',
             });
 
-            api.defaults.headers['Authorization'] = `${idToken}`;
+            const api = apiFunction();
 
             api.get(`users/isMyUidExternalRegistered`)
                 .then((response) => {
                     const { data } = response;
                     if (data === 'This user does not have an account in our system') {
-                        Router.push('register/isLogged');
+                        Router.push('/register/isLogged');
                     } else {
-                        Router.push('UserPage/Post/1');
+                        Router.push('/UserPage/Post/1');
                     }
                 })
                 .catch(() => console.log('Erro ao se conectar com o servidor'));

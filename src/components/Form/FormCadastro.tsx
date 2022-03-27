@@ -26,10 +26,10 @@ import { GiPadlock } from 'react-icons/gi';
 import { FaBaby } from 'react-icons/fa';
 import { BiTargetLock } from 'react-icons/bi';
 import { useState, useEffect } from 'react';
-import { api } from '../../services/api';
+import { api as apiFunction } from '../../services/api';
 import { initializeApp } from 'firebase/app';
 import { setCookie } from 'nookies';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { formatDateToBackend } from '../../functions/formatDateToBackEnd';
 import { auth } from '../../services/firebaseConfig';
 
@@ -82,6 +82,9 @@ export function FormCadastro(props: FormCadastroProps) {
     const isLogged = getData === 'isLogged';
 
     const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
+
+    const api = apiFunction();
+
     useEffect(() => {
         api.get('targetLanguages')
             .then((response) => setTargetLanguages(response.data))
@@ -120,7 +123,7 @@ export function FormCadastro(props: FormCadastroProps) {
                 title: 'O IDIOMA NATIVO, E O IDIOMA DE INTERESSE DEVEM SER DIFERENTES.',
                 status: 'error',
                 isClosable: true,
-                position: 'top-right',
+                position: 'top',
             });
         }
 
@@ -140,14 +143,14 @@ export function FormCadastro(props: FormCadastroProps) {
                         position: 'top',
                     });
 
-                    Router.push('UserPage/Post/1');
+                    Router.push('/UserPage/Post/1');
                 })
                 .catch((error: any) => {
                     toast({
                         title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
                         status: 'error',
                         isClosable: true,
-                        position: 'top-right',
+                        position: 'top',
                     });
                 });
         }
@@ -158,12 +161,10 @@ export function FormCadastro(props: FormCadastroProps) {
                     const { user } = userCredential;
                     const { accessToken: idToken } = user;
 
-                    setCookie(undefined, 'firebase', idToken, {
+                    setCookie(undefined, 'firebaseAccount', idToken, {
                         maxAge: 60 * 60 * 24 * 30,
                         path: '/',
                     });
-
-                    api.defaults.headers['Authorization'] = `${idToken}`;
 
                     api.post('users', {
                         userName: name,
@@ -178,6 +179,8 @@ export function FormCadastro(props: FormCadastroProps) {
                                 isClosable: true,
                                 position: 'top',
                             });
+
+                            Router.push('/UserPage/Post/1');
                         })
                         .catch((error: any) => {
                             toast({
@@ -223,6 +226,11 @@ export function FormCadastro(props: FormCadastroProps) {
             borderRadius={8}
             flexDir="column"
         >
+            {isLogged && (
+                <Text color="howdyColors.mainBlack" mb="30px" fontSize="1.5rem">
+                    QUASE ACABANDO!
+                </Text>
+            )}
             {!isLogged && (
                 <InputGroup width={400} variant="filled" marginBottom="10px">
                     <InputLeftElement pointerEvents="none">

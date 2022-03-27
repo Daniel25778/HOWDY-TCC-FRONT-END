@@ -1,23 +1,17 @@
-import { Box, Button, Center, Flex, Grid, Icon, IconButton, SimpleGrid } from '@chakra-ui/react';
-import { GetStaticProps } from 'next';
+import { Box, Flex, Icon, SimpleGrid } from '@chakra-ui/react';
 import { Image } from '@chakra-ui/react';
 import { Heading, Text } from '@chakra-ui/react';
-import { Divider } from '@chakra-ui/react';
-import { Header } from '../Header/Header';
 import { BiTargetLock } from 'react-icons/bi';
-import { AiOutlineMessage, AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
-import { MdTranslate } from 'react-icons/md';
 import { FaBaby } from 'react-icons/fa';
 import { FriendshipButton } from '../Button/FriendshipButton';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { WeeklyChart } from '../Chart/WeeklyChart';
 import { MonthlyChart } from '../Chart/MonthlyChart';
 import StarRatings from 'react-star-ratings';
-import { initializeApp } from 'firebase/app';
-import { NavLink } from '../NavLink/UserPage/NavLink';
-import { auth } from '../../services/firebaseConfig';
 import ProfilePhotoAndPatent from '../ProfilePhotoAndPatent/ProfilePhotoAndPatent';
+import { getUserLogged } from '../../functions/getUserLogged';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 export default function UserDataPage(props: any) {
     const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];

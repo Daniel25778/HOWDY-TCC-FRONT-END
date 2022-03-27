@@ -117,7 +117,7 @@ export default function PasswordRecovery(props: any) {
                         />
                     </InputGroup>
                     <Flex marginTop="6" marginBottom="6" justify="right" w="100%">
-                        <Link href="/LoginPage" passHref prefetch>
+                        <Link href="/LoginPage" passHref>
                             <Button
                                 _hover={{ bg: '#B9C2FD' }}
                                 ml="5"

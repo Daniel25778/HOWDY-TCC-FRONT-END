@@ -19,7 +19,7 @@ export function NavLink({ href, title }: NavLinkProps) {
     }
 
     return (
-            <Link prefetch href={href}>
+            <Link href={href}>
                 <ChakraLink w='100%'
                  _hover={{bgColor: '#ffffff33'}}
                  >

@@ -70,7 +70,7 @@ export function Header({ user }: HeaderProps) {
                                 alt="howdy coin"
                             ></Image>
                             <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">
-                                {user.howdyCoin ? user.howdyCoin : 0}
+                                {user?.howdyCoin}
                             </Text>
                             <IconButton
                                 variant="unstyled"
@@ -83,14 +83,14 @@ export function Header({ user }: HeaderProps) {
                             />
                         </Flex>
 
-                        <Flex ml="10%" height="100%" align="center">
+                        <Flex ml="10%" w="45%" height="100%" align="center">
                             <Image
                                 borderRadius="100%"
                                 h="3rem"
                                 w="3rem"
                                 objectFit="cover"
                                 src={
-                                    user.profilePhoto
+                                    user?.profilePhoto
                                         ? user.profilePhoto
                                         : '/images/default-images/default-profile-photo.svg'
                                 }
@@ -102,11 +102,12 @@ export function Header({ user }: HeaderProps) {
                                 fontSize={['sm', '', 'medium', 'x-large']}
                                 color="howdyColors.mainWhite"
                             >
-                                {user.userName}
+                                {user?.userName}
                                 <Menu>
                                     <MenuButton
                                         bg="howdyColors.mainBlue"
                                         fontSize="20px"
+                                        pl="8px"
                                         w="20px"
                                         as={Button}
                                         rightIcon={<IoMdArrowDropdown />}
@@ -118,34 +119,34 @@ export function Header({ user }: HeaderProps) {
                                     </MenuList>
                                 </Menu>
                             </Text>
-                            <Box position="relative">
-                                <IconButton
-                                    position="relative"
-                                    borderRadius="100%"
-                                    aria-label="Open navigation"
-                                    bg="howdyColors.mainWhite"
-                                    color="howdyColors.mainBlack"
-                                    fontWeight="black"
-                                    fontSize="1.5rem"
-                                    transform="rotate(-15deg)"
-                                    icon={<Icon opacity="60%" as={FaRegBell} />}
-                                />
-
-                                <Center
-                                    color="howdyColors.mainWhite"
-                                    position="absolute"
-                                    top="-.5rem"
-                                    right="-.8vw"
-                                    w="30px"
-                                    h="20px"
-                                    borderRadius="35%"
-                                    bg="howdyColors.mainRed"
-                                    fontSize="1rem"
-                                >
-                                    +9
-                                </Center>
-                            </Box>
                         </Flex>
+                        <Box w="10px" position="relative">
+                            <IconButton
+                                position="relative"
+                                borderRadius="100%"
+                                aria-label="Open navigation"
+                                bg="howdyColors.mainWhite"
+                                color="howdyColors.mainBlack"
+                                fontWeight="black"
+                                fontSize="1.5rem"
+                                transform="rotate(-15deg)"
+                                icon={<Icon opacity="60%" as={FaRegBell} />}
+                            />
+
+                            <Center
+                                color="howdyColors.mainWhite"
+                                position="absolute"
+                                top="-.5rem"
+                                right="-.8vw"
+                                w="30px"
+                                h="20px"
+                                borderRadius="35%"
+                                bg="howdyColors.mainRed"
+                                fontSize="1rem"
+                            >
+                                +9
+                            </Center>
+                        </Box>
                     </Flex>
                 </Flex>
 

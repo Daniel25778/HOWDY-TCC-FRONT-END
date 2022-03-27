@@ -13,7 +13,7 @@ import { api as apiFunction } from '../../../services/api';
 
 export default function PostPage() {
     const api = apiFunction();
-    const [userLogged, setUserLogged] = useState<any>([]);
+    const [userLogged, setUserLogged] = useState<any>(null);
 
     useEffect(() => {
         getUserLogged(api).then((res) => {

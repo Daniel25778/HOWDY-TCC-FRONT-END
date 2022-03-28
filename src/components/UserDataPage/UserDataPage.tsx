@@ -12,6 +12,26 @@ import ProfilePhotoAndPatent from '../ProfilePhotoAndPatent/ProfilePhotoAndPaten
 import { getUserLogged } from '../../functions/getUserLogged';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { api as apiFunction } from '../../services/api';
+
+interface UserDataPageProps {
+    user?: any;
+}
+//DADOS RETORNADOS PELO O FIREBASE
+
+// "idUser": 4,
+    // "profilePhoto": null,
+    // "userName": "GabrielTSR",
+    // "description": "Olá! Sou GabrielTSR, português brasileiro é meu idioma nativo, e desejo aprender a me comunicar em inglês americano.",
+    // "backgroundImage": null,
+    // "subscriptionEndDate": null,
+    // "howdyCoin": 0,
+    // "idTargetLanguage": 2,
+    // "targetLanguageName": "Inglês americano",
+    // "targetLanguageTranslatorName": "en",
+    // "idNativeLanguage": 1,
+    // "nativeLanguageName": "Português brasileiro",
+    // "nativeLanguageTranslatorName": "pt"
 
 export default function UserDataPage(props: any) {
     const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];

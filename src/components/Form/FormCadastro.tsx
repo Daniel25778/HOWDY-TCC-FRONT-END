@@ -83,7 +83,7 @@ export function FormCadastro(props: FormCadastroProps) {
 
     const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
 
-    const api = apiFunction();
+    let api = apiFunction();
 
     useEffect(() => {
         api.get('targetLanguages')
@@ -165,6 +165,8 @@ export function FormCadastro(props: FormCadastroProps) {
                         maxAge: 60 * 60 * 24 * 30,
                         path: '/',
                     });
+
+                    api = apiFunction();
 
                     api.post('users', {
                         userName: name,

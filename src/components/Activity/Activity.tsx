@@ -7,7 +7,7 @@ export function Activity(){
         
            <Flex width="50%" mt="5%" flexDir="column" bgColor="howdyColors.mainWhite">
 
-                <Text>HELLO</Text>
+                <Text>HI</Text>
 
            </Flex>
         

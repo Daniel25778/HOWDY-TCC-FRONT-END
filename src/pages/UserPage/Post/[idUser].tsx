@@ -31,6 +31,23 @@ export default function PostPage() {
     //       </>
     //   );
     // }
+
+
+    // "idUser": 4,
+    // "profilePhoto": null,
+    // "userName": "GabrielTSR",
+    // "description": "Olá! Sou GabrielTSR, português brasileiro é meu idioma nativo, e desejo aprender a me comunicar em inglês americano.",
+    // "backgroundImage": null,
+    // "subscriptionEndDate": null,
+    // "howdyCoin": 0,
+    // "idTargetLanguage": 2,
+    // "targetLanguageName": "Inglês americano",
+    // "targetLanguageTranslatorName": "en",
+    // "idNativeLanguage": 1,
+    // "nativeLanguageName": "Português brasileiro",
+    // "nativeLanguageTranslatorName": "pt"
+
+    
     return (
         <>
             <Head>

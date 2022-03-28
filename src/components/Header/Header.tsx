@@ -29,7 +29,7 @@ import { BiLogOut } from 'react-icons/bi';
 import { logOut } from '../../functions/logOut';
 
 interface HeaderProps {
-    user: any;
+    user?: any;
 }
 
 export function Header({ user }: HeaderProps) {

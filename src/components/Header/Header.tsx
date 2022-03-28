@@ -33,7 +33,6 @@ interface HeaderProps {
 }
 
 export function Header({ user }: HeaderProps) {
-    console.log(user);
     return (
         <Flex
             position="fixed"

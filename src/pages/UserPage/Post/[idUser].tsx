@@ -36,6 +36,7 @@ export default function PostPage() {
             <Head>
                 <title>HOWDY - USER PAGE</title>
             </Head>
+                   
             <Header user={userLogged} />
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
                 <UserDataPage></UserDataPage>

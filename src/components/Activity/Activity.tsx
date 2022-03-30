@@ -1,11 +1,18 @@
-import { Flex, Heading, Icon, IconButton, Image, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Icon, IconButton, Image, Text } from "@chakra-ui/react";
 import { BiTargetLock } from "react-icons/bi";
 import { IoMdAdd } from "react-icons/io";
 import StarRatings from "react-star-ratings";
 import ProfilePhotoAndPatent from "../ProfilePhotoAndPatent/ProfilePhotoAndPatent";
 
+interface ActivityProps {
+    name?: string;
+    description?: string;
+    image?: string;
+    rating?: number;
+}
 
-export function Activity(){
+export function Activity(props: ActivityProps) {
+   
     return(
         <>
         
@@ -36,14 +43,14 @@ export function Activity(){
                         filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
                         objectFit="cover"
                         w="100%"
-                        h="20rem"
+                        h="26rem"
                         src="/images/Tests/image 22.png"
                         >
 
                         </Image>
                     </Flex>
 
-                    <Flex  gap="10%" flexDir="column" p="2%"  width="50%" bgColor="howdyColors.mainBlue">
+                    <Flex  gap="7%" flexDir="column" p="2%"  width="50%" bgColor="howdyColors.mainBlue">
                         <Heading color="howdyColors.mainWhite">Present Simple</Heading>
                         <Text color="howdyColors.mainWhite">
                             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt
@@ -56,19 +63,26 @@ export function Activity(){
                                 alt="howdy coin"
                             ></Image>
                             <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">
-                                0
+                               0
                             </Text>
-                            <IconButton
-                                variant="unstyled"
-                                aria-label="Open navigation"
-                                fontSize="2rem"
-                                bg="howdyColors.brownHowdyCoin"
-                                borderRadius="0px 15px 15px 0px"
-                                color="white"
-                                icon={<Icon opacity="2" as={IoMdAdd} fontWeight="black" />}
-                            />
                         </Flex>
-                        <StarRatings rating={2} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
+                        <Flex width="90%" flexDir="column" align="center" justify="center">
+                            <StarRatings starDimension="40px"  rating={2} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
+                            <Button
+                                _hover={{ bg: '#B9C2FD' }}
+                                width={300}
+                                h="70px"
+                                maxWidth={300}
+                                marginTop="6"
+                                bg="#CBD2FF"
+                                color="howdyColors.mainWhite"
+                                type="submit"
+                                borderRadius="50px"
+                            >
+                                <Text fontSize={['sm', 'md', 'xx-large']} >ACESSAR</Text>
+                            </Button>
+                        </Flex>
+                       
                     </Flex>
 
                 </Flex>

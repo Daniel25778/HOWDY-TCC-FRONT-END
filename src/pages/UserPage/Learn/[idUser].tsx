@@ -47,8 +47,10 @@ export default function LearnPage(){
                 <Text mt="5%" color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
                         Atividades desbloqueadas: {/*{userFriends} */}
                 </Text>
-                <Flex align="center" width="100%" mt="1%" flexDir="column">
-                    <Activity></Activity>
+                <Flex  gap={10} align="center" width="100%" mt="1%" flexDir="column">
+                        <Activity></Activity>
+                        <Box bg="howdyColors.divider" h="1px" w="50%" mt="30"  />
+                        <Activity></Activity>
                 </Flex>
             </Box>
 

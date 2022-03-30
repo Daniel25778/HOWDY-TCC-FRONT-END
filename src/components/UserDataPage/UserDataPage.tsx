@@ -33,7 +33,8 @@ interface UserDataPageProps {
     // "nativeLanguageName": "Português brasileiro",
     // "nativeLanguageTranslatorName": "pt"
 
-export default function UserDataPage(props: any) {
+export default function UserDataPage(props: UserDataPageProps) {
+    console.log(props.user);
     const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];
 
     const monthlyXpSeries = [
@@ -57,13 +58,13 @@ export default function UserDataPage(props: any) {
                     src="/images/Tests/backgroundImage.png"
                 />
                 <Flex w="100%" position="relative" bottom="4vw" pl="8vw">
-                    <ProfilePhotoAndPatent whiteBorder={true} size="12.5vw" />
+                    <ProfilePhotoAndPatent user={props.user} whiteBorder={true} size="12.5vw" />
                     <Box color="howdyColors.mainBlack" flex="1" ml="10%" mt="5vw">
                         <Heading wordBreak="break-word" fontSize="4xl">
-                            Helena Pena Rodrigues dos Santos
+                            {props.user.userName}
                         </Heading>
                         <Text mt="20px" fontSize="xl" color="howdyColors.mainBlack">
-                            Olá! Me chamo Helena, XXXXX é meu idioma nativo, e desejo aprender a me comunicar em XXXX.
+                        {props.user.description}
                         </Text>
                     </Box>
                     <FriendshipButton idUser={1} />
@@ -93,7 +94,7 @@ export default function UserDataPage(props: any) {
                             fontWeight={'bold'}
                             fontSize={['sm', 'md', 'xx-large']}
                         >
-                            20000 XP
+                            {props.user.totalXp}
                         </Flex>
                         <Flex gap="5%" ml="6%" justify={'center'} align={'center'}>
                             <Icon color="howdyColors.mainGreen" fontSize="x-large">

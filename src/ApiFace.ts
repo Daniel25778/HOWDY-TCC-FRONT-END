@@ -40,7 +40,7 @@ export default {
             });
 
             const api = apiFunction();
-            api.defaults.headers['Authorization'] = `${idToken}`;
+        
 
             api.get(`users/isMyUidExternalRegistered`)
                 .then((response) => {

@@ -12,6 +12,8 @@ import { api as apiFunction } from '../../../services/api';
 export default function FriendsPage() {
     const api = apiFunction();
     const [userLogged, setUserLogged] = useState<any>(null);
+    
+
 
     useEffect(() => {
         getUserLogged(api).then((res) => {

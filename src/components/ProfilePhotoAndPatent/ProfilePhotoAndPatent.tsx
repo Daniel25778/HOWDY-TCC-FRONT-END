@@ -1,11 +1,14 @@
-import { Center, Flex, Image, Text } from '@chakra-ui/react';
+import { Center, Flex, Image, propNames, Text } from '@chakra-ui/react';
+import { userInfo } from 'os';
 
 interface ProfilePhotoAndPatentProps {
     size: string;
     whiteBorder?: boolean;
+    user?: any;
 }
 
-export default function ProfilePhotoAndPatent({ size, whiteBorder = false }: ProfilePhotoAndPatentProps) {
+export default function ProfilePhotoAndPatent({user, size, whiteBorder = false }: ProfilePhotoAndPatentProps) {
+    
     return (
         <Center position="relative" borderRadius="100%" w={size} h={size} bg="white">
             <Image
@@ -13,7 +16,7 @@ export default function ProfilePhotoAndPatent({ size, whiteBorder = false }: Pro
                 h={whiteBorder ? '95%' : '100%'}
                 borderRadius="100%"
                 objectFit="cover"
-                src="/images/Tests/profilePhoto.png"
+                src={user.profilePhoto}
             />
 
             <Flex role="group" position="absolute" bottom="0" right="0">

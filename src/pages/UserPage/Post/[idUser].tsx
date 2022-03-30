@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
 import { MdTranslate } from 'react-icons/md';
-import useRouter from 'use-react-router';
 import { Header } from '../../../components/Header/Header';
 import Loading from '../../../components/Loading/Loading';
 import { NavLink } from '../../../components/NavLink/UserPage/NavLink';
@@ -12,6 +11,7 @@ import { getUserLogged } from '../../../functions/getUserLogged';
 import { api as apiFunction } from '../../../services/api';
 import { api } from '../../../services/api';
 import {GetStaticPaths,  GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
 
 
 interface PostUserPageProps {
@@ -19,12 +19,12 @@ interface PostUserPageProps {
 }
 
 export default  function PostPage(props: PostUserPageProps) {
-    // const { idUser } = props;
-    const api = apiFunction();
-
-    // api.get(`users/${idUser}`).then(res => {
-    //     console.log(res.data);
-    // })
+    const router = useRouter();
+    if (router.isFallback) {
+        return (
+            <Loading></Loading>
+        )
+      }
 
     const [userLogged, setUserLogged] = useState<any>(null);
 
@@ -33,6 +33,20 @@ export default  function PostPage(props: PostUserPageProps) {
             setUserLogged(res);
         });
     }, []);
+
+    const { idUser } = props;
+    console.log(idUser);
+
+    const api = apiFunction();
+
+    const [user, setUser] = useState<any>('nulo');
+
+    useEffect(() => {
+        api.get(`users/${idUser}`).then(response => {
+            setUser(response.data[0]);
+        });
+    } , []);
+    
 
 
     // const router = useRouter();
@@ -54,7 +68,7 @@ export default  function PostPage(props: PostUserPageProps) {
                    
             <Header user={userLogged} />
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
-                <UserDataPage></UserDataPage>
+                <UserDataPage user={user}/>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                     <NavLink href="/UserPage/Post/1" title="Postagens"></NavLink>
                     <NavLink href="/UserPage/Friends/1" title="Amigos"></NavLink>
@@ -464,7 +478,7 @@ export default  function PostPage(props: PostUserPageProps) {
             </Box>
         </>
     );
-}
+};
 
 export const getStaticPaths: GetStaticPaths = async () => {
     return {

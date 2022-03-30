@@ -169,7 +169,7 @@ export function Header({ user }: HeaderProps) {
 
                     <Center w="50%" justifyContent={'space-between'}>
                         <NavLink href="/RankingPage" title="Ranking" />
-                        <NavLink href="/UserPage/Post/1" title="Postagens" />
+                        <NavLink href="/UserPage/Post/3" title="Postagens" />
                         <NavLink href="/UserPage/Learn/1" title="Aprenda" />
                     </Center>
                 </Flex>

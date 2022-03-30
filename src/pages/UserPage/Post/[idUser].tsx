@@ -10,9 +10,22 @@ import { NavLink } from '../../../components/NavLink/UserPage/NavLink';
 import UserDataPage from '../../../components/UserDataPage/UserDataPage';
 import { getUserLogged } from '../../../functions/getUserLogged';
 import { api as apiFunction } from '../../../services/api';
+import { api } from '../../../services/api';
+import {GetStaticPaths,  GetStaticProps } from 'next';
 
-export default function PostPage() {
+
+interface PostUserPageProps {
+    idUser: string;
+}
+
+export default  function PostPage(props: PostUserPageProps) {
+    // const { idUser } = props;
     const api = apiFunction();
+
+    // api.get(`users/${idUser}`).then(res => {
+    //     console.log(res.data);
+    // })
+
     const [userLogged, setUserLogged] = useState<any>(null);
 
     useEffect(() => {
@@ -20,6 +33,7 @@ export default function PostPage() {
             setUserLogged(res);
         });
     }, []);
+
 
     // const router = useRouter();
     // if (router.isFallback) {
@@ -31,10 +45,6 @@ export default function PostPage() {
     //       </>
     //   );
     // }
-
-
-    
-
 
     return (
         <>
@@ -455,3 +465,20 @@ export default function PostPage() {
         </>
     );
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    return {
+        paths: [],
+        fallback: true, //true, false, 'blocking'
+    };
+};
+
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    const { idUser } = params;
+
+    return {
+        props: { idUser },
+    };
+};
+  

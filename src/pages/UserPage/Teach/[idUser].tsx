@@ -6,7 +6,15 @@ import UserDataPage from "../../../components/UserDataPage/UserDataPage";
 import { getUserLogged } from '../../../functions/getUserLogged';
 import { api as apiFunction } from '../../../services/api';
 
-export default function TeachPage(){
+
+interface PostUserPageProps {
+    idUser: string;
+}
+
+
+export default function TeachPage(props: PostUserPageProps) {
+
+    const { idUser } = props;
     const api = apiFunction();
     const [userLogged, setUserLogged] = useState<any>(null);
 
@@ -32,7 +40,7 @@ export default function TeachPage(){
             </Head>
                 <Header user={userLogged} />
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
-                <UserDataPage></UserDataPage>
+                <UserDataPage user={props.idUser}></UserDataPage>
             </Box>
         </>
     )

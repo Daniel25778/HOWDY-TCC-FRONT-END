@@ -19,37 +19,32 @@ interface PostUserPageProps {
 }
 
 export default  function PostPage(props: PostUserPageProps) {
-    const router = useRouter();
-    if (router.isFallback) {
-        return (
-            <Loading></Loading>
-        )
-      }
-
     const [userLogged, setUserLogged] = useState<any>(null);
-
-    useEffect(() => {
-        getUserLogged(api).then((res) => {
-            setUserLogged(res);
-        });
-    }, []);
+    const router = useRouter();
 
     const { idUser } = props;
-    console.log(idUser);
 
     const api = apiFunction();
 
     const [user, setUser] = useState<any>('nulo');
 
     useEffect(() => {
-        api.get(`users/${idUser}`).then(response => {
-            setUser(response.data[0]);
-        });
-    } , []);
-    
+        if(!router.isFallback) {
+            getUserLogged(api).then((res) => {
+                setUserLogged(res);
+            });
 
-
+            api.get(`users/${idUser}`).then(response => {
+                setUser(response.data[0]);
+            });
+        }
+    } , [router.isFallback]);
     
+    if (router.isFallback) {
+        return (
+            <Loading />
+        )
+      }
     // const router = useRouter();
     // if (router.isFallback) {
     //   return (

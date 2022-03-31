@@ -34,7 +34,6 @@ interface UserDataPageProps {
     // "nativeLanguageTranslatorName": "pt"
 
 export default function UserDataPage(props: UserDataPageProps) {
-    console.log(props.user);
     const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];
 
     const monthlyXpSeries = [

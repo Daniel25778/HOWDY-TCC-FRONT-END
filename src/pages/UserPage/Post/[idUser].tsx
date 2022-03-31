@@ -14,6 +14,7 @@ import {GetStaticPaths,  GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Post from '../../../components/Post/Post';
 import { isUndefined } from 'util';
+import Filter from '../../../components/Filter/Filter';
 
 
 interface PostUserPageProps {

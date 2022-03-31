@@ -12,7 +12,7 @@ export async function getUserLogged(api) {
                 .get(`/users/isMyUidExternalRegistered`)
                 .then((response) => {
                     const { data } = response;
-                    data == null ; // Adiconar depois,logo depois de null && logOut()
+                    data == null ; // Adiconar depois,logo depois de null "&& logOut()"
 
                     if (data === 'This user does not have an account in our system' || data === 'The user was not found') {
                         Router.push('/register/isLogged');

@@ -5,15 +5,12 @@ export default function Posts(){
     return (
         <>
         
+        
         <Header></Header>
 
-        <Post user={"1"}></Post>
-        <Post user={"1"}></Post>
-        <Post user={"1"}></Post>
-        
-        
-        
-        
+            <Post user={"1"}></Post>
+            <Post user={"1"}></Post>
+            <Post user={"1"}></Post>
         
         </>
     )

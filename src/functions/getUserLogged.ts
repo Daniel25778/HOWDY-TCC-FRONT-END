@@ -12,7 +12,7 @@ export async function getUserLogged(api) {
                 .get(`/users/isMyUidExternalRegistered`)
                 .then((response) => {
                     const { data } = response;
-                    data == null ; // Adiconar depois,logo depois de null "&& logOut()"
+                    data == null && logOut(); 
 
                     if (data === 'This user does not have an account in our system' || data === 'The user was not found') {
                         Router.push('/register/isLogged');
@@ -23,10 +23,10 @@ export async function getUserLogged(api) {
                 .catch(() => console.log('Erro ao se conectar com o servidor'));
 
             if (userLogged !== false) {
-                // return userLogged;
+                return userLogged;
             }
         } else {
-            // return logOut();
+            return logOut();
         }
     }
 }

@@ -30,6 +30,8 @@ export default  function PostPage(props: PostUserPageProps) {
     const api = apiFunction();
 
     const [user, setUser] = useState<any>('nulo');
+
+    const [userPosts, setUserPosts] = useState<any>('nulo');
     
 
     useEffect(() => {
@@ -38,18 +40,18 @@ export default  function PostPage(props: PostUserPageProps) {
                 setUserLogged(res);
             });
 
-           
-            
-                api.get(`users/${idUser}`).then(response => {
-                    response.data && setUser(response.data[0]);
-                });
-            
+            //Pegar usuario atraves do id
 
-           
+            api.get(`users/${idUser}`).then(response => {
+                response.data && setUser(response.data[0]);
+            });
 
-            // api.get(`users/${idUser}`).then(response => {
-            //     setUser(response.data[0]);
-            // });
+            //Pegar postagens do usuario atraves do id
+
+            api.get(`posts/user/${idUser}`).then(response => {
+                response.data && setUserPosts(response.data[0]);
+            })
+
 
         }
     } , [router.isFallback]);
@@ -59,16 +61,6 @@ export default  function PostPage(props: PostUserPageProps) {
             <Loading />
         )
       }
-    // const router = useRouter();
-    // if (router.isFallback) {
-    //   return (
-    //       <>
-
-    //           <Loading></Loading>
-
-    //       </>
-    //   );
-    // }
 
     return (
         <>
@@ -85,8 +77,7 @@ export default  function PostPage(props: PostUserPageProps) {
                     <NavLink href="/UserPage/Learn/1" title="Aprendizado"></NavLink>
                     <NavLink href="/UserPage/Teach/1" title="Ensinamentos"></NavLink>
                 </Grid>
-                <Post user={user}></Post>
-                <Post user={user}></Post>
+                <Post userPosts={userPosts} user={user}></Post>
             </Box>
         </>
     );

@@ -24,7 +24,7 @@ export default function Loading() {
             repeatDelay: 1
           }}
           padding="2"
-          bgGradient="linear(to-l, #7928CA, #FF0080)"
+          bgGradient="linear(to-l, #6A7DFF, #303135)"
           width="12"
           height="12"
           display="flex"

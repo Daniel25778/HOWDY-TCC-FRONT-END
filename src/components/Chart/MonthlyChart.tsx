@@ -65,7 +65,6 @@ export function MonthlyChart({ title, series }: ChartProps) {
                 '',
                 '',
                 '',
-                '',
                 'Hoje',
             ],
         },

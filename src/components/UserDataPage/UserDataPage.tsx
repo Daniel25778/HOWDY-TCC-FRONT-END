@@ -33,18 +33,28 @@ interface UserDataPageProps {
     // "nativeLanguageName": "Português brasileiro",
     // "nativeLanguageTranslatorName": "pt"
 
-export default function UserDataPage(props: UserDataPageProps) {
-    const weeklyXpSeries = [{ name: 'weeklyXpSeries', data: [31, 120, 10, 28, 61, 18, 109] }];
+// xpCharts:
+// monthly: (30) [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+// weekly: (7) [0, 0, 0, 0, 0, 0, 0]
+export default function UserDataPage({user}: UserDataPageProps) {
+
+    //const createdAt = new Date(user.createdAt);
+    
+    
+    console.log(user.xpCharts?.monthly)
+    const weeklyXpSeries = [
+
+        { 
+          name: 'weeklyXpSeries', 
+          data: user.xpCharts?.weekly
+        }];
 
     const monthlyXpSeries = [
         {
             name: 'monthlyXpSeries',
-            data: [
-                31, 120, 10, 28, 61, 18, 109, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61,
-                61, 61, 61, 61, 61, 61,
-            ],
-        },
-    ];
+            data: user.xpCharts?.monthly
+
+        }];
 
     return (
         <>
@@ -57,13 +67,13 @@ export default function UserDataPage(props: UserDataPageProps) {
                     src="/images/Tests/backgroundImage.png"
                 />
                 <Flex w="100%" position="relative" bottom="4vw" pl="8vw">
-                    <ProfilePhotoAndPatent user={props.user} whiteBorder={true} size="12.5vw" />
+                    <ProfilePhotoAndPatent user={user} whiteBorder={true} size="12.5vw" />
                     <Box color="howdyColors.mainBlack" flex="1" ml="10%" mt="5vw">
                         <Heading wordBreak="break-word" fontSize="4xl">
-                            {props.user.userName}
+                            {user.userName}
                         </Heading>
                         <Text mt="20px" fontSize="xl" color="howdyColors.mainBlack">
-                        {props.user.description}
+                        {user.description}
                         </Text>
                     </Box>
                     <FriendshipButton idUser={1} />
@@ -93,19 +103,19 @@ export default function UserDataPage(props: UserDataPageProps) {
                             fontWeight={'bold'}
                             fontSize={['sm', 'md', 'xx-large']}
                         >
-                            {props.user.totalXp}
+                            {user.totalXp}
                         </Flex>
                         <Flex gap="5%" ml="6%" justify={'center'} align={'center'}>
                             <Icon color="howdyColors.mainGreen" fontSize="x-large">
                                 <BiTargetLock />
                             </Icon>
-                            <Text color="howdyColors.mainGreen">Inglês</Text>
+                            <Text color="howdyColors.mainGreen">{user.targetLanguageName}</Text>
                         </Flex>
                         <Flex gap="5%" ml="6%" justify={'center'} align={'center'}>
                             <Icon color="howdyColors.mainGreen" fontSize="x-large">
                                 <FaBaby />
                             </Icon>
-                            <Text color="howdyColors.mainGreen">Português</Text>
+                            <Text color="howdyColors.mainGreen">{user.nativeLanguageName}</Text>
                         </Flex>
                     </Flex>
                 </Flex>

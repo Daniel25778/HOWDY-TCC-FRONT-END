@@ -1,17 +1,46 @@
 import { Flex, Icon, IconButton, Image, Text } from "@chakra-ui/react";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { MdTranslate } from "react-icons/md";
+import { isUndefined } from "util";
 
 interface PostProps {
     user?: any;
+    userPosts?: any;
 }
 
 export default function Post(props: PostProps){
+    const createdAt = new Date(props.userPosts?.createdAt).toLocaleDateString('pt-BR',{
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+
+    const havePosts = props.userPosts == undefined;
+
     return(
         <>
-        
-        
-            <Flex width="100%" align={'center'} mt="5%" flexDir="column">
+            {
+            havePosts ?
+                <Flex align="center" flexDir="column" p="5%" width="100%" justify="center">
+                    <Flex borderRadius="15" w="80%" h="10vh" justify="center" align="center">
+                        <Text color="howdyColors.mainBlack"
+                        fontWeight={'bold'}
+                        fontSize={['sm', 'xx-large', 'xx-large']}
+                        >
+                            Ops...Não foi possivel encontrar postagens para exibir
+                        </Text>
+                        
+                    </Flex>
+                    <Image
+                        width={500}
+                        maxWidth={500}
+                        objectFit="cover"
+                        marginBottom={8}
+                        src="/images/illustrations/notHavePosts.png">
+                    </Image>
+                </Flex>
+                :
+                <Flex width="100%" align={'center'} mt="5%" flexDir="column">
                 <Flex mb="1%" gap="3%" width="40%">
                     <Flex>
                         <Image 
@@ -34,11 +63,11 @@ export default function Post(props: PostProps){
                                 </Text>
                                 <Text  color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'md']}>
                                     {' '}
-                                    ● 19 Nov{' '}
+                                    ● {createdAt}
                                 </Text>
                             </Flex>
                             <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
-                                Amet minim mollit non dese Amet minim mollit non deserunt ullamco est sit
+                               {props.userPosts.textContent}
                             </Text>
                             <IconButton 
                                 w="10%"
@@ -60,9 +89,9 @@ export default function Post(props: PostProps){
                 <Flex mb="1%">
                     <Image
                         borderRadius="50"
-                        height="30rem"
+                        height="5rem"
                         objectFit="cover"
-                        src="/images/Tests/Rectangle 23.svg"
+                        src={props.userPosts.imageContent}
                         alt="profilePhoto"
                     ></Image>
                 </Flex>
@@ -108,11 +137,7 @@ export default function Post(props: PostProps){
                     </Flex>
                 </Flex>
             </Flex>
-            
-        
-        
-        
-        
+            }
         </>
     )
 }

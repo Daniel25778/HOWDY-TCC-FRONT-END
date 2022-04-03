@@ -36,8 +36,7 @@ export function MonthlyChart({ title, series }: ChartProps) {
                 color: 'black',
             },
             categories: [
-                'Há 1 mês',
-                '',
+                'Há 29 dias',
                 '',
                 '',
                 '',
@@ -60,6 +59,7 @@ export function MonthlyChart({ title, series }: ChartProps) {
                 '',
                 '',
                 'Há 7 dias',
+                '',
                 '',
                 '',
                 '',

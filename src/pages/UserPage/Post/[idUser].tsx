@@ -72,7 +72,7 @@ export default  function PostPage(props: PostUserPageProps) {
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
                 <UserDataPage user={user}/>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-                    <NavLink href="/UserPage/Post/3" title="Postagens"></NavLink>
+                    <NavLink href="/UserPage/Post/1" title="Postagens"></NavLink>
                     <NavLink href="/UserPage/Friends/1" title="Amigos"></NavLink>
                     <NavLink href="/UserPage/Learn/1" title="Aprendizado"></NavLink>
                     <NavLink href="/UserPage/Teach/1" title="Ensinamentos"></NavLink>

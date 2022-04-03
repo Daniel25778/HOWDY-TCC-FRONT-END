@@ -92,7 +92,7 @@ export default function Post(props: PostProps){
                         height="5rem"
                         objectFit="cover"
                         src={props.userPosts.imageContent}
-                        alt="profilePhoto"
+                        alt="f"
                     ></Image>
                 </Flex>
                 <Flex justify="space-between" align="center" width="20%">

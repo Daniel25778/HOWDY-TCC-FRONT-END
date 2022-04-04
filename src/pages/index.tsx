@@ -25,6 +25,7 @@ import Loading from '../components/Loading/Loading';
 import { useEffect, useState } from 'react';
 import { api as apiFunction } from '../services/api';
 import { useRouter } from 'next/router';
+import Footer from '../components/Footer/Footer';
 
 // install Swiper modules
 SwiperCore.use([Pagination, Navigation, Scrollbar, A11y, Autoplay]);
@@ -174,19 +175,16 @@ const monthlyXpSeries = [
                             Estamos Juntos nessa jornada!
                     </Text>
                 </Flex>
-                <Flex align={'center'} justify={'center'}>
-                    <SimpleGrid alignContent="center" justifyContent={'center'} mr={50} pl="10%" flex="1" gap="4" minChildWidth="300px">
+                <Flex  w="70%" align={'center'} justify={'space-between'}>
+                    <SimpleGrid alignContent="center" justifyContent={'center'} mr={50} pl="10%" flex="1" gap="5%" minChildWidth="100px">
                         <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />
-                    </SimpleGrid>
-                    <Flex flexDir={'column'} w="30%">
+                        <Flex flexDir={'column'} w="30%">
                         <Heading>Somos mais de 1OO BILHÕES de sonhadores.</Heading>
                         <Text>O mundo afora requer que tenhamos cada vez mais conhecimentos sobre outras línguas. Não vá sozinho!</Text>
                     </Flex>
-                   
+                    </SimpleGrid>
                 </Flex>
-                
-               
-               
+                <Footer></Footer>
             </Flex>
         </>
            

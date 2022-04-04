@@ -1,7 +1,7 @@
 import Head from 'next/head';
 // import styles from '../styles/Home.module.css';
 import { FormLogin } from '../components/Form/FormLogin';
-import { Flex, Text,Image, Heading, Button, Grid} from '@chakra-ui/react';
+import { Flex, Text,Image, Heading, Button, Grid, SimpleGrid} from '@chakra-ui/react';
 import PageCadastro from './register/[isLogged]';
 import { HeaderNotLogged } from '../components/Header/HeaderNotLogged';
 // Import Swiper React components
@@ -19,13 +19,45 @@ import Router from 'next/router';
 import SwiperCore, { Pagination, Navigation, Scrollbar, A11y, Autoplay } from 'swiper';
 import { CategoryIcon } from '../components/CategoryIcon/CategoryIcon';
 import { SliderContent } from '../components/SliderContent/SliderContent';
+import { WeeklyChart } from '../components/Chart/WeeklyChart';
+import { MonthlyChart } from '../components/Chart/MonthlyChart';
+import Loading from '../components/Loading/Loading';
+import { useEffect, useState } from 'react';
+import { api as apiFunction } from '../services/api';
+import { useRouter } from 'next/router';
 
 // install Swiper modules
 SwiperCore.use([Pagination, Navigation, Scrollbar, A11y, Autoplay]);
 
+interface HomeProps {
+    user?: any;
+}
 
-export default function Home() {
-   
+export default function Home(props) {
+    const router = useRouter();
+
+    if (router.isFallback) {
+        return (
+            <Loading />
+        )
+    }
+
+    const api = apiFunction();
+    const [user, setUser] = useState<any>('nulo');
+
+    useEffect(() => {
+            api?.get(`users/historic`).then(response => {
+                response.data && setUser(response.data.chartData);
+            });
+    } , []);
+
+const monthlyXpSeries = [
+    {
+        name: 'monthlyXpSeries',
+        data: user
+
+    }];
+    
     return (
         <>
             <HeaderNotLogged/>
@@ -82,7 +114,7 @@ export default function Home() {
                         </Swiper>
                     </Flex>
                 </Flex>
-                <Flex py="2%"  flexDir="column" bgColor="howdyColors.mainBlack" w="100%" justify="center" align="center">
+                <Flex py="2%" flexDir="column" bgColor="howdyColors.mainBlack" w="100%" justify="center" align="center">
                     <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium', '2xl']} >
                         Adquira a assinatura “PRO” e desbloqueie 
                     </Text>
@@ -90,16 +122,25 @@ export default function Home() {
                         INCRÍVEIS FUNCIONALIDADES !
                     </Text>
 
-                    <Flex w="100%">
-                        <Flex  align="center"  flexDir="column" w="50%">
+                    <Flex h={1200} w="100%" >
+                        <Flex align="center"  flexDir="column" w="50%">
                             <Image
                                 w="100%"
                                 h="40%"
                                 src="/images/howdy-images/subscription/free-subs.svg">
                             </Image>
-                            <Text  color="howdyColors.mainBlue" fontWeight="medium" fontSize={['medium', '2xl']} >
+                            <Text mb="5%"  color="howdyColors.mainBlue" fontWeight="medium" fontSize={['medium', '2xl']} >
                                 FREE
                             </Text>
+                            <Grid templateColumns="repeat(1, 7fr)" gap={6}>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>REALIZAR UMA PUBLICAÇÃO POR DIA</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>COMENTAR AS PUBLICAÇÕES</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>CURTIR AS PUBLICAÇÕES</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>ADICIONAR AMIGOS</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>NIVÉL FACIO,MEDIO DESBLOQUEADO</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>GRAFICO DE DESEMPENHO</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>PARTICIPAÇÃO DO RANKINGS</Text></Flex>
+                            </Grid>
                         </Flex> 
 
                         <Flex align="center" flexDir="column" w="50%">
@@ -108,22 +149,44 @@ export default function Home() {
                                 h="40%"
                                 src="/images/howdy-images/subscription/pro-subs.svg">
                             </Image>
-                            <Text  color="howdyColors.master" fontWeight="medium" fontSize={['medium', '2xl']} >
+                            <Text mb="5%" color="howdyColors.master" fontWeight="medium" fontSize={['medium', '2xl']} >
                                 PRO SUBS
                             </Text>
-                            <Grid templateColumns="repeat(1, 7fr)" gap={6}>
-                                <Flex align="center"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainBlue" fontWeight="medium" fontSize={['medium']}>REALIZAR UMA PUBLICAÇÃO POR DIA</Text></Flex>
-                                <Flex><SiVerizon color="#29B995"></SiVerizon><Text>Realizar uma publicação por dia</Text></Flex>
-                                <Flex><SiVerizon color="#29B995"></SiVerizon><Text>Realizar uma publicação por dia</Text></Flex>
-                                <Flex><SiVerizon color="#29B995"></SiVerizon><Text>Realizar uma publicação por dia</Text></Flex>
-                                <Flex><SiVerizon color="#29B995"></SiVerizon><Text>Realizar uma publicação por dia</Text></Flex>
-                                <Flex><SiVerizon color="#29B995"></SiVerizon><Text>Realizar uma publicação por dia</Text></Flex>
-                                <Flex gap="1%"><SiVerizon color="#29B995"></SiVerizon><Text>Realizar uma publicação por dia</Text></Flex>
+                            <Grid templateColumns="repeat(1, 8fr)" gap={6}>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>CHAT COM SEUS AMIGOS</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>PATENTES PERSONALIZADAS</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>PERSONALIZAR FOTO DE FUNDO</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>POSTAGENS ILIMITADAS</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>NIVEL AVANÇADO DESBLOQUEADO</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>COMENTAR AS PUBLICAÇOES</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>CURTIR AS PUBLICAÇOES</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>ADICIONAR AMIGOS</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>GRAFICO DE DESEMPENHO</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>CURTIR AS PPUBLICAÇOES</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>PARTICIPAÇÃO NOS RANKINGS</Text></Flex>
                             </Grid>
                         </Flex>
-
                     </Flex>
+                   
                 </Flex>    
+                <Flex flexDir="column" w="100%" justify="center" align="center">
+                    <Text mt="5%" mb="4%" fontWeight="medium" fontSize={['medium', '4xl']} color="howdyColors.mainBlack">
+                            Estamos Juntos nessa jornada!
+                    </Text>
+                </Flex>
+                <Flex align={'center'} justify={'center'}>
+                    <SimpleGrid alignContent="center" justifyContent={'center'} mr={50} pl="10%" flex="1" gap="4" minChildWidth="300px">
+                        <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />
+                    </SimpleGrid>
+                    <Flex flexDir={'column'} w="30%">
+                        <Heading>Somos mais de 1OO BILHÕES de sonhadores.</Heading>
+                        <Text>O mundo afora requer que tenhamos cada vez mais conhecimentos sobre outras línguas. Não vá sozinho!</Text>
+                    </Flex>
+                   
+                </Flex>
+                
+               
+               
             </Flex>
         </>
            

@@ -16,7 +16,7 @@ export function SliderContent(props: SliderContentProps) {
                 backgroundImage={`/images/illustrations/${props.image}`}
                 alignItems="center"
                 justifyContent="center"
-                h={[400, 400]}
+                h={[600, 600]}
                 backgroundSize="cover"
                 flexDir="column"
                 color="white.800"

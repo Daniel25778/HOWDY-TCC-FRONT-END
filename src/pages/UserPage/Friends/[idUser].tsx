@@ -3,33 +3,58 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { BiTargetLock } from 'react-icons/bi';
 import { Header } from '../../../components/Header/Header';
+import Loading from '../../../components/Loading/Loading';
 import { NavLink } from '../../../components/NavLink/UserPage/NavLink';
 import ProfilePhotoAndPatent from '../../../components/ProfilePhotoAndPatent/ProfilePhotoAndPatent';
 import UserDataPage from '../../../components/UserDataPage/UserDataPage';
 import { getUserLogged } from '../../../functions/getUserLogged';
 import { api as apiFunction } from '../../../services/api';
+import { useRouter } from 'next/router';
 
-export default function FriendsPage() {
-    const api = apiFunction();
+interface FriendPageProps {
+    idUser: string;
+}
+
+export default function FriendsPage(props: FriendPageProps) {
     const [userLogged, setUserLogged] = useState<any>(null);
+    const router = useRouter();
+
+    const { idUser } = props;
+
+    const api = apiFunction();
+
+    const [user, setUser] = useState<any>('nulo');
+
+    const [userPosts, setUserPosts] = useState<any>('nulo');
     
 
-
     useEffect(() => {
-        getUserLogged(api).then((res) => {
-            setUserLogged(res);
-        });
-    }, []);
-    // const router = useRouter();
-    // if (router.isFallback) {
-    //   return (
-    //       <>
+        if(!router.isFallback) {
+            getUserLogged(api).then((res) => {
+                setUserLogged(res);
+            });
 
-    //           <Loading></Loading>
+            //Pegar usuario atraves do id
 
-    //       </>
-    //   );
-    // }
+            api.get(`users/${idUser}`).then(response => {
+                response.data && setUser(response.data[0]);
+            });
+
+            //Pegar postagens do usuario atraves do id
+
+            api.get(`posts/user/${idUser}`).then(response => {
+                response.data && setUserPosts(response.data[0]);
+            })
+
+
+        }
+    } , [router.isFallback]);
+    
+    if (router.isFallback) {
+        return (
+            <Loading />
+        )
+      }
     return (
         <>
             <Head>

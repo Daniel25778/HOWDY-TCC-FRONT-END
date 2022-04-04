@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 interface ChartProps {
     title: string;
-    series;
+    series: any;
 }
 
 export function MonthlyChart({ title, series }: ChartProps) {

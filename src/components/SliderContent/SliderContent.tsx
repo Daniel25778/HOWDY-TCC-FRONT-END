@@ -12,6 +12,7 @@ export function SliderContent(props: SliderContentProps) {
         <Link href="/UserPage/Post/1" passHref>
             <ChakraLink
                 display="flex"
+                borderRadius="25px"
                 backgroundImage={`/images/illustrations/${props.image}`}
                 alignItems="center"
                 justifyContent="center"
@@ -24,7 +25,7 @@ export function SliderContent(props: SliderContentProps) {
                 <Heading color="howdyColors.mainWhite" mb={5} fontSize={['3xl', '5xl']} fontWeight={700}>
                     {props.title}
                 </Heading>
-                <Text fontSize={['medium', '2xl']} fontWeight={700}>
+                <Text color="howdyColors.mainWhite" fontSize={['medium', '2xl']} fontWeight={700}>
                     {props.description}
                 </Text>
             </ChakraLink>

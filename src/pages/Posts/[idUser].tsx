@@ -67,11 +67,11 @@ export default function Posts(props:PostsProps){
             </Flex>
 
         <Flex
-            align="center" flexDir="column" p="5%" width="100%" justify="center" borderRadius="60" h="10vh" bgColor={"gray.200"} w="20%">
+            align="center" flexDir="column" p="5%" width="100%" justify="center" borderRadius="20" h="10vh" bgColor={"gray.200"} w="40%">
             <Stack spacing={3}>
-                <Input width={400} variant="filled" marginBottom="60px" placeholder='Write in English about whatever you want!' borderRadius="100"></Input>
+                <Input width={400} variant="filled" marginBottom="60px" placeholder='Write in English about whatever you want!' borderRadius="100" h="5vh"></Input>
             </Stack>
-            <Button colorScheme='howdyColors.mainBlue'>Postar</Button>
+            <Button bgColor='howdyColors.mainBlue' textColor={'howdyColors.mainWhite'} left="150">Postar</Button>
 
         </Flex>
         

@@ -5,8 +5,13 @@ import { api as apiFunction } from '../../services/api';
 import { useEffect, useState } from "react";
 import { getUserLogged } from "../../functions/getUserLogged";
 import Loading from "../../components/Loading/Loading";
-import { Button, Flex, Input, InputGroup, Stack } from "@chakra-ui/react";
+import { Button, Flex, Image, Input, InputGroup, Menu, MenuButton, Stack } from "@chakra-ui/react";
 import { FaRegStar } from "react-icons/fa";
+import { MdOutlineCategory } from "react-icons/md";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { AiOutlineGlobal } from "react-icons/ai";
+import { BsCamera } from "react-icons/bs";
+import { GiTransparentSlime } from "react-icons/gi";
 interface PostsProps {
     idUser?: string;
 }
@@ -62,18 +67,55 @@ export default function Posts(props:PostsProps){
             <Header user={userLogged}></Header>
 
            
-            <Flex h="30vh">
-            <Post user={user}userPosts={userPosts}></Post>
+           
+
+        <Flex align="center" flexDir="column" p="5%" width="100%" justify="center" borderRadius="20" h="15vh" marginTop={233} marginX="950" bgColor={"gray.200"} w="25%" >
+        <Image
+                                marginRight={505}
+                                marginBottom={-10}
+                                marginY="-50"
+                                marginTop={15}
+                                borderRadius="100%"
+                                h="4rem"
+                                w="4rem"
+                                objectFit="cover"
+                                src={
+                                    user?.profilePhoto
+                                        ? user.profilePhoto
+                                        : '/images/default-images/default-profile-photo.svg'
+                                }
+                                alt="howdy coin"
+                            ></Image>
+            <Stack spacing={3}>
+                <Input width={480} variant="filled" marginInlineStart="90" marginBottom="60px" placeholder='Write in English about whatever you want!' borderRadius="100" h="4vh"></Input>
+            </Stack>
+            
+            
+            <Flex flexDir={"row"} gap="3">
+            <Menu size="100%" colorScheme={"gray"}>
+            <MenuButton>
+                <Button  w="110%"  fontWeight="medium" leftIcon={<MdOutlineCategory color="#29B995" size="1.5rem"/>} justifyContent="space-between" rightIcon={<IoMdArrowDropdown/>}>*Categoria</Button>
+            </MenuButton>
+
+            <MenuButton>
+                <Button  w="95%"  fontWeight="medium" leftIcon={<AiOutlineGlobal color="#A06BD4" size="1.5rem"/>} justifyContent="space-between" rightIcon={<IoMdArrowDropdown/>}>*Visibilidade</Button>
+            </MenuButton>
+
+            <MenuButton>
+            <Button w="80%" fontWeight="medium" leftIcon={<BsCamera color="#2EC4F3" size="1.5rem"/>} justifyContent="space-between" px="5" rightIcon={<IoMdArrowDropdown/>} textAlign="start"></Button>
+            </MenuButton>
+           
+
+            </Menu>
+            <Button bgColor='howdyColors.mainBlue' textColor={'howdyColors.mainWhite'} w="101%">Postar</Button>
             </Flex>
 
-        <Flex
-            align="center" flexDir="column" p="5%" width="100%" justify="center" borderRadius="20" h="10vh" bgColor={"gray.200"} w="40%">
-            <Stack spacing={3}>
-                <Input width={400} variant="filled" marginBottom="60px" placeholder='Write in English about whatever you want!' borderRadius="100" h="5vh"></Input>
-            </Stack>
-            <Button bgColor='howdyColors.mainBlue' textColor={'howdyColors.mainWhite'} left="150">Postar</Button>
 
         </Flex>
+
+        <Flex h="25vh" marginTop={33} marginInlineStart="222">
+            <Post user={user}userPosts={userPosts}></Post>
+            </Flex>
         
         </>
     )

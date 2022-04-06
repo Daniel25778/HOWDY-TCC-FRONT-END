@@ -1,7 +1,7 @@
 import Head from 'next/head';
 // import styles from '../styles/Home.module.css';
 import { FormLogin } from '../components/Form/FormLogin';
-import { Flex, Text,Image, Heading, Button, Grid, SimpleGrid} from '@chakra-ui/react';
+import { Flex, Text,Image, Heading, Button, Grid, SimpleGrid, Box} from '@chakra-ui/react';
 import PageCadastro from './register/[isLogged]';
 import { HeaderNotLogged } from '../components/Header/HeaderNotLogged';
 // Import Swiper React components
@@ -175,15 +175,16 @@ const monthlyXpSeries = [
                             Estamos Juntos nessa jornada!
                     </Text>
                 </Flex>
-                <Flex  w="70%" align={'center'} justify={'space-between'}>
-                    <SimpleGrid alignContent="center" justifyContent={'center'} mr={50} pl="10%" flex="1" gap="5%" minChildWidth="100px">
+                <Flex  w="80%" align={'center'} justify={'space-between'}>
+                    <SimpleGrid  alignContent="center" justifyContent={'center'} flex="1" gap="5%" minChildWidth="100px">
                         <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />
                         <Flex flexDir={'column'} w="30%">
                         <Heading>Somos mais de 1OO BILHÕES de sonhadores.</Heading>
-                        <Text>O mundo afora requer que tenhamos cada vez mais conhecimentos sobre outras línguas. Não vá sozinho!</Text>
+                        <Text w="%">O mundo afora requer que tenhamos cada vez mais conhecimentos sobre outras línguas. Não vá sozinho!</Text>
                     </Flex>
                     </SimpleGrid>
                 </Flex>
+                <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
                 <Footer></Footer>
             </Flex>
         </>

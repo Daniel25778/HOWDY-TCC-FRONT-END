@@ -1,4 +1,5 @@
 import { Flex, Icon, IconButton, Image, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { MdTranslate } from "react-icons/md";
 import { isUndefined } from "util";
@@ -15,7 +16,12 @@ export default function Post(props: PostProps){
         year: 'numeric',
     });
 
-    const havePosts = props.userPosts == undefined;
+    const [havePosts, setHavePosts] = useState<any>([]);
+
+    useEffect(() => {
+        setHavePosts(props.userPosts == undefined);
+    })
+   
 
     return(
         <>
@@ -89,7 +95,8 @@ export default function Post(props: PostProps){
                 <Flex mb="1%">
                     <Image
                         borderRadius="50"
-                        height="5rem"
+                        height="25rem"
+                        w="50rem"
                         objectFit="cover"
                         src={props.userPosts.imageContent}
                         alt="f"

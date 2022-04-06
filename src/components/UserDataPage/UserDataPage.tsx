@@ -64,7 +64,9 @@ export default function UserDataPage({user}: UserDataPageProps) {
                     objectFit="cover"
                     w="100%"
                     maxH="25vw"
-                    src="/images/Tests/backgroundImage.png"
+                    src={user?.backgroundImage
+                    ? user.backgroundImage
+                    : '/images/Tests/backgroundImage.png'}
                 />
                 <Flex w="100%" position="relative" bottom="4vw" pl="8vw">
                     <ProfilePhotoAndPatent user={user} whiteBorder={true} size="12.5vw" />

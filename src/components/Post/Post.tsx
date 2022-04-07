@@ -19,7 +19,7 @@ export default function Post(props: PostProps){
     const [havePosts, setHavePosts] = useState<any>([]);
 
     useEffect(() => {
-        setHavePosts(props.userPosts == undefined);
+        setHavePosts(props.userPosts === undefined);
     })
    
 

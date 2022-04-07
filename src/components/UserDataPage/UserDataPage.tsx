@@ -41,7 +41,7 @@ export default function UserDataPage({user}: UserDataPageProps) {
     //const createdAt = new Date(user.createdAt);
     
     
-    console.log(user.xpCharts?.monthly)
+    
     const weeklyXpSeries = [
 
         { 

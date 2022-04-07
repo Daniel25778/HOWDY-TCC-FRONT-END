@@ -49,7 +49,8 @@ export default  function PostPage(props: PostUserPageProps) {
             //Pegar postagens do usuario atraves do id
 
             api.get(`posts/user/${idUser}`).then(response => {
-                response.data && setUserPosts(response.data[0]);
+                if(response.data?.error) setUserPosts([]);
+                else if(response.data) setUserPosts(response.data);
             })
 
 
@@ -72,12 +73,16 @@ export default  function PostPage(props: PostUserPageProps) {
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
                 <UserDataPage user={user}/>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-                    <NavLink href="/UserPage/Post/1" title="Postagens"></NavLink>
-                    <NavLink href="/UserPage/Friends/1" title="Amigos"></NavLink>
-                    <NavLink href="/UserPage/Learn/1" title="Aprendizado"></NavLink>
-                    <NavLink href="/UserPage/Teach/1" title="Ensinamentos"></NavLink>
+                    <NavLink href={`/UserPage/Post/${idUser}`} title="Postagens"></NavLink>
+                    <NavLink href={`/UserPage/Friends/${idUser}`} title="Amigos"></NavLink>
+                    <NavLink href={`/UserPage/Learn/${idUser}`} title="Aprendizado"></NavLink>
+                    <NavLink href={`/UserPage/Teach/${idUser}`} title="Ensinamentos"></NavLink>
                 </Grid>
-                <Post userPosts={userPosts} user={user}></Post>
+                {
+                    userPosts !== 'nulo' && userPosts.map(post => (
+                        <Post key={post.id} userPosts={post} user={user} />
+                    ))
+                }
             </Box>
         </>
     );

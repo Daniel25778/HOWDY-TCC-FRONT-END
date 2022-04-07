@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Header } from "../../../components/Header/Header";
@@ -7,6 +7,10 @@ import UserDataPage from "../../../components/UserDataPage/UserDataPage";
 import { getUserLogged } from '../../../functions/getUserLogged';
 import { api as apiFunction } from '../../../services/api';
 import { useRouter } from 'next/router';
+import { GetStaticPaths, GetStaticProps } from "next";
+
+import { Activity } from "../../../components/Activity/Activity";
+import { NavLink } from "../../../components/NavLink/UserPage/NavLink";
 
 
 interface TeachUserPageProps {
@@ -25,7 +29,7 @@ export default function TeachPage(props: TeachUserPageProps) {
 
     const [user, setUser] = useState<any>('nulo');
 
-    const [userPosts, setUserPosts] = useState<any>('nulo');
+    const [userActivitys, setUserActivitys] = useState<any>('nulo');
     
 
     useEffect(() => {
@@ -40,11 +44,12 @@ export default function TeachPage(props: TeachUserPageProps) {
                 response.data && setUser(response.data[0]);
             });
 
-            //Pegar postagens do usuario atraves do id
+           //Pegar postagens do usuario atraves do id
 
-            api.get(`posts/user/${idUser}`).then(response => {
-                response.data && setUserPosts(response.data[0]);
-            })
+           api.get(`activities/user?idUserCreator=${idUser}&maxPrice=200&idDifficulty=1&orderBy=rating`).then(response => {
+            if(response.data?.error) setUserActivitys([]);
+            else if(response.data) setUserActivitys(response.data);
+           })
 
 
         }
@@ -62,8 +67,39 @@ export default function TeachPage(props: TeachUserPageProps) {
             </Head>
                 <Header user={userLogged} />
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
-                <UserDataPage user={props.idUser}></UserDataPage>
+                <UserDataPage user={user}></UserDataPage>
+                <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+                    <NavLink href={`/UserPage/Post/${idUser}`} title="Postagens"></NavLink>
+                    <NavLink href={`/UserPage/Friends/${idUser}`} title="Amigos"></NavLink>
+                    <NavLink href={`/UserPage/Learn/${idUser}`} title="Aprendizado"></NavLink>
+                    <NavLink href={`/UserPage/Teach/${idUser}`} title="Ensinamentos"></NavLink>
+                </Grid>
+                <Flex  gap={10} align="center" width="100%" mt="1%" flexDir="column">
+                        {
+                            userActivitys !== 'nulo' && userActivitys.map(unlockedActivity => (
+                                <Activity key={unlockedActivity.id} userUnlockedActivitys={unlockedActivity} user={user}></Activity>
+                            ))
+                        }
+                        
+                        <Box bg="howdyColors.divider" h="1px" w="50%" mt="30"  />
+                </Flex>
             </Box>
         </>
     )
 }            
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    return {
+        paths: [],
+        fallback: true, //true, false, 'blocking'
+    };
+};
+
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    const { idUser } = params;
+
+    return {
+        props: { idUser },
+    };
+};

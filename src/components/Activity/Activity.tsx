@@ -1,4 +1,5 @@
 import { Button, Flex, Heading, Icon, IconButton, Image, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { BiTargetLock } from "react-icons/bi";
 import { IoMdAdd } from "react-icons/io";
 import StarRatings from "react-star-ratings";
@@ -9,19 +10,49 @@ interface ActivityProps {
     description?: string;
     image?: string;
     rating?: number;
+    userUnlockedActivitys: any;
+    user: any;
+
 }
 
 export function Activity(props: ActivityProps) {
-   
+
+    const [haveActivitys, setHaveActivitys] = useState<any>([]);
+
+    useEffect(() => {
+        setHaveActivitys(props.userUnlockedActivitys === undefined);
+    })
+
     return(
         <>
-        
+
+        {
+        haveActivitys ?
+            <Flex align="center" flexDir="column" p="5%" width="100%" justify="center">
+                <Flex borderRadius="15" w="80%" h="10vh" justify="center" align="center">
+                    <Text color="howdyColors.mainBlack"
+                    fontWeight={'bold'}
+                    fontSize={['sm', 'xx-large', 'xx-large']}
+                    >
+                        Ops...Não foi possivel encontrar atividades para exibir
+                    </Text>
+                    
+                </Flex>
+                <Image
+                    width={500}
+                    maxWidth={500}
+                    objectFit="cover"
+                    marginBottom={8}
+                    src="/images/illustrations/notHavePosts.png">
+                </Image>
+            </Flex>
+            :
            <Flex borderRadius="20px"  width="50%" mt="5%"  flexDir="column" bgColor="howdyColors.mainWhite">
 
                 <Flex mb="2%" width="100%">
                     <Flex width="70%" gap="3%" align="center">
-                        <ProfilePhotoAndPatent size='9rem'></ProfilePhotoAndPatent>
-                        <Heading>Roger Guedes</Heading>
+                        <ProfilePhotoAndPatent user={props.user} size='9rem'></ProfilePhotoAndPatent>
+                        <Heading>{props.userUnlockedActivitys.userCreator.userName}</Heading>
                         <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>● 19 Nov</Text>
                     </Flex>
                   
@@ -51,9 +82,9 @@ export function Activity(props: ActivityProps) {
                     </Flex>
 
                     <Flex  gap="7%" flexDir="column" p="2%"  width="50%" bgColor="howdyColors.mainBlue">
-                        <Heading color="howdyColors.mainWhite">Present Simple</Heading>
+                        <Heading color="howdyColors.mainWhite">{props.userUnlockedActivitys.activityTitle}</Heading>
                         <Text color="howdyColors.mainWhite">
-                            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt
+                            {props.userUnlockedActivitys.activityTitle}
                         </Text>
                         
                         <Flex width="20%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
@@ -88,7 +119,7 @@ export function Activity(props: ActivityProps) {
                 </Flex>
 
            </Flex>
-        
+    }
 
         </>
     )

@@ -5,13 +5,14 @@ import { api as apiFunction } from '../../services/api';
 import { useEffect, useState } from "react";
 import { getUserLogged } from "../../functions/getUserLogged";
 import Loading from "../../components/Loading/Loading";
-import { Button, Flex, Image, Input, InputGroup, Menu, MenuButton, Stack } from "@chakra-ui/react";
-import { FaRegStar } from "react-icons/fa";
-import { MdOutlineCategory } from "react-icons/md";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { AiOutlineGlobal } from "react-icons/ai";
-import { BsCamera } from "react-icons/bs";
+import { Button, Flex, Image, Input, InputGroup, List, Menu, MenuButton, Stack, Text } from "@chakra-ui/react";
+import { FaBook, FaRegStar } from "react-icons/fa";
+import { MdOutlineCategory, MdOutlineSportsHandball } from "react-icons/md";
+import { IoIosFitness, IoMdArrowDropdown, IoMdBook } from "react-icons/io";
+import { AiFillStar, AiOutlineGlobal, AiOutlineTag } from "react-icons/ai";
+import { BsCamera, BsHeartFill } from "react-icons/bs";
 import { GiTransparentSlime } from "react-icons/gi";
+import { Scrollbar } from "swiper";
 interface PostsProps {
     idUser?: string;
 }
@@ -66,10 +67,30 @@ export default function Posts(props:PostsProps){
 
             <Header user={userLogged}></Header>
 
+            <Flex align="flex-start" marginInlineStart={85} marginBlockStart={245} flexDir={"column"} h="20%" w="6%" gap="5">
+       		
+            <List size="100%">
+            <Text fontWeight="bold" marginBottom={5} >Categorias</Text>
+            
+                 <Button marginBottom={5} w="100%" bgColor={"white"} textColor="#303135" fontWeight="medium" leftIcon={<AiFillStar color="#FFD700" size="1.5rem"/>} justifyContent="space-between" textAlign="start">Amigos</Button>
+        
+                 <Button marginBottom={5} w="100%" bgColor={"white"} color="#303135" fontWeight="medium" leftIcon={<FaBook color="#FF7628" size="1.5rem"/>} justifyContent="space-between" textAlign="start">Dúvidas</Button>
+
+                 <Button marginBottom={5} w="100%" bgColor={"white"} color="#303135" fontWeight="medium" leftIcon={<BsHeartFill color="#FA383E" size="1.5rem"/>} justifyContent="space-between"  textAlign="start">Popular</Button>
+
+                 <Button marginBottom={5} w="100%" bgColor={"white"} color="#303135" fontWeight="medium" leftIcon={<MdOutlineSportsHandball color="#0AD2AE" size="1.5rem"/>} justifyContent="space-between"  textAlign="start">Esportes</Button>
+            
+            
+               
+            </List>
+            
+        </Flex>
+
+
            
            
 
-        <Flex align="center" flexDir="column" p="5%" width="100%" justify="center" borderRadius="20" h="15vh" marginTop={233} marginX="950" bgColor={"gray.200"} w="25%" >
+        <Flex align="center" flexDir="column" p="5%" width="100%" justify="center" borderRadius="20" h="15vh" marginTop={-299} marginX="950" bgColor={"gray.200"} w="25%" >
         <Image
                                 marginRight={505}
                                 marginBottom={-10}
@@ -107,13 +128,13 @@ export default function Posts(props:PostsProps){
            
 
             </Menu>
-            <Button bgColor='howdyColors.mainBlue' textColor={'howdyColors.mainWhite'} w="101%">Postar</Button>
+            <Button bgColor='howdyColors.mainBlue' textColor={'howdyColors.mainWhite'} w="100%">Postar</Button>
             </Flex>
 
 
         </Flex>
 
-        <Flex h="25vh" marginTop={33} marginInlineStart="222">
+        <Flex h="25vh" marginTop={11} marginInlineStart="222">
             <Post user={user}userPosts={userPosts}></Post>
             </Flex>
         

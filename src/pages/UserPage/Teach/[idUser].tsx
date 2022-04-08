@@ -9,7 +9,7 @@ import { api as apiFunction } from '../../../services/api';
 import { useRouter } from 'next/router';
 import { GetStaticPaths, GetStaticProps } from "next";
 
-import { Activity } from "../../../components/Activity/Activity";
+import { ActivityCreate } from "../../../components/Activity/ActivityCreate";
 import { NavLink } from "../../../components/NavLink/UserPage/NavLink";
 
 
@@ -76,8 +76,8 @@ export default function TeachPage(props: TeachUserPageProps) {
                 </Grid>
                 <Flex  gap={10} align="center" width="100%" mt="1%" flexDir="column">
                         {
-                            userActivitys !== 'nulo' && userActivitys.map(unlockedActivity => (
-                                <Activity key={unlockedActivity.id} userUnlockedActivitys={unlockedActivity} user={user}></Activity>
+                            userActivitys !== 'nulo' && userActivitys?.map(UserActivity => (
+                                <ActivityCreate key={UserActivity.id} userActivitys={UserActivity} user={user}></ActivityCreate>
                             ))
                         }
                         

@@ -163,7 +163,7 @@ const monthlyXpSeries = [
                                 <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>CURTIR AS PUBLICAÇOES</Text></Flex>
                                 <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>ADICIONAR AMIGOS</Text></Flex>
                                 <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>GRAFICO DE DESEMPENHO</Text></Flex>
-                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>CURTIR AS PPUBLICAÇOES</Text></Flex>
+                                <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>CURTIR AS PUBLICAÇOES</Text></Flex>
                                 <Flex align="center" gap="7%"><SiVerizon color="#29B995"></SiVerizon><Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>PARTICIPAÇÃO NOS RANKINGS</Text></Flex>
                             </Grid>
                         </Flex>

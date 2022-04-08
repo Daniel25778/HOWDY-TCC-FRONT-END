@@ -20,7 +20,7 @@ export default function Footer(){
 
                         <ChakraLink color="howdyColors.mainBlack" opacity="60%" fontWeight="medium" fontSize={['sm', 'md', 'x-large']}>
                             <Link href="/AboutUs">
-                               Termos de uso
+                              Termos de uso
                             </Link>
                         </ChakraLink>
 

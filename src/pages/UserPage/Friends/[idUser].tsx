@@ -68,7 +68,7 @@ export default function FriendsPage(props: FriendPageProps) {
                 <title>HOWDY - USER PAGE</title>
             </Head>
             <Header user={userLogged}/>
-            <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
+            <Box pt="7rem" as="main" px="100px"  bgImg="/images/background.png">
                 <UserDataPage user={user}></UserDataPage>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                     <NavLink href={`/UserPage/Post/${idUser}`} title="Postagens"></NavLink>

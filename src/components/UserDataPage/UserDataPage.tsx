@@ -127,7 +127,7 @@ export default function UserDataPage({user}: UserDataPageProps) {
                 </SimpleGrid>
                 <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
             </Box>
-            <Flex flexDir="column">
+            {user?.averageEvaluations !== 0 && <Flex flexDir="column">
                 <Flex flexDir="row">
                     <Text
                         mb="5"
@@ -154,9 +154,9 @@ export default function UserDataPage({user}: UserDataPageProps) {
                     </Flex>
                 </Flex>
                 <Box w="10%"></Box>
-                <StarRatings rating={2} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
-            </Flex>
+                <StarRatings rating={2} starRatedColor="#F2D63F" numberOfStars={user?.averageEvaluations} name="rating" />
             <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
+            </Flex>}
         </>
     );
 }

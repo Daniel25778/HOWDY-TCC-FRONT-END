@@ -45,7 +45,7 @@ export default function LearnPage(props: LearnPageProps) {
 
             api.get(`activities/unlocked/${idUser}`).then(response => {
                 if(response.data?.error) setUserUnlockedActivitys([]);
-                else if(response.data) setUserUnlockedActivitys(response.data);
+                else if(response.data) setUserUnlockedActivitys(response.data.unlockedActivities);
             })
 
 
@@ -72,11 +72,12 @@ export default function LearnPage(props: LearnPageProps) {
                     <NavLink href={`/UserPage/Teach/${idUser}`} title="Ensinamentos"></NavLink>
                 </Grid>
                 <Text mt="5%" color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
-                        Atividades desbloqueadas: {/*{userFriends} */}
+                        Atividades desbloqueadas:
                 </Text>
+                {console.log(userUnlockedActivitys)}
                 <Flex  gap={10} align="center" width="100%" mt="1%" flexDir="column">
                         {
-                            userUnlockedActivitys !== 'nulo' && userUnlockedActivitys.map(unlockedActivity => (
+                            userUnlockedActivitys !== 'nulo' && userUnlockedActivitys?.map(unlockedActivity => (
                                 <Activity key={unlockedActivity.id} userUnlockedActivitys={unlockedActivity} user={unlockedActivity.userCreator}></Activity>
                             ))
                         }

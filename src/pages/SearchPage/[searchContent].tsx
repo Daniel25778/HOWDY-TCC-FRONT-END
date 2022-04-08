@@ -6,6 +6,11 @@ import UserDataPage from '../../components/UserDataPage/UserDataPage';
 import { BiTargetLock } from 'react-icons/bi';
 import ProfilePhotoAndPatent from '../../components/ProfilePhotoAndPatent/ProfilePhotoAndPatent';
 
+interface SearchPageProps {
+    idUser: string;
+}
+
+
 export default function SearchPage() {
     // const router = useRouter();
     // if (router.isFallback) {

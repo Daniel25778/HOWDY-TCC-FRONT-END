@@ -13,8 +13,10 @@ import { AiFillStar, AiOutlineGlobal, AiOutlineTag } from "react-icons/ai";
 import { BsCamera, BsHeartFill } from "react-icons/bs";
 import { GiTransparentSlime } from "react-icons/gi";
 import { Scrollbar } from "swiper";
+import Head from "next/head";
+import { GetStaticPaths, GetStaticProps } from "next";
 interface PostsProps {
-    idUser?: string;
+    idUser: string;
 }
 
 export default function Posts(props:PostsProps){
@@ -23,6 +25,7 @@ export default function Posts(props:PostsProps){
     const router = useRouter();
 
     const { idUser } = props;
+    console.log(idUser);
 
     const api = apiFunction();
 
@@ -46,7 +49,8 @@ export default function Posts(props:PostsProps){
             //Pegar postagens do usuario atraves do id
 
             api.get(`posts/user/${idUser}`).then(response => {
-                response.data && setUserPosts(response.data[0]);
+                if(response.data?.error) setUserPosts([]);
+                else if(response.data) setUserPosts(response.data);
             })
 
 
@@ -63,7 +67,9 @@ export default function Posts(props:PostsProps){
     return (
         <> 
 
-            
+            <Head>
+                <title>HOWDY - POST PAGE</title>
+            </Head>
 
             <Header user={userLogged}></Header>
 
@@ -134,10 +140,31 @@ export default function Posts(props:PostsProps){
 
         </Flex>
 
-        <Flex h="25vh" marginTop={11} marginInlineStart="222">
-            <Post user={user}userPosts={userPosts}></Post>
-            </Flex>
+        <Flex  flexDir="column" h="25vh" marginTop={11} marginInlineStart="222">
+                {
+                    userPosts !== 'nulo' && userPosts.map(post => (
+                        <Post key={post.id} userPosts={post} user={user} />
+                    ))
+                }
+        </Flex>
         
         </>
     )
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    return {
+        paths: [],
+        fallback: true, //true, false, 'blocking'
+    };
+};
+
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    const { idUser } = params;
+
+    return {
+        props: { idUser },
+    };
+};
+

@@ -9,6 +9,8 @@ import {
     IconButton,
     Image,
     Input,
+    InputGroup,
+    InputLeftElement,
     Link as ChakraLink,
     Menu,
     MenuButton,
@@ -27,12 +29,19 @@ import { setCookie } from 'nookies';
 import nookies, { destroyCookie } from 'nookies';
 import { BiLogOut } from 'react-icons/bi';
 import { logOut } from '../../functions/logOut';
+import { GiPadlock } from 'react-icons/gi';
 
 interface HeaderProps {
     user?: any;
 }
 
 export function Header({ user }: HeaderProps) {
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        const value = document.getElementById('search-input')?.value;
+        Router.push(`/SearchPage/${value}`);
+    }
     return (
         <Flex
             position="fixed"
@@ -52,13 +61,36 @@ export function Header({ user }: HeaderProps) {
                             <FiSearch size={30} color="#F2F2F2" />
                         </Box>
 
-                        <Input
+                        {/* <Input
                             bg="howdyColors.main"
                             focusBorderColor="howdyColors.mainWhite"
                             placeholder="Descubra pessoas ou atividades..."
                             borderRadius="0px 100px 100px 0px"
                             width="35vw"
-                        ></Input>
+                        ></Input> */}
+                             <Flex as="form"
+                              onSubmit={handleSearch}
+                             > 
+                                <InputGroup width="35vw" variant="filled">
+                                    <Input
+                                        bg="howdyColors.main"
+                                        name="search"
+                                        placeholder="Descubra pessoas ou atividades..."
+                                        type="text"
+                                        focusBorderColor="howdyColors.mainWhite"
+                                        borderRadius="0px 100px 100px 0px"
+                                        id='search-input'
+                                    />
+                                </InputGroup>
+
+                                <Box marginRight="5">
+                                    <Button type="submit"
+                                    ><FiSearch size={30} color="#F2F2F2" /></Button>
+                                </Box>
+                             </Flex> 
+                        
+                        
+
                     </Flex>
 
                     <Flex align="center" width="45%" height="70">

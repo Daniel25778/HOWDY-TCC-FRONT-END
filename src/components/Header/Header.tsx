@@ -38,7 +38,6 @@ interface HeaderProps {
 export function Header({ user }: HeaderProps) {
     const handleSearch = (e) => {
         e.preventDefault();
-
         const value = document.getElementById('search-input')?.value;
         Router.push(`/SearchPage/${value}`);
     }

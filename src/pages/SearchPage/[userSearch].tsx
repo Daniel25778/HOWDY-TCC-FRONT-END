@@ -5,29 +5,59 @@ import { NavLink } from '../../components/NavLink/Header/NavLink';
 import UserDataPage from '../../components/UserDataPage/UserDataPage';
 import { BiTargetLock } from 'react-icons/bi';
 import ProfilePhotoAndPatent from '../../components/ProfilePhotoAndPatent/ProfilePhotoAndPatent';
+import { useEffect, useState } from 'react';
+import { api as apiFunction } from '../../services/api';
+import { useRouter } from 'next/router';
+import { getUserLogged } from '../../functions/getUserLogged';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import Loading from '../../components/Loading/Loading';
 
 interface SearchPageProps {
-    idUser: string;
+    userSearch?: string;
 }
+export default function SearchPage(props: SearchPageProps) {
+    const [userLogged, setUserLogged] = useState<any>(null);
+    const router = useRouter();
+
+    const { userSearch } = props;
+    
+
+    const api = apiFunction();
+
+    const [search, setSearch] = useState<any>('nulo');
 
 
-export default function SearchPage() {
-    // const router = useRouter();
-    // if (router.isFallback) {
-    //   return (
-    //       <>
+    useEffect(() => {
+        if(!router.isFallback) {
+            getUserLogged(api).then((res) => {
+                setUserLogged(res);
+            });
 
-    //           <Loading></Loading>
+         
+            //Pegar resultado de pesquisa atraves do nome do usuario
 
-    //       </>
-    //   );
-    // }
+            api.get(`users/getByName/${userSearch}`).then((res) => {
+                setSearch(res.data);
+                console.log(search);
+            });
+
+
+        }
+    } , [router.isFallback]);
+    
+    if (router.isFallback) {
+        return (
+            <Loading />
+        )
+      }
+
+
     return (
         <>
             <Head>
-                <title>HOWDY - Resultados de XXXX</title>
+                <title>HOWDY - Resultados de `${userLogged}`</title>
             </Head>
-            <Header />
+            <Header user={userLogged}/>
             <Flex
                 flexDir="column"
                 alignItems="center"
@@ -40,7 +70,7 @@ export default function SearchPage() {
                 <Center fontWeight="bold" fontSize="2.5rem" color="howdyColors.mainBlack" flexDir="column" w="100%">
                     <Heading fontSize="2.5rem">Resultados da pesquisa:</Heading>
                     <Text display="flex">
-                        " <Text color="howdyColors.mainBlue">XXXXXX</Text> "
+                        " <Text color="howdyColors.mainBlue">`${userLogged}`</Text> "
                     </Text>
                 </Center>
                 <Table mt="10" minW="800px" w="70%" bg="howdyColors.mainWhite">
@@ -55,7 +85,7 @@ export default function SearchPage() {
                         <Tr>
                             <Box mt="70px" pl="50px">
                                 <Flex>
-                                    <ProfilePhotoAndPatent size="8rem" />
+                                    {/* <ProfilePhotoAndPatent user={search} size="8rem" /> */}
                                     <Box ml="30px">
                                         <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
                                             XXXXXX Wilson
@@ -149,7 +179,7 @@ export default function SearchPage() {
                         <Tr>
                             <Box mt="70px" pl="50px">
                                 <Flex>
-                                    <ProfilePhotoAndPatent size="8rem" />
+                                    <ProfilePhotoAndPatent  size="8rem" />
                                     <Box ml="30px">
                                         <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
                                             XXXXXX Wilson
@@ -304,3 +334,24 @@ export default function SearchPage() {
         </>
     );
 }
+
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    const { userSearch }  = params;
+
+    return {
+        props: { userSearch },
+    };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    
+    return {
+        paths: [],
+        fallback: true, //true, false, 'blocking'
+    };
+};
+
+
+
+  

@@ -9,55 +9,46 @@ import { useEffect, useState } from 'react';
 import { api as apiFunction } from '../../services/api';
 import { useRouter } from 'next/router';
 import { getUserLogged } from '../../functions/getUserLogged';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import Loading from '../../components/Loading/Loading';
 
 interface SearchPageProps {
     userSearch?: string;
 }
-export default function SearchPage(props: SearchPageProps) {
+
+export default function SearchPage({ userSearch }: SearchPageProps) {
     const [userLogged, setUserLogged] = useState<any>(null);
     const router = useRouter();
-
-    const { userSearch } = props;
-    
 
     const api = apiFunction();
 
     const [search, setSearch] = useState<any>('nulo');
 
+    // useEffect(() => {
+    //     if (!router.isFallback) {
+    //         getUserLogged(api).then((res) => {
+    //             setUserLogged(res);
+    //         });
 
-    useEffect(() => {
-        if(!router.isFallback) {
-            getUserLogged(api).then((res) => {
-                setUserLogged(res);
-            });
+    //         //Pegar resultado de pesquisa atraves do nome do usuario
 
-         
-            //Pegar resultado de pesquisa atraves do nome do usuario
+    //         api.get(`users/getByName/${userSearch}`).then((res) => {
+    //             setSearch(res.data);
+    //             console.log(search);
+    //         });
+    //     }
+    // }, [router.isFallback]);
 
-            api.get(`users/getByName/${userSearch}`).then((res) => {
-                setSearch(res.data);
-                console.log(search);
-            });
-
-
-        }
-    } , [router.isFallback]);
-    
     if (router.isFallback) {
-        return (
-            <Loading />
-        )
-      }
-
+        return <Loading />;
+    }
 
     return (
         <>
             <Head>
-                <title>HOWDY - Resultados de `${userLogged}`</title>
+                <title>HOWDY - Resultados de {userSearch}</title>
             </Head>
-            <Header user={userLogged}/>
+            <Header user={userLogged} />
             <Flex
                 flexDir="column"
                 alignItems="center"
@@ -70,7 +61,7 @@ export default function SearchPage(props: SearchPageProps) {
                 <Center fontWeight="bold" fontSize="2.5rem" color="howdyColors.mainBlack" flexDir="column" w="100%">
                     <Heading fontSize="2.5rem">Resultados da pesquisa:</Heading>
                     <Text display="flex">
-                        " <Text color="howdyColors.mainBlue">`${userLogged}`</Text> "
+                        " <Text color="howdyColors.mainBlue">{userSearch}</Text> "
                     </Text>
                 </Center>
                 <Table mt="10" minW="800px" w="70%" bg="howdyColors.mainWhite">
@@ -132,7 +123,7 @@ export default function SearchPage(props: SearchPageProps) {
                         <Tr>
                             <Box mt="70px" pl="50px">
                                 <Flex>
-                                    <ProfilePhotoAndPatent size="8rem" />
+                                    {/* <ProfilePhotoAndPatent size="8rem" /> */}
                                     <Box ml="30px">
                                         <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
                                             XXXXXX Wilson
@@ -179,7 +170,7 @@ export default function SearchPage(props: SearchPageProps) {
                         <Tr>
                             <Box mt="70px" pl="50px">
                                 <Flex>
-                                    <ProfilePhotoAndPatent  size="8rem" />
+                                    {/* <ProfilePhotoAndPatent size="8rem" /> */}
                                     <Box ml="30px">
                                         <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
                                             XXXXXX Wilson
@@ -226,7 +217,7 @@ export default function SearchPage(props: SearchPageProps) {
                         <Tr>
                             <Box mt="70px" pl="50px">
                                 <Flex>
-                                    <ProfilePhotoAndPatent size="8rem" />
+                                    {/* <ProfilePhotoAndPatent size="8rem" /> */}
                                     <Box ml="30px">
                                         <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
                                             XXXXXX Wilson
@@ -273,7 +264,7 @@ export default function SearchPage(props: SearchPageProps) {
                         <Tr>
                             <Box mt="70px" pl="50px">
                                 <Flex>
-                                    <ProfilePhotoAndPatent size="8rem" />
+                                    {/* <ProfilePhotoAndPatent size="8rem" /> */}
                                     <Box ml="30px">
                                         <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
                                             XXXXXX Wilson
@@ -335,23 +326,10 @@ export default function SearchPage(props: SearchPageProps) {
     );
 }
 
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const { userSearch }  = params;
+export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
+    const { userSearch } = params;
 
     return {
         props: { userSearch },
     };
 };
-
-export const getStaticPaths: GetStaticPaths = async () => {
-    
-    return {
-        paths: [],
-        fallback: true, //true, false, 'blocking'
-    };
-};
-
-
-
-  

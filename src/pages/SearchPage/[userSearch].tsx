@@ -24,20 +24,20 @@ export default function SearchPage({ userSearch }: SearchPageProps) {
 
     const [search, setSearch] = useState<any>('nulo');
 
-    // useEffect(() => {
-    //     if (!router.isFallback) {
-    //         getUserLogged(api).then((res) => {
-    //             setUserLogged(res);
-    //         });
+    useEffect(() => {
+        if (!router.isFallback) {
+            getUserLogged(api).then((res) => {
+                setUserLogged(res);
+            });
 
-    //         //Pegar resultado de pesquisa atraves do nome do usuario
+            //Pegar resultado de pesquisa atraves do nome do usuario
 
-    //         api.get(`users/getByName/${userSearch}`).then((res) => {
-    //             setSearch(res.data);
-    //             console.log(search);
-    //         });
-    //     }
-    // }, [router.isFallback]);
+            api.get(`users/getByName/${userSearch}`).then((res) => {
+                setSearch(res.data);
+                console.log(res.data);
+            });
+        }
+    }, [router.isFallback]);
 
     if (router.isFallback) {
         return <Loading />;

@@ -11,6 +11,9 @@ import { useRouter } from 'next/router';
 import { getUserLogged } from '../../functions/getUserLogged';
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import Loading from '../../components/Loading/Loading';
+import ResultSearchPeople from '../../components/ResultSearch/ResultSearchPeople';
+import { Activity } from '../../components/Activity/Activity';
+import { ResultActivity } from '../../components/Activity/ResultActivity';
 
 interface SearchPageProps {
     userSearch?: string;
@@ -23,6 +26,7 @@ export default function SearchPage({ userSearch }: SearchPageProps) {
     const api = apiFunction();
 
     const [search, setSearch] = useState<any>('nulo');
+    const [searchActivities, setSearchActivities] = useState<any>('nulo');
 
     useEffect(() => {
         if (!router.isFallback) {
@@ -32,9 +36,16 @@ export default function SearchPage({ userSearch }: SearchPageProps) {
 
             //Pegar resultado de pesquisa atraves do nome do usuario
 
-            api.get(`users/getByName/${userSearch}`).then((res) => {
-                setSearch(res.data);
-                console.log(res.data);
+            api.get(`users/getByName/${userSearch}`).then((response) => {
+                if (response.data?.error) setSearch([]);
+                else if (response.data) setSearch(response.data);
+            });
+
+            //Pegar resultado de pesquisa atraves do nome da atividade
+
+            api.get(`activities/name/${userSearch}`).then((response) => {
+                if (response.data?.error) setSearchActivities([]);
+                else if (response.data) setSearchActivities(response.data);
             });
         }
     }, [router.isFallback]);
@@ -58,6 +69,7 @@ export default function SearchPage({ userSearch }: SearchPageProps) {
                 bg="red"
                 bgImg="/images/background.png"
             >
+                {console.log(searchActivities)}
                 <Center fontWeight="bold" fontSize="2.5rem" color="howdyColors.mainBlack" flexDir="column" w="100%">
                     <Heading fontSize="2.5rem">Resultados da pesquisa:</Heading>
                     <Text display="flex">
@@ -73,241 +85,8 @@ export default function SearchPage({ userSearch }: SearchPageProps) {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Box mt="70px" pl="50px">
-                                <Flex>
-                                    {/* <ProfilePhotoAndPatent user={search} size="8rem" /> */}
-                                    <Box ml="30px">
-                                        <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
-                                            XXXXXX Wilson
-                                        </Text>
-                                        <Flex mt="2rem">
-                                            <Center>
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Inglês
-                                                </Text>
-                                            </Center>
-                                            <Center ml="10">
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Português
-                                                </Text>
-                                            </Center>
-                                        </Flex>
-                                    </Box>
-                                </Flex>
-                                <Box mt="15px" h="1px" w="70%" borderRadius="50px" bg="howdyColors.divider"></Box>
-                            </Box>
-                        </Tr>
-                        <Tr>
-                            <Box mt="70px" pl="50px">
-                                <Flex>
-                                    {/* <ProfilePhotoAndPatent size="8rem" /> */}
-                                    <Box ml="30px">
-                                        <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
-                                            XXXXXX Wilson
-                                        </Text>
-                                        <Flex mt="2rem">
-                                            <Center>
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Inglês
-                                                </Text>
-                                            </Center>
-                                            <Center ml="10">
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Português
-                                                </Text>
-                                            </Center>
-                                        </Flex>
-                                    </Box>
-                                </Flex>
-                                <Box mt="15px" h="1px" w="70%" borderRadius="50px" bg="howdyColors.divider"></Box>
-                            </Box>
-                        </Tr>
-                        <Tr>
-                            <Box mt="70px" pl="50px">
-                                <Flex>
-                                    {/* <ProfilePhotoAndPatent size="8rem" /> */}
-                                    <Box ml="30px">
-                                        <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
-                                            XXXXXX Wilson
-                                        </Text>
-                                        <Flex mt="2rem">
-                                            <Center>
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Inglês
-                                                </Text>
-                                            </Center>
-                                            <Center ml="10">
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Português
-                                                </Text>
-                                            </Center>
-                                        </Flex>
-                                    </Box>
-                                </Flex>
-                                <Box mt="15px" h="1px" w="70%" borderRadius="50px" bg="howdyColors.divider"></Box>
-                            </Box>
-                        </Tr>
-                        <Tr>
-                            <Box mt="70px" pl="50px">
-                                <Flex>
-                                    {/* <ProfilePhotoAndPatent size="8rem" /> */}
-                                    <Box ml="30px">
-                                        <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
-                                            XXXXXX Wilson
-                                        </Text>
-                                        <Flex mt="2rem">
-                                            <Center>
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Inglês
-                                                </Text>
-                                            </Center>
-                                            <Center ml="10">
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Português
-                                                </Text>
-                                            </Center>
-                                        </Flex>
-                                    </Box>
-                                </Flex>
-                                <Box mt="15px" h="1px" w="70%" borderRadius="50px" bg="howdyColors.divider"></Box>
-                            </Box>
-                        </Tr>
-                        <Tr>
-                            <Box mt="70px" pl="50px">
-                                <Flex>
-                                    {/* <ProfilePhotoAndPatent size="8rem" /> */}
-                                    <Box ml="30px">
-                                        <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">
-                                            XXXXXX Wilson
-                                        </Text>
-                                        <Flex mt="2rem">
-                                            <Center>
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Inglês
-                                                </Text>
-                                            </Center>
-                                            <Center ml="10">
-                                                <Icon
-                                                    as={BiTargetLock}
-                                                    color="howdyColors.mainBlue"
-                                                    w="30px"
-                                                    h="30px"
-                                                />
-                                                <Text
-                                                    ml="5"
-                                                    fontWeight="thin"
-                                                    fontSize="xl"
-                                                    color="howdyColors.mainBlue"
-                                                >
-                                                    Português
-                                                </Text>
-                                            </Center>
-                                        </Flex>
-                                    </Box>
-                                </Flex>
-                                <Box mt="15px" h="1px" w="70%" borderRadius="50px" bg="howdyColors.divider"></Box>
-                            </Box>
-                        </Tr>
+                        {search !== 'nulo' &&
+                            search.map((search) => <ResultSearchPeople key={search.id} ResultSearchPeople={search} />)}
                     </Tbody>
                 </Table>
 
@@ -319,7 +98,15 @@ export default function SearchPage({ userSearch }: SearchPageProps) {
                             </Th>
                         </Tr>
                     </Thead>
-                    <Tbody></Tbody>
+                    <Tbody>
+                        <Flex>
+                            {searchActivities !== 'nulo' &&
+                                searchActivities.map((search) => (
+                                    <ResultActivity key={search.id} user={search} ResultActivities={search} />
+                            ))}
+                        </Flex>
+                        
+                    </Tbody>
                 </Table>
             </Flex>
         </>

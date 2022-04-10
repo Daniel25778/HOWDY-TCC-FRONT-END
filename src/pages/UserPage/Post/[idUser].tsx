@@ -32,6 +32,9 @@ export default  function PostPage(props: PostUserPageProps) {
     const [user, setUser] = useState<any>('nulo');
 
     const [userPosts, setUserPosts] = useState<any>('nulo');
+
+
+    
     
 
     useEffect(() => {

@@ -56,20 +56,14 @@ export function Header({ user }: HeaderProps) {
             <Flex position="relative" top="0" left="0" w="100%" pl="15%" pr="7%" h="5rem" align="center">
                 <Flex width="100%" align="center" px="10" justify="space-between">
                     <Flex mr="auto">
-                        <Box marginRight="5">
-                            <FiSearch size={30} color="#F2F2F2" />
-                        </Box>
-
-                        {/* <Input
-                            bg="howdyColors.main"
-                            focusBorderColor="howdyColors.mainWhite"
-                            placeholder="Descubra pessoas ou atividades..."
-                            borderRadius="0px 100px 100px 0px"
-                            width="35vw"
-                        ></Input> */}
                              <Flex as="form"
                               onSubmit={handleSearch}
                              > 
+                              <Box marginRight="5">
+                                    <Button type="submit"
+                                    variant={'ghost'}
+                                    ><FiSearch size={30} color="#F2F2F2" /></Button>
+                                </Box>
                                 <InputGroup width="35vw" variant="filled">
                                     <Input
                                         bg="howdyColors.main"
@@ -79,13 +73,11 @@ export function Header({ user }: HeaderProps) {
                                         focusBorderColor="howdyColors.mainWhite"
                                         borderRadius="0px 100px 100px 0px"
                                         id='search-input'
+                                        variant={'filled'}
                                     />
                                 </InputGroup>
 
-                                <Box marginRight="5">
-                                    <Button type="submit"
-                                    ><FiSearch size={30} color="#F2F2F2" /></Button>
-                                </Box>
+                               
                              </Flex> 
                         
                         

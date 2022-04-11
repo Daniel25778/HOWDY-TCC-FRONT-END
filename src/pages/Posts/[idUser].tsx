@@ -31,8 +31,13 @@ export default function Posts(props:PostsProps){
 
     const [user, setUser] = useState<any>('nulo');
 
-    const [userPosts, setUserPosts] = useState<any>('nulo');
-    
+    const [posts, setPosts] = useState<any>('nulo');
+
+    const [category, setCategory] = useState<any>('nulo');
+
+    const [categoryList, setCategoryList] = useState<any>('nulo');
+
+
 
     useEffect(() => {
         if(!router.isFallback) {
@@ -40,30 +45,42 @@ export default function Posts(props:PostsProps){
                 setUserLogged(res);
             });
 
+            //Pegar categorias das postagens 
+
+            api.get(`postCategories`).then(response => {
+                if(response.data?.error) setCategoryList([]);
+                else if(response.data) setCategoryList(response.data);
+            }).catch(err=> console.log('err aaa'))
+
+            console.log(categoryList)
+           
+
             //Pegar usuario atraves do id
 
-            api.get(`users/${idUser}`).then(response => {
-                response.data && setUser(response.data[0]);
-            });
+            // api.get(`users/${idUser}`).then(response => {
+            //     response.data && setUser(response.data[0]);
+            // });
 
-            //Pegar postagens do usuario atraves do id
+            //Pegar postagens atraves da categoria
 
-            api.get(`posts/user/${idUser}`).then(response => {
-                if(response.data?.error) setUserPosts([]);
-                else if(response.data) setUserPosts(response.data);
+            api.get(`posts/category/${category}`).then(response => {
+                if(response.status === undefined) return setPosts([]);
+                if(response.data?.error) setPosts([]);
+                else if(response.data) setPosts(response.data);
+                
+            }).catch(err => {
+                if (err.response.status === 404) {
+                    setPosts([]);
+                }
             })
-
-
         }
-    } , [router.isFallback]);
+    } , [category, router.isFallback]);
     
     if (router.isFallback) {
         return (
             <Loading />
         )
       }
-
-
     return (
         <> 
 
@@ -77,17 +94,16 @@ export default function Posts(props:PostsProps){
        		
             <List size="100%">
             <Text fontWeight="bold" marginBottom={5} >Categorias</Text>
-            
-                 <Button marginBottom={5} w="100%" bgColor={"white"} textColor="#303135" fontWeight="medium" leftIcon={<AiFillStar color="#FFD700" size="1.5rem"/>} justifyContent="space-between" textAlign="start">Amigos</Button>
+                 {
+                     categoryList !== 'nulo' && categoryList.map(categoryList => (
+                        <Button onClick={()=>setCategory(categoryList.idPostCategory)}  marginBottom={5} w="100%" bgColor={"white"}  textColor="#303135" fontWeight="medium"  justifyContent="space-between" textAlign="start"><Image src={categoryList.iconImage}></Image>{categoryList.categoryName}</Button>
+                    ))
+                }
+                
+                 <Button onClick={()=>setCategory("myFriends")}  marginBottom={5} w="100%" bgColor={"white"} textColor="#303135" fontWeight="medium" justifyContent="space-between" textAlign="start">Amigos</Button>
         
-                 <Button marginBottom={5} w="100%" bgColor={"white"} color="#303135" fontWeight="medium" leftIcon={<FaBook color="#FF7628" size="1.5rem"/>} justifyContent="space-between" textAlign="start">Dúvidas</Button>
+                 <Button onClick={()=>setCategory("popular")} marginBottom={5} w="100%" bgColor={"white"} color="#303135" fontWeight="medium"  justifyContent="space-between"  textAlign="start">Popular</Button>
 
-                 <Button marginBottom={5} w="100%" bgColor={"white"} color="#303135" fontWeight="medium" leftIcon={<BsHeartFill color="#FA383E" size="1.5rem"/>} justifyContent="space-between"  textAlign="start">Popular</Button>
-
-                 <Button marginBottom={5} w="100%" bgColor={"white"} color="#303135" fontWeight="medium" leftIcon={<MdOutlineSportsHandball color="#0AD2AE" size="1.5rem"/>} justifyContent="space-between"  textAlign="start">Esportes</Button>
-            
-            
-               
             </List>
             
         </Flex>
@@ -142,10 +158,12 @@ export default function Posts(props:PostsProps){
 
         <Flex  flexDir="column" h="25vh" marginTop={11} marginInlineStart="222">
                 {
-                    userPosts !== 'nulo' && userPosts.map(post => (
-                        <Post key={post.id} userPosts={post} user={user} />
+                    posts !== 'nulo' && posts.map(post => (
+                        <Post key={post.id} userPosts={post} user={post.userCreator} />
+                        
                     ))
                 }
+               {console.log(posts) }
         </Flex>
         
         </>

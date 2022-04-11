@@ -97,7 +97,7 @@ export default function Post(props: PostProps){
                         borderRadius="50"
                         height="25rem"
                         w="50rem"
-                        objectFit="cover"
+                     
                         src={props.userPosts.imageContent}
                         alt="f"
                     ></Image>

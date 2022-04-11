@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import Post from '../../../components/Post/Post';
 import { isUndefined } from 'util';
 import Filter from '../../../components/Filter/Filter';
+import Comments from '../../../components/Comments/Comments';
 
 
 interface PostUserPageProps {
@@ -86,6 +87,7 @@ export default  function PostPage(props: PostUserPageProps) {
                         <Post key={post.id} userPosts={post} user={user} />
                     ))
                 }
+                <Comments></Comments>
             </Box>
         </>
     );

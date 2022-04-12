@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { MdTranslate } from "react-icons/md";
 import { isUndefined } from "util";
+import Router from 'next/router';
+import { GetStaticPaths, GetStaticProps } from "next";
 
 interface PostProps {
     user?: any;
@@ -20,8 +22,15 @@ export default function Post(props: PostProps){
 
     useEffect(() => {
         setHavePosts(props.userPosts == undefined);
+       
     })
    
+    
+    // function handleAccessToProfile(){
+     
+    //     Router.push(`/UserPage/Post/${props.user[0].idUser}`)
+    // }
+    
 
     return(
         <>
@@ -55,6 +64,8 @@ export default function Post(props: PostProps){
                             objectFit="cover"
                             src={props.user.profilePhoto}
                             alt="profilePhoto"
+                            _hover={{cursor: 'pointer'}}
+                            // onClick={handleAccessToProfile}
                         ></Image>
                     </Flex>
                     <Flex>
@@ -148,3 +159,19 @@ export default function Post(props: PostProps){
         </>
     )
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    return {
+        paths: [],
+        fallback: true, //true, false, 'blocking'
+    };
+};
+
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    const { idUser } = params;
+
+    return {
+        props: { idUser },
+    };
+};

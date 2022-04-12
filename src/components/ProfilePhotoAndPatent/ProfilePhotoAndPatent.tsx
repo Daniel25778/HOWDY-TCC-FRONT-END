@@ -1,4 +1,5 @@
 import { Center, Flex, Image, propNames, Text } from '@chakra-ui/react';
+import Router from 'next/router';
 
 interface ProfilePhotoAndPatentProps {
     size: string;
@@ -7,6 +8,9 @@ interface ProfilePhotoAndPatentProps {
 }
 
 export default function ProfilePhotoAndPatent({user, size, whiteBorder = false }: ProfilePhotoAndPatentProps) {
+    function handleAccessToProfile(){
+        Router.push(`UserDataPage/Post/${user.id}'`)
+    }
     return (
         <Center position="relative" borderRadius="100%" w={size} h={size} bg="white">
             <Image
@@ -17,6 +21,8 @@ export default function ProfilePhotoAndPatent({user, size, whiteBorder = false }
                 src={ user?.profilePhoto
                     ? user.profilePhoto
                     : '/images/default-images/default-profile-photo.svg'}
+                onClick={() => {handleAccessToProfile}}
+                _hover={{cursor: 'pointer'}}    
             />
 
             <Flex role="group" position="absolute" bottom="0" right="0">

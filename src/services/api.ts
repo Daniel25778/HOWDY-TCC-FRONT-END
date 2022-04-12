@@ -15,6 +15,7 @@ export function api() {
 
         api.interceptors.response.use(
             (response) => {
+                console.log('resposta interceptor', response)
                 return response;
             },
             (error) => {
@@ -41,6 +42,10 @@ export function api() {
 
                     default:
                         break;
+                }
+
+                if (error.response.status === 404) {
+                    return {data: []}
                 }
 
                 return error;

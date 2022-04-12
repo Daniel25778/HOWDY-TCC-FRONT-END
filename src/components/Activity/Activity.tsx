@@ -32,7 +32,7 @@ export function Activity(props: ActivityProps) {
                 <Flex borderRadius="15" w="80%" h="10vh" justify="center" align="center">
                     <Text color="howdyColors.mainBlack"
                     fontWeight={'bold'}
-                    fontSize={['sm', 'xx-large', 'xx-large']}
+                    fontSize ={['sm', 'xx-large', 'xx-large']}
                     >
                         Ops...Não foi possivel encontrar atividades para exibir
                     </Text>

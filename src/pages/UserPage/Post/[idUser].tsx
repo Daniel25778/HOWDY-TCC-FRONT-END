@@ -87,7 +87,7 @@ export default  function PostPage(props: PostUserPageProps) {
                         <Post key={post.id} userPosts={post} user={user} />
                     ))
                 }
-                <Comments></Comments>
+                {/* <Comments></Comments> */}
             </Box>
         </>
     );

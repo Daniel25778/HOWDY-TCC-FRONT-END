@@ -25,6 +25,8 @@ export default function Posts(props:PostsProps){
     const [userLogged, setUserLogged] = useState<any>(null);
     const router = useRouter();
 
+    let idPost = 0;
+
     const { idUser } = props;
    
 
@@ -40,6 +42,8 @@ export default function Posts(props:PostsProps){
 
     const [userFriends, setUserFriends] = useState<any>('nulo');
 
+    const [postComments, setPostComments] = useState<any>('nulo');
+
 
 
     useEffect(() => {
@@ -47,6 +51,8 @@ export default function Posts(props:PostsProps){
             getUserLogged(api).then((res) => {
                 setUserLogged(res);
             });
+
+
 
             //Pegar categorias das postagens 
 
@@ -76,6 +82,17 @@ export default function Posts(props:PostsProps){
             api.get(`posts/category/${category}`).then(response => {
                 setPosts(response.data);
             }).catch(err => console.log(err))
+
+            //Pegar comentarios atraves do id da postagem
+            console.log('posts', posts)
+            posts !== 'nulo' && posts.map(post => {
+                console.log('before')
+                api.get(`posts/commentary/${post.idPost}`).then(response => {
+                    console.log('response', response.data)
+                setPostComments(response.data);
+                }).catch(err => console.log(err))
+            })
+           
         }
     } , [category, router.isFallback]);
     
@@ -181,9 +198,12 @@ export default function Posts(props:PostsProps){
 
                     <Flex width="100%" flexDir="column">
                             {
-                                posts !== 'nulo' && posts.map(post => (
-                                    <Post key={post.id} userPosts={post} user={post.userCreator} />
-                                ))
+                                posts !== 'nulo' && posts.map(post => {
+                                    idPost = post.idPost;
+                                    console.log(idPost)
+                                    return (
+                                    <Post key={post.id} commentary={postComments} userPosts={post} user={post.userCreator} />)
+                                })
                             }
                     </Flex>
                 </Flex>

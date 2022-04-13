@@ -1,34 +1,31 @@
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
 
-export default function Comments(){
+interface CommentsProps {
+    commentary?: any;
+}
+
+export default function Comments(props: CommentsProps){
     return(
-        <>
-        <Flex>
-           <Flex align="start" flexDir="column" p="5%" width="100%" justify="center" borderRadius="20" h="15vh" >
-           <Image
-                                marginRight={505}
-                                borderRadius="100%"
-                                w="4rem"
-                                src={ '/images/default-images/default-profile-photo.svg'
-                                }
-                            ></Image>
-                            <Flex position={"sticky"}>
-                            <p>Jenny Wilson</p>
-                            <p>27/02/2022</p>
-                            </Flex>
-           
-           </Flex>
-        </Flex>
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        <>  
+            <Flex mb="3%" w="100%" >
+                <Flex p="2%" borderRadius="12" width="100%" bgColor="#fff">
+                    <Flex align="center"  width="30%" >
+                        <Image borderRadius="100%" width="40%" maxWidth={500}  src={ '/images/default-images/default-profile-photo.svg'}/>
+                        <Flex ml="10%" align="center" h="50%" justifyContent="space-between" flexDir="column">
+                            <Text fontWeight="medium" fontSize={['sm', 'md', 'md']}>{props.commentary.commenter.userName}</Text>
+                            <Text fontSize={['sm', 'md', 'md']}>{props.commentary.postCommentaryCreatedAt}</Text>
+                        </Flex>
+                    </Flex>
+
+                    <Box mr="7" ml="7" bg="howdyColors.divider" h="100%" w="1px"  />
+
+                     <Flex w="90%" align="center" justifyContent="center">
+                         <Text fontSize={['sm', 'md', 'large']}>{props.commentary.textCommentary}</Text>
+                     </Flex>
+                </Flex>
+            </Flex>
+            
         </>
     );
 }

@@ -116,8 +116,7 @@ export function FormCadastro(props: FormCadastroProps) {
         nativeLanguage = JSON.parse(nativeLanguage);
 
         const birthDateFormatted = formatDateToBackend(birthDate);
-        console.log(birthDateFormatted);
-
+       
         if (nativeLanguage.idNativeLanguage === targetLanguage.idTargetLanguage) {
             return toast({
                 title: 'O IDIOMA NATIVO, E O IDIOMA DE INTERESSE DEVEM SER DIFERENTES.',

@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import Post from '../../../components/Post/Post';
 import { isUndefined } from 'util';
 import Filter from '../../../components/Filter/Filter';
-import Comments from '../../../components/Comments/Comments';
+import Commentary from '../../../components/Comments/Comments';
 
 
 interface PostUserPageProps {

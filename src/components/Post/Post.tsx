@@ -1,38 +1,49 @@
-import { Button, Flex, Icon, IconButton, Image, Input, InputGroup, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, IconButton, Image, Input, InputGroup, Text,useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { MdTranslate } from "react-icons/md";
 import { isUndefined } from "util";
 import Router from 'next/router';
 import { GetStaticPaths, GetStaticProps } from "next";
-import Comments from "../Comments/Comments";
+import Commentary from "../Comments/Comments";
+import { useRouter } from 'next/router';
+import { api as apiFunction } from '../../services/api';
+import { GiDigitalTrace, GiGuitarHead } from "react-icons/gi";
+import { createInflateRaw } from "zlib";
+import { Manipulation } from "swiper";
+import { FaLongArrowAltDown } from "react-icons/fa";
 
 interface PostProps {
     user?: any;
     userPosts?: any;
     commentary?: any;
+    userLogged?: any;
 }
 
-export default function Post(props: PostProps){
-    const createdAt = new Date(props.userPosts?.createdAt).toLocaleDateString('pt-BR',{
+export default function Post({user, userPosts, commentary, userLogged}: PostProps){
+    const createdAt = new Date(userPosts?.createdAt).toLocaleDateString('pt-BR',{
         day: '2-digit',
         month: 'short',
         year: 'numeric',
     });
 
     const [havePosts, setHavePosts] = useState<any>([]);
+    const [comments, setComments] = useState<any>([]);
     const [display, setDisplay] = useState<any>("none");
     const [colorIconMessage, setColorIconMessage] = useState<any>("howdyColors.mainBlue");
     const [colorBoxMessage, setColorBoxMessage] = useState<any>("#fff");
-
+    const router = useRouter();
+    let api = apiFunction();
+    const toast = useToast();
 
     useEffect(() => {
-        setHavePosts(props.userPosts == undefined);
-    })
+        setHavePosts(userPosts == undefined);
+        setComments(commentary);
+    }, [])
    
     
     function handleAccessToProfile(){
-        Router.push(`/UserPage/Post/${props.userPosts.userCreator.idUser}`)
+        Router.push(`/UserPage/Post/${userPosts.userCreator.idUser}`)
     }
 
     function handleAccessComments(){
@@ -41,6 +52,41 @@ export default function Post(props: PostProps){
        setColorIconMessage("howdyColors.mainWhite");
        setColorBoxMessage("howdyColors.mainBlue");
        console.log(display)
+    }
+
+    function handleSendComment(){
+        const commentary = document.getElementById('comment-input')?.value;
+        console.log(commentary)
+        if(!router.isFallback){
+                api.post(`posts/commentary/${userPosts.idPost}`, {
+                   textContent: commentary,
+                })
+                .then((response: any) => {
+                    setComments([...comments, {
+                        commenter: userLogged,
+                        idPostCommentary: response.data.insertId,
+                        textCommentary: commentary,
+                        postCommentaryCreatedAt: new Date().toISOString().slice(0, 10),
+                        postCommentaryEditedAt: null 
+                    }]);
+                    
+                    toast({
+                        title: 'COMENTÁRIO CRIADO COM SUCESSO!',
+                        status: 'success',
+                        isClosable: true,
+                        position: 'top',
+                    });
+
+                    // Router.push('/UserPage/Post/1');
+                }).catch((error: any) => {
+                    toast({
+                        title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                        status: 'error',
+                        isClosable: true,
+                        position: 'top',
+                    });
+                });
+        }
     }
     
 
@@ -56,7 +102,7 @@ export default function Post(props: PostProps){
                         >
                             Ops...Não foi possivel encontrar postagens para exibir
                         </Text>
-                        
+                        {console.log(userPosts)}
                     </Flex>
                     <Image
                         width={500}
@@ -74,7 +120,7 @@ export default function Post(props: PostProps){
                             borderRadius="100%"
                             height="5rem"
                             objectFit="cover"
-                            src={props.user.profilePhoto}
+                            src={user.profilePhoto}
                             alt="profilePhoto"
                             _hover={{cursor: 'pointer'}}
                             onClick={handleAccessToProfile}
@@ -88,7 +134,7 @@ export default function Post(props: PostProps){
                                     fontWeight={'bold'}
                                     fontSize={['sm', 'md', 'x-large']}
                                 >
-                                    {props.user.userName}
+                                    {user.userName}
                                 </Text>
                                 <Text  color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'md']}>
                                     {' '}
@@ -96,7 +142,7 @@ export default function Post(props: PostProps){
                                 </Text>
                             </Flex>
                             <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
-                               {props.userPosts.textContent}
+                               {userPosts.textContent}
                             </Text>
                             <IconButton 
                                 w="10%"
@@ -121,7 +167,7 @@ export default function Post(props: PostProps){
                         height="25rem"
                         w="50rem"
                      
-                        src={props.userPosts.imageContent}
+                        src={userPosts.imageContent}
                         alt="f"
                     ></Image>
                 </Flex>
@@ -144,7 +190,7 @@ export default function Post(props: PostProps){
                             }
                         ></IconButton>
                         <Text  color={colorIconMessage} fontSize={['sm', 'md', 'md']}>
-                            {props.userPosts.totalComments}
+                            {userPosts.totalComments}
                         </Text>
                     </Flex>
 
@@ -168,11 +214,11 @@ export default function Post(props: PostProps){
                         </Text>
                     </Flex>
                 </Flex>
-                {console.log(props.commentary)}
+                {console.log(commentary)}
                 <Flex p="1%" flexDir="column" borderRadius="12" bgColor="howdyColors.mainBlue" display={display} justifyContent="center" width="50%">
-                    {
-                        props.commentary !== 'nulo' && props.commentary?.map(commentary => ( 
-                            <Comments key={commentary.id} commentary={commentary}></Comments> 
+                    {   
+                        comments !== 'nulo' && comments?.map(commentary => (
+                            <Commentary key={commentary.idPostCommentary} commentary={commentary}/> 
                         ))
                     } 
                     <Flex gap="2%" align="center" w="100%">
@@ -187,10 +233,10 @@ export default function Post(props: PostProps){
                                 type="text"
                                 focusBorderColor="howdyColors.mainWhite"
                                 borderRadius="100px"
-                                id='search-input'
+                                id='comment-input' 
                             />
                         </InputGroup>
-                        <Button bgColor='#fff3' textColor={'howdyColors.mainWhite'} w="20%">Postar</Button>
+                        <Button onClick={handleSendComment}  bgColor='#fff3' textColor={'howdyColors.mainWhite'} w="20%">Comentar</Button>
                     </Flex>
                     
                 </Flex>

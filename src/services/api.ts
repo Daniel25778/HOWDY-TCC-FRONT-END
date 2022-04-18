@@ -15,7 +15,6 @@ export function api() {
 
         api.interceptors.response.use(
             (response) => {
-                console.log('resposta interceptor', response)
                 return response;
             },
             (error) => {
@@ -24,7 +23,7 @@ export function api() {
                         logOut();
                         break;
 
-                    case 'Firebase ID token has expired. Get a fresh ID token from your client app and try again (auth/id-token-expired). See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.':
+                    case 'Firebase ID token has \"kid\" claim which does not correspond to a known public key. Most likely the ID token is expired, so get a fresh token from your client app and try again.':
                         logOut();
                         break;
 
@@ -44,7 +43,7 @@ export function api() {
                         break;
                 }
 
-                if (error.response.status === 404) {
+                if (error?.response?.status === 404) {
                     return {data: []}
                 }
 

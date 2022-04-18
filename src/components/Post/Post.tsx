@@ -8,26 +8,23 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Commentary from "../Comments/Comments";
 import { useRouter } from 'next/router';
 import { api as apiFunction } from '../../services/api';
-import { GiDigitalTrace, GiGuitarHead } from "react-icons/gi";
 import { createInflateRaw } from "zlib";
 import { Manipulation } from "swiper";
 import { FaLongArrowAltDown } from "react-icons/fa";
 
 interface PostProps {
-    user?: any;
-    userPosts?: any;
-    commentary?: any;
-    userLogged?: any;
+    userCreator: any;
+    post: any;
+    userLogged: any;
 }
 
-export default function Post({user, userPosts, commentary, userLogged}: PostProps){
-    const createdAt = new Date(userPosts?.createdAt).toLocaleDateString('pt-BR',{
+export default function Post({userCreator, post, userLogged}: PostProps){
+    const createdAt = new Date(post.createdAt).toLocaleDateString('pt-BR',{
         day: '2-digit',
         month: 'short',
         year: 'numeric',
     });
 
-    const [havePosts, setHavePosts] = useState<any>([]);
     const [comments, setComments] = useState<any>([]);
     const [display, setDisplay] = useState<any>("none");
     const [colorIconMessage, setColorIconMessage] = useState<any>("howdyColors.mainBlue");
@@ -35,30 +32,29 @@ export default function Post({user, userPosts, commentary, userLogged}: PostProp
     const router = useRouter();
     let api = apiFunction();
     const toast = useToast();
-
-    useEffect(() => {
-        setHavePosts(userPosts == undefined);
-        setComments(commentary);
-    }, [])
    
     
     function handleAccessToProfile(){
-        Router.push(`/UserPage/Post/${userPosts.userCreator.idUser}`)
+        Router.push(`/UserPage/Post/${post.userCreator.idUser}`)
     }
 
     function handleAccessComments(){
-       
        setDisplay("flex")
        setColorIconMessage("howdyColors.mainWhite");
        setColorBoxMessage("howdyColors.mainBlue");
-       console.log(display)
+       
+       //Pegar comentarios atraves do id da postagem
+       
+           api.get(`posts/commentary/${post.idPost}`).then(response => {
+               setComments(response.data)
+          }).catch(err => console.log(err))
     }
 
     function handleSendComment(){
         const commentary = document.getElementById('comment-input')?.value;
         console.log(commentary)
         if(!router.isFallback){
-                api.post(`posts/commentary/${userPosts.idPost}`, {
+                api.post(`posts/commentary/${post.idPost}`, {
                    textContent: commentary,
                 })
                 .then((response: any) => {
@@ -92,27 +88,6 @@ export default function Post({user, userPosts, commentary, userLogged}: PostProp
 
     return(
         <>
-            { 
-            havePosts ?
-                <Flex align="center" flexDir="column" p="5%" width="100%" justify="center">
-                    <Flex borderRadius="15" w="80%" h="10vh" justify="center" align="center">
-                        <Text color="howdyColors.mainBlack"
-                        fontWeight={'bold'}
-                        fontSize={['sm', 'xx-large', 'xx-large']}
-                        >
-                            Ops...Não foi possivel encontrar postagens para exibir
-                        </Text>
-                        {console.log(userPosts)}
-                    </Flex>
-                    <Image
-                        width={500}
-                        maxWidth={500}
-                        objectFit="cover"
-                        marginBottom={8}
-                        src="/images/illustrations/notHavePosts.png">
-                    </Image>
-                </Flex>
-                :
                 <Flex  width="100%" align={'center'} mt="5%" flexDir="column">
                 <Flex mb="1%" gap="3%" width="40%">
                     <Flex>
@@ -120,7 +95,7 @@ export default function Post({user, userPosts, commentary, userLogged}: PostProp
                             borderRadius="100%"
                             height="5rem"
                             objectFit="cover"
-                            src={user.profilePhoto}
+                            src={userCreator?.profilePhoto}
                             alt="profilePhoto"
                             _hover={{cursor: 'pointer'}}
                             onClick={handleAccessToProfile}
@@ -134,7 +109,7 @@ export default function Post({user, userPosts, commentary, userLogged}: PostProp
                                     fontWeight={'bold'}
                                     fontSize={['sm', 'md', 'x-large']}
                                 >
-                                    {user.userName}
+                                    {userCreator.userName}
                                 </Text>
                                 <Text  color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'md']}>
                                     {' '}
@@ -142,7 +117,7 @@ export default function Post({user, userPosts, commentary, userLogged}: PostProp
                                 </Text>
                             </Flex>
                             <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
-                               {userPosts.textContent}
+                               {post.textContent}
                             </Text>
                             <IconButton 
                                 w="10%"
@@ -167,7 +142,7 @@ export default function Post({user, userPosts, commentary, userLogged}: PostProp
                         height="25rem"
                         w="50rem"
                      
-                        src={userPosts.imageContent}
+                        src={post.imageContent}
                         alt="f"
                     ></Image>
                 </Flex>
@@ -190,7 +165,7 @@ export default function Post({user, userPosts, commentary, userLogged}: PostProp
                             }
                         ></IconButton>
                         <Text  color={colorIconMessage} fontSize={['sm', 'md', 'md']}>
-                            {userPosts.totalComments}
+                            {post.totalComments}
                         </Text>
                     </Flex>
 
@@ -214,15 +189,14 @@ export default function Post({user, userPosts, commentary, userLogged}: PostProp
                         </Text>
                     </Flex>
                 </Flex>
-                {console.log(commentary)}
                 <Flex p="1%" flexDir="column" borderRadius="12" bgColor="howdyColors.mainBlue" display={display} justifyContent="center" width="50%">
                     {   
-                        comments !== 'nulo' && comments?.map(commentary => (
+                        comments.length > 0 && comments?.map(commentary => (
                             <Commentary key={commentary.idPostCommentary} commentary={commentary}/> 
                         ))
                     } 
                     <Flex gap="2%" align="center" w="100%">
-                        <Image borderRadius="100%" width="10%" maxWidth={500}  src={ '/images/default-images/default-profile-photo.svg'}/>
+                        <Image borderRadius="100%" width="10%" maxWidth={500}  src={userLogged?.profilePhoto}/>
                         <InputGroup h="60%" width="70%" variant="unstyled">
                             <Input
                                 fontSize={['sm', 'md', 'x-large']}
@@ -241,7 +215,6 @@ export default function Post({user, userPosts, commentary, userLogged}: PostProp
                     
                 </Flex>
             </Flex>
-            }
         </>
     )
 }

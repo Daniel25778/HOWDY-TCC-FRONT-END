@@ -44,18 +44,18 @@ export default function Home(props) {
     }
 
     const api = apiFunction();
-    const [user, setUser] = useState<any>('nulo');
+    const [registerChart, setRegisterChart] = useState<any>(null);
 
     useEffect(() => {
             api?.get(`users/historic`).then(response => {
-                response.data && setUser(response.data.chartData);
+                response.data && setRegisterChart(response.data.chartData);
             });
     } , []);
 
 const monthlyXpSeries = [
     {
         name: 'monthlyXpSeries',
-        data: user
+        data: registerChart
 
     }];
     
@@ -177,7 +177,9 @@ const monthlyXpSeries = [
                 </Flex>
                 <Flex  w="80%" align={'center'} justify={'space-between'}>
                     <SimpleGrid  alignContent="center" justifyContent={'center'} flex="1" gap="5%" minChildWidth="100px">
+                        {registerChart && 
                         <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />
+                        }
                         <Flex flexDir={'column'} w="30%">
                         <Heading>Somos mais de 1OO BILHÕES de sonhadores.</Heading>
                         <Text w="%">O mundo afora requer que tenhamos cada vez mais conhecimentos sobre outras línguas. Não vá sozinho!</Text>
@@ -185,7 +187,7 @@ const monthlyXpSeries = [
                     </SimpleGrid>
                 </Flex>
                 <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
-                <Footer></Footer>
+                <Footer/>
             </Flex>
         </>
            

@@ -1,10 +1,10 @@
-import { Header } from "../../components/Header/Header";
-import Post from "../../components/Post/Post";
+import { Header } from "../components/Header/Header";
+import Post from "../components/Post/Post";
 import { useRouter } from 'next/router';
-import { api as apiFunction } from '../../services/api';
+import { api as apiFunction } from '../services/api';
 import { useEffect, useState } from "react";
-import { getUserLogged } from "../../functions/getUserLogged";
-import Loading from "../../components/Loading/Loading";
+import { getUserLogged } from "../functions/getUserLogged";
+import Loading from "../components/Loading/Loading";
 import { Box, Button, Flex, Image, Input, InputGroup, List, Menu, MenuButton, Stack, Text } from "@chakra-ui/react";
 import { FaBook, FaRegStar } from "react-icons/fa";
 import { MdOutlineCategory, MdOutlineSportsHandball } from "react-icons/md";
@@ -15,7 +15,7 @@ import { GiTransparentSlime } from "react-icons/gi";
 import { Scrollbar } from "swiper";
 import Head from "next/head";
 import { GetStaticPaths, GetStaticProps } from "next";
-import ListFriends from "../../components/Friends/ListFriends";
+import ListFriends from "../components/Friends/ListFriends";
 interface PostsProps {
     idUser: string;
 }
@@ -24,71 +24,40 @@ export default function Posts(props:PostsProps){
 
     const [userLogged, setUserLogged] = useState<any>(null);
     const router = useRouter();
-
-    let idPost = 0;
-
-    const { idUser } = props;
    
 
     const api = apiFunction();
 
-    const [user, setUser] = useState<any>('nulo');
+    const [posts, setPosts] = useState<any>([]);
 
-    const [posts, setPosts] = useState<any>('nulo');
+    const [category, setCategory] = useState<any>('popular');
 
-    const [category, setCategory] = useState<any>('nulo');
+    const [categoryList, setCategoryList] = useState<any[]>([]);
 
-    const [categoryList, setCategoryList] = useState<any>('nulo');
-
-    const [userFriends, setUserFriends] = useState<any>('nulo');
-
-    const [postComments, setPostComments] = useState<any>('nulo');
+    const [friendsList, setFriendsList] = useState<any[]>([]);
 
     useEffect(() => {
         if(!router.isFallback) {
             getUserLogged(api).then((res) => {
                 setUserLogged(res);
+
+                //Pegar amigos do usuario atraves do id
+                api.get(`friendships/getAllSomeoneFriends/${res.idUser}`).then(response => {
+                    if(response.data?.error) setFriendsList([]);
+                    else if(response.data) setFriendsList(response.data);
+                })
             });
 
-
-
-            //Pegar categorias das postagens 
-
+            //Pegar categorias das postagens
             api.get(`postCategories`).then(response => {
-                if(response.data?.error) setCategoryList([]);
-                else if(response.data) setCategoryList(response.data);
-            }).catch(err=> console.log('err aaa'))
-
-
-           //Pegar amigos do usuario atraves do id
-
-           api.get(`friendships/getAllSomeoneFriends/${idUser}`).then(response => {
-                console.log(response.data)
-                if(response.data?.error) setUserFriends([]);
-                else if(response.data) setUserFriends(response.data);
-                console.log(response.data)
-            })
-
-            //Pegar usuario atraves do id
-
-            // api.get(`users/${idUser}`).then(response => {
-            //     response.data && setUser(response.data[0]);
-            // });
+                setCategoryList(response.data);
+            }).catch(err=> console.log('err category list'))
 
             //Pegar postagens atraves da categoria
-
-            console.log({category})
 
             api.get(`posts/category/${category}`).then(response => {
                 setPosts(response.data);
             }).catch(err => console.log(err))
-
-            //Pegar comentarios atraves do id da postagem
-            posts !== 'nulo' && posts.map(post => {
-                api.get(`posts/commentary/${post.idPost}`).then(response => {
-                setPostComments(response.data);
-                }).catch(err => console.log(err))
-            })
            
         }
     } , [category, router.isFallback]);
@@ -134,17 +103,17 @@ export default function Posts(props:PostsProps){
                                 Popular
                          </Button>
                         {
-                            categoryList !== 'nulo' && categoryList.map(categoryList => (
+                            categoryList.length > 0 && categoryList.map(category => (
                                 <Button 
                                 justifyContent={"space-between"} 
                                 width="90%" 
-                                onClick={()=>setCategory(categoryList.idPostCategory)}
+                                onClick={()=>setCategory(category.idPostCategory)}
                                 marginBottom={5}  
                                 bgColor={"white"}  
                                 textColor="#303135" 
                                 fontWeight="medium" >
-                                    <Image width="25%" src={categoryList.iconImage}/>
-                                    <Text  fontSize ={['sm', 'x-small', 'medium']}>{categoryList.categoryName}</Text>
+                                    <Image width="25%" src={category.iconImage}/>
+                                    <Text  fontSize ={['sm', 'x-small', 'medium']}>{category.categoryName}</Text>
                                 </Button>
                             ))
                         }
@@ -195,10 +164,9 @@ export default function Posts(props:PostsProps){
 
                     <Flex width="100%" flexDir="column">
                             {
-                                posts !== 'nulo' && posts.map(post => {
-                                    // idPost = post.idPost;
+                                posts.length > 0 && posts.map(post => {
                                     return (
-                                    <Post userLogged={userLogged} key={post.id} commentary={postComments} userPosts={post} user={post.userCreator} />)
+                                    <Post userLogged={userLogged} key={post.id} post={post} userCreator={post.userCreator} />)
                                 })
                             }
                     </Flex>
@@ -211,7 +179,7 @@ export default function Posts(props:PostsProps){
                         
                     </Flex>
                     {
-                            userFriends !== 'nulo' && userFriends.map(friend => (
+                            friendsList.length > 0 && friendsList.map(friend => (
                                 <ListFriends key={friend.id} friendName={friend.userName} friendProfilePhoto={friend.profilePhoto} />
                             ))
                         }
@@ -223,20 +191,3 @@ export default function Posts(props:PostsProps){
         </>
     )
 }
-
-export const getStaticPaths: GetStaticPaths = async () => {
-    return {
-        paths: [],
-        fallback: true, //true, false, 'blocking'
-    };
-};
-
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const { idUser } = params;
-
-    return {
-        props: { idUser },
-    };
-};
-

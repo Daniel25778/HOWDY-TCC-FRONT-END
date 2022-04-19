@@ -84,7 +84,7 @@ export default  function PostPage(props: PostUserPageProps) {
                 </Grid>
                 {
                     userPosts !== 'nulo' && userPosts.map(post => (
-                        <Post key={post.id} userPosts={post} user={user} />
+                        <Post  key={post.id} post={post} userCreator={user} />
                     ))
                 }
                 {/* <Comments></Comments> */}

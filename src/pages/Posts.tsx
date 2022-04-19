@@ -14,8 +14,10 @@ import { BsCamera, BsHeartFill, BsPeople } from "react-icons/bs";
 import { GiTransparentSlime } from "react-icons/gi";
 import { Scrollbar } from "swiper";
 import Head from "next/head";
+
 import { GetStaticPaths, GetStaticProps } from "next";
 import ListFriends from "../components/Friends/ListFriends";
+
 interface PostsProps {
     idUser: string;
 }
@@ -23,11 +25,11 @@ interface PostsProps {
 export default function Posts(props:PostsProps){
 
     const [userLogged, setUserLogged] = useState<any>(null);
-    const router = useRouter();
+    const router = useRouter(); 
    
 
     const api = apiFunction();
-
+    
     const [posts, setPosts] = useState<any>([]);
 
     const [category, setCategory] = useState<any>('popular');

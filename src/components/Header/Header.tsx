@@ -36,6 +36,9 @@ interface HeaderProps {
 }
 
 export function Header({ user }: HeaderProps) {
+    function handleRedirectUserConfig() {
+        Router.push('/PageUserConfig');
+    }
     const handleSearch = (e) => {
         e.preventDefault();
         const value = document.getElementById('search-input')?.value;
@@ -136,7 +139,7 @@ export function Header({ user }: HeaderProps) {
                                     />
                                     <MenuList color="howdyColors.mainBlack">
                                         <MenuItem>Perfil</MenuItem>
-                                        <MenuItem>Confirações de perfil</MenuItem>
+                                        <MenuItem onClick={handleRedirectUserConfig}>Confirações de perfil</MenuItem>
                                         <MenuItem onClick={logOut}>Sair</MenuItem>
                                     </MenuList>
                                 </Menu>

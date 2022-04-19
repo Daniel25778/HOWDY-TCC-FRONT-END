@@ -233,7 +233,7 @@ export function FormCadastro(props: FormCadastroProps) {
                 </Text>
             )}
             {!isLogged && (
-                <InputGroup width={400} variant="filled" marginBottom="10px">
+                <InputGroup width="90%" variant="filled" marginBottom="10px">
                     <InputLeftElement pointerEvents="none">
                         <MdOutlineMailOutline color="#6A7DFF" />
                     </InputLeftElement>

@@ -15,7 +15,7 @@ import { FaLongArrowAltDown } from "react-icons/fa";
 interface PostProps {
     userCreator: any;
     post: any;
-    userLogged: any;
+    userLogged?: any;
 }
 
 export default function Post({userCreator, post, userLogged}: PostProps){

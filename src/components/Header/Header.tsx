@@ -35,10 +35,16 @@ interface HeaderProps {
     user?: any;
 }
 
+
 export function Header({ user }: HeaderProps) {
     function handleRedirectUserConfig() {
         Router.push('/PageUserConfig');
     }
+
+    function handleRedirectProfile() {
+        Router.push(`/UserPage/Post/${user.idUser}`);
+    }
+
     const handleSearch = (e) => {
         e.preventDefault();
         const value = document.getElementById('search-input')?.value;
@@ -138,8 +144,8 @@ export function Header({ user }: HeaderProps) {
                                         rightIcon={<IoMdArrowDropdown />}
                                     />
                                     <MenuList color="howdyColors.mainBlack">
-                                        <MenuItem>Perfil</MenuItem>
-                                        <MenuItem onClick={handleRedirectUserConfig}>Confirações de perfil</MenuItem>
+                                        <MenuItem onClick={handleRedirectProfile}>Perfil</MenuItem>
+                                        <MenuItem onClick={handleRedirectUserConfig}>Configurações de perfil</MenuItem>
                                         <MenuItem onClick={logOut}>Sair</MenuItem>
                                     </MenuList>
                                 </Menu>

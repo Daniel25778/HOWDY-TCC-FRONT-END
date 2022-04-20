@@ -38,7 +38,7 @@ export default {
                     if (data === 'This user does not have an account in our system') {
                         Router.push('/register/isLogged');
                     } else {
-                        Router.push('/Posts/1');
+                        Router.push('/Posts');
                     }
                 })
                 .catch(() => console.log('Erro ao se conectar com o servidor'));

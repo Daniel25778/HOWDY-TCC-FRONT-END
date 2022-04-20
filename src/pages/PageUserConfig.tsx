@@ -1,19 +1,22 @@
-import { Box, Center, Flex, Image, InputGroup, InputLeftElement, Select, Text, FormControl,
+import { Box, Center, Flex, Image, InputGroup, InputLeftElement, Select, Input, Text, FormControl,
   FormErrorMessage, useToast, Button } from "@chakra-ui/react";
 import { AiOutlineMail } from "react-icons/ai";
 import { BsCalendar3, BsPerson } from "react-icons/bs";
 import { GiPadlock } from "react-icons/gi";
-import { MdArrowDropDown, MdOutlineCake, MdOutlineMailOutline } from "react-icons/md";
+import { MdArrowDropDown, MdOutlineCake, MdOutlineDescription, MdOutlineMailOutline } from "react-icons/md";
 import UserDataPage from "../components/UserDataPage/UserDataPage";
 import { getUserLogged } from "../functions/getUserLogged";
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input } from '../components/Form/Input';
+import { Input as MyInput } from '../components/Form/Input';
 import { formatDateToBackend } from "../functions/formatDateToBackEnd";
 import { api as apiFunction } from '../services/api';
 import Router, { useRouter } from 'next/router';
 import { useEffect, useState } from "react";
+import {storage} from '../services/firebaseConfig';
+import { ref, uploadBytes } from "firebase/storage";
+
 
 type editUserFormData = {
   email?: string;
@@ -23,6 +26,7 @@ type editUserFormData = {
   birthDate: Date;
   targetLanguage: any;
   nativeLanguage: any;
+  description: string;
 };
 
 const editFormSchema = yup.object().shape({
@@ -58,21 +62,12 @@ export default function PageUserConfig() {
   });
   const { errors } = formState;
 
-  let api = apiFunction();
-  const [userLogged, setUserLogged] = useState<any>(null);
-  const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
-  useEffect(() => {
-    api.get('targetLanguages')
-        .then((response) => setTargetLanguages(response.data))
-        .catch((err) => console.log(err));
-}, []);
+let api = apiFunction();
+const [userLogged, setUserLogged] = useState<any>(null);
+const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
 const [user, setUser] = useState<any>('nulo');
 const [nativeLanguages, setNativeLanguages] = useState<NativeLanguage[]>([]);
-useEffect(() => {
-    api.get('nativeLanguages')
-        .then((response) => setNativeLanguages(response.data))
-        .catch((err) => console.log(err));
-}, []);
+
 
 useEffect(() => {
   if(!router.isFallback) {
@@ -85,6 +80,14 @@ useEffect(() => {
             console.log(user)
         });
 
+        api.get('nativeLanguages')
+        .then((response) => setNativeLanguages(response.data))
+        .catch((err) => console.log(err));
+
+        api.get('targetLanguages')
+        .then((response) => setTargetLanguages(response.data))
+        .catch((err) => console.log(err));
+
 
       });
      
@@ -94,7 +97,7 @@ useEffect(() => {
   const handleEditUser: SubmitHandler<editUserFormData> = async (values) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    let { email, password, name, birthDate, targetLanguage, nativeLanguage } = values;
+    let { email, password, description, name, birthDate, targetLanguage, nativeLanguage } = values;
 
     targetLanguage = JSON.parse(targetLanguage);
     nativeLanguage = JSON.parse(nativeLanguage);
@@ -116,6 +119,8 @@ useEffect(() => {
                 birthDate: birthDateFormatted,
                 idTargetLanguage :  targetLanguage.idTargetLanguage,
                 idNativeLanguage :  nativeLanguage.idNativeLanguage,
+                description: description,
+
             })
             .then((response: any) => {
                 toast({
@@ -136,6 +141,49 @@ useEffect(() => {
                 });
             });
     };
+
+    const [image, setImage] = useState<any>('nulo');
+    const [url, setUrl] = useState<any>('nulo');
+    const [progress, setProgress] = useState<any>('nulo');
+
+    const handleChange = (e: any) => {
+      if(e.target.files[0]){
+        setImage(e.target.files[0])
+      }
+    } 
+
+    const handleUpload = () => {
+      
+      
+      // Points to the root reference
+      const storageRef = ref(storage);
+      
+      
+      // Points to 'images'
+      const imagesRef = ref(storageRef, "upload-images")
+      
+      // Points to 'images/space.jpg'
+      // Note that you can use variables to create child values
+      const fileName = image.name;
+      console.log(fileName);
+      const spaceRef = ref(imagesRef, fileName);
+      console.log(spaceRef);
+      // File path is 'images/space.jpg'
+      const path = spaceRef.fullPath;
+      console.log(path);
+      // File name is 'space.jpg'
+      const name = spaceRef.name;
+      
+      // Points to 'images'
+      const imagesRefAgain = spaceRef.parent;
+
+      uploadBytes(imagesRef, image).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+      });
+
+
+    }
+
     return (
     <Flex w="100%" bg="howdyColors.mainBlue" justifyContent={"center"} align="center" padding="2%">
         
@@ -164,6 +212,12 @@ useEffect(() => {
                   h="20rem"
                   src={userLogged?.backgroundImage}
               />
+
+              <Input onChange={handleChange} type={"file"}></Input>
+              <Button onClick={handleUpload}></Button>
+              <Text>{url}</Text>
+              <progress value={progress} max="100"></progress>
+              <Image src={url}></Image>
 
             <Flex justify={"center"} align="center" position={"relative"} flexDir={"column"} bottom="2vw" >  
               
@@ -203,7 +257,7 @@ useEffect(() => {
                       <InputLeftElement pointerEvents="none">
                           <BsPerson color="#6A7DFF" />
                       </InputLeftElement>
-                      <Input
+                      <MyInput
                           fontWeight="medium"
                           name="name"
                           placeholder={userLogged?.userName}
@@ -227,7 +281,7 @@ useEffect(() => {
                     <InputLeftElement pointerEvents="none">
                         <MdOutlineMailOutline color="#6A7DFF" />
                     </InputLeftElement>
-                    <Input
+                    <MyInput
                         fontWeight="medium"
                         name="email"
                         placeholder="E-mail"
@@ -251,7 +305,7 @@ useEffect(() => {
                       <InputLeftElement pointerEvents="none">
                           <MdOutlineCake color="#6A7DFF" />
                       </InputLeftElement>
-                      <Input
+                      <MyInput
                           fontWeight="medium"
                           name="birthDate"
                           placeholder="Data nascimento"
@@ -259,6 +313,30 @@ useEffect(() => {
                           type="text"
                           error={errors.birthDate}
                           {...register('birthDate')}
+                      />
+                  </InputGroup>
+
+                  <Flex align="center" width="100%">
+                          <Text
+                                color="howdyColors.mainBlack"
+                                fontWeight={'bold'}
+                                fontSize={['sm', 'md', 'large']}
+                                >
+                                  Descrição
+                          </Text>
+                    </Flex>
+
+                  <InputGroup width="100%" variant="filled" marginBottom="15px">
+                      <InputLeftElement pointerEvents="none">
+                          <MdOutlineDescription color="#6A7DFF" />
+                      </InputLeftElement>
+                      <MyInput
+                          fontWeight="medium"
+                          name="description"
+                          placeholder="Descrição"
+                          type="text"
+                          error={errors.description}
+                          {...register('description')}
                       />
                   </InputGroup>
 
@@ -335,7 +413,7 @@ useEffect(() => {
                       <InputLeftElement pointerEvents="none">
                           <GiPadlock color="#6A7DFF" />
                       </InputLeftElement>
-                      <Input
+                      <MyInput
                           fontWeight="medium"
                           name="password"
                           placeholder="Sua senha"
@@ -359,14 +437,14 @@ useEffect(() => {
                     <InputLeftElement pointerEvents="none">
                         <GiPadlock color="#6A7DFF" />
                     </InputLeftElement>
-                    <Input
+                    <MyInput
                         fontWeight="medium"
                         name="passwordConfirm"
                         placeholder="Confirme sua senha"
                         type="password"
                         error={errors.passwordConfirm}
                         {...register('passwordConfirm')}
-                     ></Input>
+                     ></MyInput>
                     </InputGroup> 
 
                     <Button

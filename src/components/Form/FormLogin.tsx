@@ -60,7 +60,7 @@ export function FormLogin() {
                     path: '/',
                 });
 
-                Router.push('/Posts/1');
+                Router.push('/Posts');
             })
             .catch((error) => {
                 const errorCode = error.code;

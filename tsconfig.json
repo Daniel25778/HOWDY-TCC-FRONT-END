@@ -15,6 +15,6 @@
         "isolatedModules": true,
         "jsx": "preserve"
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/hooks/useSession.jsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/hooks/useSession.jsx", "src/services/firebaseConfig.ts"],
     "exclude": ["node_modules"]
 }

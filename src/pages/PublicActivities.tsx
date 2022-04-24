@@ -51,7 +51,7 @@ interface selectData {
     label: string;
 }
 
-export default function Posts(props: PostsProps) {
+export default function PublicActivities(props: PostsProps) {
     const router = useRouter();
 
     if (router.isFallback) {

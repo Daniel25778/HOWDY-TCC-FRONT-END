@@ -12,7 +12,6 @@ export async function getUserLogged(api) {
             await api
                 .get(`/users/isMyUidExternalRegistered`)
                 .then((response) => {
-                    console.log('RESPONSE', response);
                     const { data } = response;
                     data == null && logOut();
 

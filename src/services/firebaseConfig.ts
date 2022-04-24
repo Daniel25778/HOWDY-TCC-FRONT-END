@@ -2,8 +2,7 @@ import firebase, { getApp, getApps } from 'firebase/app';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
-import { getStorage } from "firebase/storage";
-
+import { getStorage } from 'firebase/storage';
 
 var firebaseConfig = {
     apiKey: 'AIzaSyC0TK97o4ONPa4Uzs385gV9rFJ8Y38hkPQ',
@@ -24,6 +23,6 @@ if (!getApps().length) {
 const auth = getAuth(firebaseApp);
 const database = getDatabase(firebaseApp);
 const storage = getStorage(firebaseApp);
-console.log(storage)
+console.log(storage);
 
 export { firebase, storage, auth, database, firebaseApp };

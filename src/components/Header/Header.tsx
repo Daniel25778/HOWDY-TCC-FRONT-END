@@ -1,17 +1,13 @@
-import { useColorMode } from '@chakra-ui/core';
 import {
     Box,
     Button,
     Center,
-    color,
     Flex,
     Icon,
     IconButton,
     Image,
     Input,
     InputGroup,
-    InputLeftElement,
-    Link as ChakraLink,
     Menu,
     MenuButton,
     MenuItem,
@@ -24,17 +20,11 @@ import { FaRegBell } from 'react-icons/fa';
 import { IoMdAdd, IoMdArrowDropdown } from 'react-icons/io';
 import { NavLink } from '../NavLink/Header/NavLink';
 import Router from 'next/router';
-import { api as apiFunction } from '../../services/api';
-import { setCookie } from 'nookies';
-import nookies, { destroyCookie } from 'nookies';
-import { BiLogOut } from 'react-icons/bi';
 import { logOut } from '../../functions/logOut';
-import { GiPadlock } from 'react-icons/gi';
 
 interface HeaderProps {
     user?: any;
 }
-
 
 export function Header({ user }: HeaderProps) {
     function handleRedirectUserConfig() {
@@ -49,7 +39,7 @@ export function Header({ user }: HeaderProps) {
         e.preventDefault();
         const value = document.getElementById('search-input')?.value;
         Router.push(`/SearchPage/${value}`);
-    }
+    };
     return (
         <Flex
             position="fixed"
@@ -65,32 +55,25 @@ export function Header({ user }: HeaderProps) {
             <Flex position="relative" top="0" left="0" w="100%" pl="15%" pr="7%" h="5rem" align="center">
                 <Flex width="100%" align="center" px="10" justify="space-between">
                     <Flex mr="auto">
-                             <Flex as="form"
-                              onSubmit={handleSearch}
-                             > 
-                              <Box marginRight="5">
-                                    <Button type="submit"
-                                    variant={'ghost'}
-                                    ><FiSearch size={30} color="#F2F2F2" /></Button>
-                                </Box>
-                                <InputGroup width="35vw" variant="filled">
-                                    <Input
-                                        bg="howdyColors.main"
-                                        name="search"
-                                        placeholder="Descubra pessoas ou atividades..."
-                                        type="text"
-                                        focusBorderColor="howdyColors.mainWhite"
-                                        borderRadius="0px 100px 100px 0px"
-                                        id='search-input'
-                                        variant={'filled'}
-                                    />
-                                </InputGroup>
-
-                               
-                             </Flex> 
-                        
-                        
-
+                        <Flex as="form" onSubmit={handleSearch}>
+                            <Box marginRight="5">
+                                <Button type="submit" variant={'ghost'}>
+                                    <FiSearch size={30} color="#F2F2F2" />
+                                </Button>
+                            </Box>
+                            <InputGroup width="35vw" variant="filled">
+                                <Input
+                                    bg="howdyColors.main"
+                                    name="search"
+                                    placeholder="Descubra pessoas ou atividades..."
+                                    type="text"
+                                    focusBorderColor="howdyColors.mainWhite"
+                                    borderRadius="0px 100px 100px 0px"
+                                    id="search-input"
+                                    variant={'filled'}
+                                />
+                            </InputGroup>
+                        </Flex>
                     </Flex>
 
                     <Flex align="center" width="45%" height="70">
@@ -201,8 +184,8 @@ export function Header({ user }: HeaderProps) {
 
                     <Center w="50%" justifyContent={'space-between'}>
                         <NavLink href="/RankingPage" title="Ranking" />
-                        <NavLink href="/Posts/2" title="Postagens" />
-                        <NavLink href="/UserPage/Learn/1" title="Aprenda" />
+                        <NavLink href="/Posts" title="Postagens" />
+                        <NavLink href="/PublicActivities" title="Aprenda" />
                     </Center>
                 </Flex>
             </Flex>

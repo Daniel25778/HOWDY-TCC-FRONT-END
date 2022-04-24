@@ -1,127 +1,132 @@
-import { Box, Center, Flex, Image, InputGroup, InputLeftElement, Select, Input, Text, FormControl,
-  FormErrorMessage, useToast, Button } from "@chakra-ui/react";
-import { AiOutlineMail } from "react-icons/ai";
-import { BsCalendar3, BsPerson } from "react-icons/bs";
-import { GiPadlock } from "react-icons/gi";
-import { MdArrowDropDown, MdOutlineCake, MdOutlineDescription, MdOutlineMailOutline } from "react-icons/md";
-import UserDataPage from "../components/UserDataPage/UserDataPage";
-import { getUserLogged } from "../functions/getUserLogged";
+import {
+    Box,
+    Center,
+    Flex,
+    Image,
+    InputGroup,
+    InputLeftElement,
+    Select,
+    Input,
+    Text,
+    FormControl,
+    FormErrorMessage,
+    useToast,
+    Button,
+} from '@chakra-ui/react';
+import { AiOutlineMail } from 'react-icons/ai';
+import { BsCalendar3, BsPerson } from 'react-icons/bs';
+import { GiPadlock } from 'react-icons/gi';
+import { MdArrowDropDown, MdOutlineCake, MdOutlineDescription, MdOutlineMailOutline } from 'react-icons/md';
+import UserDataPage from '../components/UserDataPage/UserDataPage';
+import { getUserLogged } from '../functions/getUserLogged';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input as MyInput } from '../components/Form/Input';
-import { formatDateToBackend } from "../functions/formatDateToBackEnd";
+import { formatDateToBackend } from '../functions/formatDateToBackEnd';
 import { api as apiFunction } from '../services/api';
 import Router, { useRouter } from 'next/router';
-import { useEffect, useState } from "react";
-import {storage} from '../services/firebaseConfig';
-import { ref, uploadBytes } from "firebase/storage";
-
+import { useEffect, useState } from 'react';
+import { storage } from '../services/firebaseConfig';
+import { ref, uploadBytes } from 'firebase/storage';
 
 type editUserFormData = {
-  email?: string;
-  password?: string;
-  passwordConfirm?: string;
-  name: string;
-  birthDate: Date;
-  targetLanguage: any;
-  nativeLanguage: any;
-  description: string;
+    email?: string;
+    password?: string;
+    passwordConfirm?: string;
+    name: string;
+    birthDate: Date;
+    targetLanguage: any;
+    nativeLanguage: any;
+    description: string;
 };
 
 const editFormSchema = yup.object().shape({
-  email: yup.string().email('E-mail inválido'),
-  birthDate: yup.date().required('A data de nascimento é obrigatória'),
-  password: yup.string().required('Senha é obrigatória').min(6, 'A senha deve possuir ao menos 6 caracteres'),
-  passwordConfirm: yup
-      .string()
-      .required('Confirmação de senha é obrigatória')
-      .oneOf([yup.ref('password')], 'As senhas devem ser iguais'),
+    email: yup.string().email('E-mail inválido'),
+    birthDate: yup.date().required('A data de nascimento é obrigatória'),
+    password: yup.string().required('Senha é obrigatória').min(6, 'A senha deve possuir ao menos 6 caracteres'),
+    passwordConfirm: yup
+        .string()
+        .required('Confirmação de senha é obrigatória')
+        .oneOf([yup.ref('password')], 'As senhas devem ser iguais'),
 });
 
 interface TargetLanguage {
-  idTargetLanguage: number;
-  targetLanguageName: string;
-  targetLanguageTranslatorName: string;
+    idTargetLanguage: number;
+    targetLanguageName: string;
+    targetLanguageTranslatorName: string;
 }
 interface NativeLanguage {
-  idNativeLanguage: number;
-  nativeLanguageName: string;
-  nativeLanguageTranslatorName: string;
+    idNativeLanguage: number;
+    nativeLanguageName: string;
+    nativeLanguageTranslatorName: string;
 }
 
 export default function PageUserConfig() {
+    const resolver = yupResolver(editFormSchema);
 
-  const resolver = yupResolver(editFormSchema);
+    const toast = useToast();
+    const router = useRouter();
 
-  const toast = useToast();
-  const router = useRouter();
+    const { register, handleSubmit, formState } = useForm({
+        resolver: resolver,
+    });
+    const { errors } = formState;
 
-  const { register, handleSubmit, formState } = useForm({
-    resolver: resolver,
-  });
-  const { errors } = formState;
+    let api = apiFunction();
+    const [userLogged, setUserLogged] = useState<any>(null);
+    const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
+    const [user, setUser] = useState<any>('nulo');
+    const [nativeLanguages, setNativeLanguages] = useState<NativeLanguage[]>([]);
 
-let api = apiFunction();
-const [userLogged, setUserLogged] = useState<any>(null);
-const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
-const [user, setUser] = useState<any>('nulo');
-const [nativeLanguages, setNativeLanguages] = useState<NativeLanguage[]>([]);
+    useEffect(() => {
+        if (!router.isFallback) {
+            getUserLogged(api).then((res) => {
+                setUserLogged(res);
 
+                api.get(`users/${userLogged?.idUser}`).then((response) => {
+                    response.data && setUser(response.data[0]);
+                    console.log(user);
+                });
 
-useEffect(() => {
-  if(!router.isFallback) {
-      getUserLogged(api).then((res) => {
-          setUserLogged(res);
+                api.get('nativeLanguages')
+                    .then((response) => setNativeLanguages(response.data))
+                    .catch((err) => console.log(err));
 
+                api.get('targetLanguages')
+                    .then((response) => setTargetLanguages(response.data))
+                    .catch((err) => console.log(err));
+            });
+        }
+    }, [router.isFallback]);
 
-        api.get(`users/${userLogged?.idUser}`).then(response => {
-            response.data && setUser(response.data[0]);
-            console.log(user)
-        });
+    const handleEditUser: SubmitHandler<editUserFormData> = async (values) => {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        api.get('nativeLanguages')
-        .then((response) => setNativeLanguages(response.data))
-        .catch((err) => console.log(err));
+        let { email, password, description, name, birthDate, targetLanguage, nativeLanguage } = values;
 
-        api.get('targetLanguages')
-        .then((response) => setTargetLanguages(response.data))
-        .catch((err) => console.log(err));
+        targetLanguage = JSON.parse(targetLanguage);
+        nativeLanguage = JSON.parse(nativeLanguage);
 
+        console.log(targetLanguage);
 
-      });
-     
-  }
-} , [router.isFallback]);
+        const birthDateFormatted = formatDateToBackend(birthDate);
 
-  const handleEditUser: SubmitHandler<editUserFormData> = async (values) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    let { email, password, description, name, birthDate, targetLanguage, nativeLanguage } = values;
-
-    targetLanguage = JSON.parse(targetLanguage);
-    nativeLanguage = JSON.parse(nativeLanguage);
-
-    console.log(targetLanguage);
-
-    const birthDateFormatted = formatDateToBackend(birthDate);
-   
-    if (nativeLanguage.idNativeLanguage === targetLanguage.idTargetLanguage) {
-        return toast({
-            title: 'O IDIOMA NATIVO, E O IDIOMA DE INTERESSE DEVEM SER DIFERENTES.',
-            status: 'error',
-            isClosable: true,
-            position: 'top',
-        });
-    }
+        if (nativeLanguage.idNativeLanguage === targetLanguage.idTargetLanguage) {
+            return toast({
+                title: 'O IDIOMA NATIVO, E O IDIOMA DE INTERESSE DEVEM SER DIFERENTES.',
+                status: 'error',
+                isClosable: true,
+                position: 'top',
+            });
+        }
         api.put('users', {
-                userName: name,
-                birthDate: birthDateFormatted,
-                idTargetLanguage :  targetLanguage.idTargetLanguage,
-                idNativeLanguage :  nativeLanguage.idNativeLanguage,
-                description: description,
-
-            })
+            userName: name,
+            birthDate: birthDateFormatted,
+            idTargetLanguage: targetLanguage.idTargetLanguage,
+            idNativeLanguage: nativeLanguage.idNativeLanguage,
+            description: description,
+        })
             .then((response: any) => {
                 toast({
                     title: 'EDIÇÃO REALIZADA COM SUCESSO!',
@@ -147,305 +152,255 @@ useEffect(() => {
     const [progress, setProgress] = useState<any>('nulo');
 
     const handleChange = (e: any) => {
-      if(e.target.files[0]){
-        setImage(e.target.files[0])
-      }
-    } 
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
+        }
+    };
 
     const handleUpload = () => {
-      
-      
-      // Points to the root reference
-      const storageRef = ref(storage);
-      
-      
-      // Points to 'images'
-      const imagesRef = ref(storageRef, "upload-images")
-      
-      // Points to 'images/space.jpg'
-      // Note that you can use variables to create child values
-      const fileName = image.name;
-      console.log(fileName);
-      const spaceRef = ref(imagesRef, fileName);
-      console.log(spaceRef);
-      // File path is 'images/space.jpg'
-      const path = spaceRef.fullPath;
-      console.log(path);
-      // File name is 'space.jpg'
-      const name = spaceRef.name;
-      
-      // Points to 'images'
-      const imagesRefAgain = spaceRef.parent;
+        // Points to the root reference
+        const storageRef = ref(storage);
 
-      uploadBytes(imagesRef, image).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-      });
+        // Points to 'images'
+        const imagesRef = ref(storageRef, 'upload-images');
 
+        // Points to 'images/space.jpg'
+        // Note that you can use variables to create child values
+        const fileName = image.name;
+        const spaceRef = ref(imagesRef, fileName);
+        // File path is 'images/space.jpg'
+        const path = spaceRef.fullPath;
+        // File name is 'space.jpg'
+        const name = spaceRef.name;
 
-    }
+        // Points to 'images'
+        const imagesRefAgain = spaceRef.parent;
+
+        uploadBytes(imagesRef, image).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+        });
+    };
 
     return (
-    <Flex w="100%" bg="howdyColors.mainBlue" justifyContent={"center"} align="center" padding="2%">
-        
-          <Flex
-            w="50%"
-            bg="white"
-            align="center"
-            justify="center"
-            borderRadius={8}
-            flexDir="column"
-          >
-            <Flex w="100%" justifyContent={"flex-end"} p="3%">
-              <Text
-                  alignSelf={"flex-end"} 
-                  color="howdyColors.mainBlack"
-                  fontWeight={'bold'}
-                  fontSize={['sm', 'md', 'xx-large']}
-                  >
-                    Configurações
-              </Text>
-            </Flex>
-            
-            <Image
-                  objectFit="cover"
-                  w="100%"
-                  h="20rem"
-                  src={userLogged?.backgroundImage}
-              />
+        <Flex w="100%" bg="howdyColors.mainBlue" justifyContent={'center'} align="center" padding="2%">
+            <Flex w="50%" bg="white" align="center" justify="center" borderRadius={8} flexDir="column">
+                <Flex w="100%" justifyContent={'flex-end'} p="3%">
+                    <Text
+                        alignSelf={'flex-end'}
+                        color="howdyColors.mainBlack"
+                        fontWeight={'bold'}
+                        fontSize={['sm', 'md', 'xx-large']}
+                    >
+                        Configurações
+                    </Text>
+                </Flex>
 
-              <Input onChange={handleChange} type={"file"}></Input>
-              <Button onClick={handleUpload}></Button>
-              <Text>{url}</Text>
-              <progress value={progress} max="100"></progress>
-              <Image src={url}></Image>
+                <Image objectFit="cover" w="100%" h="20rem" src={userLogged?.backgroundImage} />
 
-            <Flex justify={"center"} align="center" position={"relative"} flexDir={"column"} bottom="2vw" >  
-              
+                <Input onChange={handleChange} type={'file'}></Input>
+                <Button onClick={handleUpload}></Button>
+                <Text>{url}</Text>
+                <progress value={progress} max="100"></progress>
+                <Image src={url}></Image>
+
+                <Flex justify={'center'} align="center" position={'relative'} flexDir={'column'} bottom="2vw">
                     <Image
-                      w="100%"
-                      h="10rem"
-                      borderRadius="100%"
-                      objectFit="cover"
-                      src={userLogged?.profilePhoto}
-                      _hover={{cursor: 'pointer'}}    
-                  />
-            </Flex>
-
-            <Flex
-            as="form"
-            onSubmit={handleSubmit(handleEditUser)}
-            padding="10"
-            bg="white"
-            align="center"
-            justify="center"
-            borderRadius={8}
-            flexDir="column"
-            width="70%"
-            >      
-
-                    <Flex align="center" width="100%">
-                          <Text
-                                color="howdyColors.mainBlack"
-                                fontWeight={'bold'}
-                                fontSize={['sm', 'md', 'large']}
-                                >
-                                  Nome do usuário
-                          </Text>
-                    </Flex>
-            
-                  <InputGroup width="100%" variant="filled" marginBottom="15px">
-                      <InputLeftElement pointerEvents="none">
-                          <BsPerson color="#6A7DFF" />
-                      </InputLeftElement>
-                      <MyInput
-                          fontWeight="medium"
-                          name="name"
-                          placeholder={userLogged?.userName}
-                          type="text"
-                          error={errors.name}
-                          {...register('name')}
-                      />
-                  </InputGroup>
-
-                  <Flex align="center" width="100%">
-                          <Text
-                                color="howdyColors.mainBlack"
-                                fontWeight={'bold'}
-                                fontSize={['sm', 'md', 'large']}
-                                >
-                                 E-mail
-                          </Text>
-                    </Flex>
-
-                  <InputGroup width="100%" variant="filled" marginBottom="10px">
-                    <InputLeftElement pointerEvents="none">
-                        <MdOutlineMailOutline color="#6A7DFF" />
-                    </InputLeftElement>
-                    <MyInput
-                        fontWeight="medium"
-                        name="email"
-                        placeholder="E-mail"
-                        type="text"
-                        error={errors.email}
-                        {...register('email')}
+                        w="100%"
+                        h="10rem"
+                        borderRadius="100%"
+                        objectFit="cover"
+                        src={userLogged?.profilePhoto}
+                        _hover={{ cursor: 'pointer' }}
                     />
-                   </InputGroup>
+                </Flex>
+
+                <Flex
+                    as="form"
+                    onSubmit={handleSubmit(handleEditUser)}
+                    padding="10"
+                    bg="white"
+                    align="center"
+                    justify="center"
+                    borderRadius={8}
+                    flexDir="column"
+                    width="70%"
+                >
+                    <Flex align="center" width="100%">
+                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'large']}>
+                            Nome do usuário
+                        </Text>
+                    </Flex>
+
+                    <InputGroup width="100%" variant="filled" marginBottom="15px">
+                        <InputLeftElement pointerEvents="none">
+                            <BsPerson color="#6A7DFF" />
+                        </InputLeftElement>
+                        <MyInput
+                            fontWeight="medium"
+                            name="name"
+                            placeholder={userLogged?.userName}
+                            type="text"
+                            error={errors.name}
+                            {...register('name')}
+                        />
+                    </InputGroup>
 
                     <Flex align="center" width="100%">
-                          <Text
-                                color="howdyColors.mainBlack"
-                                fontWeight={'bold'}
-                                fontSize={['sm', 'md', 'large']}
-                                >
-                                  Data de nascimento
-                          </Text>
-                    </Flex>
-
-                  <InputGroup width="100%" variant="filled" marginBottom="15px">
-                      <InputLeftElement pointerEvents="none">
-                          <MdOutlineCake color="#6A7DFF" />
-                      </InputLeftElement>
-                      <MyInput
-                          fontWeight="medium"
-                          name="birthDate"
-                          placeholder="Data nascimento"
-                          onFocus={() => document.getElementById('birthDate').setAttribute('type', 'date')}
-                          type="text"
-                          error={errors.birthDate}
-                          {...register('birthDate')}
-                      />
-                  </InputGroup>
-
-                  <Flex align="center" width="100%">
-                          <Text
-                                color="howdyColors.mainBlack"
-                                fontWeight={'bold'}
-                                fontSize={['sm', 'md', 'large']}
-                                >
-                                  Descrição
-                          </Text>
-                    </Flex>
-
-                  <InputGroup width="100%" variant="filled" marginBottom="15px">
-                      <InputLeftElement pointerEvents="none">
-                          <MdOutlineDescription color="#6A7DFF" />
-                      </InputLeftElement>
-                      <MyInput
-                          fontWeight="medium"
-                          name="description"
-                          placeholder="Descrição"
-                          type="text"
-                          error={errors.description}
-                          {...register('description')}
-                      />
-                  </InputGroup>
-
-                  <FormControl isInvalid={!!errors.nativeLanguage}>
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
-                                Idioma nativo
+                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'large']}>
+                            E-mail
                         </Text>
-                      <Select
-                          mb="15px"
-                          placeholder={userLogged?.nativeLanguageName}
-                          variant="filled"
-                          iconColor="howdyColors.mainBlue"
-                          icon={<MdArrowDropDown />}
-                          {...register('nativeLanguage')}
-                          name={'nativeLanguage'}
-                          id={'nativeLanguage'}
-                      >
-                          {nativeLanguages &&
-                              nativeLanguages.map((nativeLanguage) => (
-                                  <option key={nativeLanguage.idNativeLanguage} value={JSON.stringify(nativeLanguage)}>
-                                      {nativeLanguage.nativeLanguageName}
-                                  </option>
-                              ))}
-                      </Select>
-                      {!!errors && <FormErrorMessage>{errors?.nativeLanguage?.message}</FormErrorMessage>}
-                  </FormControl>
+                    </Flex>
 
-                  <FormControl isInvalid={!!errors.targetLanguage}>
-                  <Flex align="center" width="100%">
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
+                    <InputGroup width="100%" variant="filled" marginBottom="10px">
+                        <InputLeftElement pointerEvents="none">
+                            <MdOutlineMailOutline color="#6A7DFF" />
+                        </InputLeftElement>
+                        <MyInput
+                            fontWeight="medium"
+                            name="email"
+                            placeholder="E-mail"
+                            type="text"
+                            error={errors.email}
+                            {...register('email')}
+                        />
+                    </InputGroup>
+
+                    <Flex align="center" width="100%">
+                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'large']}>
+                            Data de nascimento
+                        </Text>
+                    </Flex>
+
+                    <InputGroup width="100%" variant="filled" marginBottom="15px">
+                        <InputLeftElement pointerEvents="none">
+                            <MdOutlineCake color="#6A7DFF" />
+                        </InputLeftElement>
+                        <MyInput
+                            fontWeight="medium"
+                            name="birthDate"
+                            placeholder="Data nascimento"
+                            onFocus={() => document.getElementById('birthDate').setAttribute('type', 'date')}
+                            type="text"
+                            error={errors.birthDate}
+                            {...register('birthDate')}
+                        />
+                    </InputGroup>
+
+                    <Flex align="center" width="100%">
+                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'large']}>
+                            Descrição
+                        </Text>
+                    </Flex>
+
+                    <InputGroup width="100%" variant="filled" marginBottom="15px">
+                        <InputLeftElement pointerEvents="none">
+                            <MdOutlineDescription color="#6A7DFF" />
+                        </InputLeftElement>
+                        <MyInput
+                            fontWeight="medium"
+                            name="description"
+                            placeholder="Descrição"
+                            type="text"
+                            error={errors.description}
+                            {...register('description')}
+                        />
+                    </InputGroup>
+
+                    <FormControl isInvalid={!!errors.nativeLanguage}>
+                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'large']}>
+                            Idioma nativo
+                        </Text>
+                        <Select
+                            mb="15px"
+                            placeholder={userLogged?.nativeLanguageName}
+                            variant="filled"
+                            iconColor="howdyColors.mainBlue"
+                            icon={<MdArrowDropDown />}
+                            {...register('nativeLanguage')}
+                            name={'nativeLanguage'}
+                            id={'nativeLanguage'}
+                        >
+                            {nativeLanguages &&
+                                nativeLanguages.map((nativeLanguage) => (
+                                    <option
+                                        key={nativeLanguage.idNativeLanguage}
+                                        value={JSON.stringify(nativeLanguage)}
+                                    >
+                                        {nativeLanguage.nativeLanguageName}
+                                    </option>
+                                ))}
+                        </Select>
+                        {!!errors && <FormErrorMessage>{errors?.nativeLanguage?.message}</FormErrorMessage>}
+                    </FormControl>
+
+                    <FormControl isInvalid={!!errors.targetLanguage}>
+                        <Flex align="center" width="100%">
+                            <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'large']}>
                                 Idioma de interesse
+                            </Text>
+                        </Flex>
+                        <Select
+                            mb="15px"
+                            placeholder={userLogged?.targetLanguageName}
+                            variant="filled"
+                            iconColor="howdyColors.mainBlue"
+                            icon={<MdArrowDropDown />}
+                            {...register('targetLanguage')}
+                            name={'targetLanguage'}
+                            id={'targetLanguage'}
+                        >
+                            {targetLanguages &&
+                                targetLanguages.map((targetLanguage) => (
+                                    <option
+                                        key={targetLanguage.idTargetLanguage}
+                                        value={JSON.stringify(targetLanguage)}
+                                    >
+                                        {targetLanguage.targetLanguageName}
+                                    </option>
+                                ))}
+                        </Select>
+                        {!!errors && <FormErrorMessage>{errors?.targetLanguage?.message}</FormErrorMessage>}
+                    </FormControl>
+
+                    <Flex align="center" width="100%">
+                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'large']}>
+                            Senha
                         </Text>
-                  </Flex>
-                      <Select
-                          mb="15px"
-                          placeholder={userLogged?.targetLanguageName}
-                          variant="filled"
-                          iconColor="howdyColors.mainBlue"
-                          icon={<MdArrowDropDown />}
-                          {...register('targetLanguage')}
-                          name={'targetLanguage'}
-                          id={'targetLanguage'}
-                      >
-                          {targetLanguages &&
-                              targetLanguages.map((targetLanguage) => (
-                                  <option key={targetLanguage.idTargetLanguage} value={JSON.stringify(targetLanguage)}>
-                                      {targetLanguage.targetLanguageName}
-                                  </option>
-                              ))}
-                      </Select>
-                      {!!errors && <FormErrorMessage>{errors?.targetLanguage?.message}</FormErrorMessage>}
-                  </FormControl>
+                    </Flex>
 
-                  <Flex align="center" width="100%">
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
-                                Senha
+                    <InputGroup width="100%" variant="filled" marginBottom="15px">
+                        <InputLeftElement pointerEvents="none">
+                            <GiPadlock color="#6A7DFF" />
+                        </InputLeftElement>
+                        <MyInput
+                            fontWeight="medium"
+                            name="password"
+                            placeholder="Sua senha"
+                            type="password"
+                            error={errors.password}
+                            {...register('password')}
+                        />
+                    </InputGroup>
+
+                    <Flex align="center" width="100%">
+                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'large']}>
+                            Confirmação de senha
                         </Text>
-                  </Flex>
+                    </Flex>
 
-            
-                  <InputGroup width="100%" variant="filled" marginBottom="15px">
-                      <InputLeftElement pointerEvents="none">
-                          <GiPadlock color="#6A7DFF" />
-                      </InputLeftElement>
-                      <MyInput
-                          fontWeight="medium"
-                          name="password"
-                          placeholder="Sua senha"
-                          type="password"
-                          error={errors.password}
-                          {...register('password')}
-                      />
-                  </InputGroup>
-
-                  <Flex align="center" width="100%">
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
-                                Confirmação de senha
-                        </Text>
-                  </Flex>
-
-                  <InputGroup width="100%" variant="filled" marginBottom="15px">
-                    <InputLeftElement pointerEvents="none">
-                        <GiPadlock color="#6A7DFF" />
-                    </InputLeftElement>
-                    <MyInput
-                        fontWeight="medium"
-                        name="passwordConfirm"
-                        placeholder="Confirme sua senha"
-                        type="password"
-                        error={errors.passwordConfirm}
-                        {...register('passwordConfirm')}
-                     ></MyInput>
-                    </InputGroup> 
+                    <InputGroup width="100%" variant="filled" marginBottom="15px">
+                        <InputLeftElement pointerEvents="none">
+                            <GiPadlock color="#6A7DFF" />
+                        </InputLeftElement>
+                        <MyInput
+                            fontWeight="medium"
+                            name="passwordConfirm"
+                            placeholder="Confirme sua senha"
+                            type="password"
+                            error={errors.passwordConfirm}
+                            {...register('passwordConfirm')}
+                        ></MyInput>
+                    </InputGroup>
 
                     <Button
                         _hover={{ bg: '#B9C2FD' }}
@@ -472,11 +427,9 @@ useEffect(() => {
                     >
                         CANCELAR
                     </Button>
+                </Flex>
 
-            
-            </Flex> 
-
-            {/* <Flex
+                {/* <Flex
              as="form"
              w="100%"
              bgColor="yellow.600"
@@ -654,7 +607,7 @@ useEffect(() => {
                 </Flex>   
 
             </Flex> */}
-          </Flex>
-    </Flex>
-  );
+            </Flex>
+        </Flex>
+    );
 }

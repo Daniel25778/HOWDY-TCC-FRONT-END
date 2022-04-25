@@ -15,6 +15,10 @@ import Head from 'next/head';
 import ListFriends from '../components/Friends/ListFriends';
 import { UserLogged } from '../interfaces/UserLogged';
 import ActivitySelectFilter from '../components/Form/ActivitySelectFilter';
+import { ActivityCreate } from '../components/Activity/ActivityCreate';
+import { ResultActivity } from '../components/Activity/ResultActivity';
+import { Activity } from '../components/Activity/Activity';
+import Filter from '../components/Filter/Filter';
 
 interface PostsProps {
     idUser: string;
@@ -78,6 +82,7 @@ export default function PublicActivities(props: PostsProps) {
         api.get(`activities?maxPrice=${maxPriceFilter}&idDifficulty=${idDifficultyFilter}&orderBy=${orderByFilter}`)
             .then((response) => {
                 setActivities(response.data);
+                console.log(response.data);
             })
             .catch((err) => setActivities([]));
     }, [maxPriceFilter, idDifficultyFilter, orderByFilter]);
@@ -107,11 +112,48 @@ export default function PublicActivities(props: PostsProps) {
             </Head>
 
             <Header user={userLogged} />
-            <Center w="100vw" h="100vh" bg="green.100">
-                <ActivitySelectFilter list={maxPriceFilterList} setHook={setMaxPriceFilter} />
-                <ActivitySelectFilter list={difficultyList} setHook={setIdDifficultyFilter} />
-                <ActivitySelectFilter list={orderByList} setHook={setOrderByFilter} />
-            </Center>
+            <Flex mt="6.5%" justifyContent="center"  width="100%" py="8%">
+                <Flex width="20%" p="1%" gap="20">
+                    <List size="100%">
+                        <Filter></Filter>
+                        {/* <ActivitySelectFilter list={maxPriceFilterList} setHook={setMaxPriceFilter} />
+                        <ActivitySelectFilter list={difficultyList} setHook={setIdDifficultyFilter} />
+                        <ActivitySelectFilter list={orderByList} setHook={setOrderByFilter} /> */}
+                    </List>
+                </Flex>
+
+                <Flex width="100%" align="center" flexDir="column">
+                    <Flex
+                        boxShadow={'md'}
+                        bgColor="#FFFF"
+                        p="1%"
+                        width="100%"
+                        borderRadius="20"
+                    >
+                        <Text>Atividades</Text>
+                        <Button bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="100%">
+                            Postar
+                        </Button>
+                        
+                    </Flex>
+
+                    <Flex bgColor="#f2f" justifyContent="center" width="50%" flexDir="column">
+                        {activities.length > 0 &&
+                            activities.map((activity) => (
+                                <ActivityCreate
+                                    key={activity.idActivity}
+                                    name={activity.userCreator.userName}
+                                    description={activity.description}
+                                    image={activity.activityCoverPhoto}
+                                    rating={activity.starsRating}
+                                    userActivitys={activity}
+                                    user={activity.userCreator}
+                                />
+                        ))}
+                    </Flex>
+                </Flex>
+            </Flex>
+                
         </>
     );
 }

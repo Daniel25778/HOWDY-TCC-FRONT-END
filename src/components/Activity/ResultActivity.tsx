@@ -10,8 +10,8 @@ interface ActivityProps {
     description?: string;
     image?: string;
     rating?: number;
-    ResultActivities: any;
-    user: any;
+    ResultActivities?: any;
+    user?: any;
 }
 
 export function ResultActivity({ user, ResultActivities }: ActivityProps) {

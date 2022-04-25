@@ -27,7 +27,7 @@ import { formatDateToBackend } from '../functions/formatDateToBackEnd';
 import { api as apiFunction } from '../services/api';
 import Router, { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { storage } from '../services/firebaseConfig';
+// import { storage } from '../services/firebaseConfig';
 import { ref, uploadBytes } from 'firebase/storage';
 
 type editUserFormData = {
@@ -158,27 +158,32 @@ export default function PageUserConfig() {
     };
 
     const handleUpload = () => {
-        // Points to the root reference
-        const storageRef = ref(storage);
 
-        // Points to 'images'
-        const imagesRef = ref(storageRef, 'upload-images');
 
-        // Points to 'images/space.jpg'
-        // Note that you can use variables to create child values
-        const fileName = image.name;
-        const spaceRef = ref(imagesRef, fileName);
-        // File path is 'images/space.jpg'
-        const path = spaceRef.fullPath;
-        // File name is 'space.jpg'
-        const name = spaceRef.name;
 
-        // Points to 'images'
-        const imagesRefAgain = spaceRef.parent;
 
-        uploadBytes(imagesRef, image).then((snapshot) => {
-            console.log('Uploaded a blob or file!');
-        });
+        // // Points to the root reference
+        // const storageRef = ref(storage);
+
+        // // Points to 'images'
+        // const imagesRef = ref(storageRef, 'upload-images');
+
+        // // Points to 'images/space.jpg'
+        // // Note that you can use variables to create child values
+        // const fileName = image.name;
+        // const spaceRef = ref(imagesRef, fileName);
+        // // File path is 'images/space.jpg'
+        // const path = spaceRef.fullPath;
+        // // File name is 'space.jpg'
+        // const name = spaceRef.name;
+
+        // // Points to 'images'
+        // const imagesRefAgain = spaceRef.parent;
+
+        // uploadBytes(imagesRef, image).then((snapshot) => {
+        //     console.log('Uploaded a blob or file!');
+        // });
+
     };
 
     return (

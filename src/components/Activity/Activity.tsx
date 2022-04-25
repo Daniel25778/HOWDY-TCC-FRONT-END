@@ -10,8 +10,8 @@ interface ActivityProps {
     description?: string;
     image?: string;
     rating?: number;
-    userUnlockedActivitys: any;
-    user: any;
+    userUnlockedActivitys?: any;
+    user?: any;
 
 }
 

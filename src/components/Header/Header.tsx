@@ -53,9 +53,9 @@ export function Header({ user }: HeaderProps) {
             bg="howdyColors.mainBlue"
         >
             <Flex position="relative" top="0" left="0" w="100%" pl="15%" pr="7%" h="5rem" align="center">
-                <Flex width="100%" align="center" px="10" justify="space-between">
-                    <Flex mr="auto">
-                        <Flex as="form" onSubmit={handleSearch}>
+                <Flex  width="100%" align="center" px="10" justify="space-between">
+                    <Flex >
+                        <Flex  as="form" onSubmit={handleSearch}>
                             <Box marginRight="5">
                                 <Button type="submit" variant={'ghost'}>
                                     <FiSearch size={30} color="#F2F2F2" />
@@ -76,7 +76,7 @@ export function Header({ user }: HeaderProps) {
                         </Flex>
                     </Flex>
 
-                    <Flex align="center" width="45%" height="70">
+                    <Flex ml={5} align="center" width="45%" height="70">
                         <Flex gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
                             <Image
                                 height="2.5rem"

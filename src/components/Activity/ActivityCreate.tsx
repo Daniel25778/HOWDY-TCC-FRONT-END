@@ -15,8 +15,8 @@ interface ActivityCreateProps {
 
 }
 
-export function ActivityCreate(props: ActivityCreateProps) {
-    const createdAt = new Date(props.userActivitys.createdAt).toLocaleDateString('pt-BR',{
+export function ActivityCreate({rating,userActivitys, user = null}: ActivityCreateProps) {
+    const createdAt = new Date(userActivitys.createdAt).toLocaleDateString('pt-BR',{
         day: '2-digit',
         month: 'short',
     });
@@ -24,10 +24,8 @@ export function ActivityCreate(props: ActivityCreateProps) {
     const [haveActivitys, setHaveActivitys] = useState<any>([]);
 
     useEffect(() => {
-        setHaveActivitys(props.userActivitys === undefined);
+        setHaveActivitys(userActivitys === undefined);
     })
-
-console.log(props.userActivitys)
 
     return(
         <>
@@ -57,8 +55,9 @@ console.log(props.userActivitys)
 
                 <Flex mb="2%" width="100%">
                     <Flex width="70%" gap="3%" align="center">
-                        <ProfilePhotoAndPatent user={props.user} size='9rem'/>
-                        <Heading>{props.userActivitys.userCreator.userName}</Heading>
+                        <ProfilePhotoAndPatent user={user} size='9rem'/>
+                        <Heading>{user ? user.userName : userActivitys.userCreator.userName}</Heading>
+                        {console.log(userActivitys.userCreator.userName)}
                         <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>● {createdAt}</Text>
                     </Flex>
                   
@@ -67,7 +66,7 @@ console.log(props.userActivitys)
                             <Icon w="40%" height="40%" color="howdyColors.mainBlue" fontSize="larger">
                                 <BiTargetLock />
                             </Icon>
-                            <Text fontSize={['sm', 'md', 'xx-large']} color="howdyColors.mainBlack" opacity="60%">{props.userActivitys.targetLanguageName}</Text>
+                            <Text fontSize={['sm', 'md', 'x-large']} color="howdyColors.mainBlack" opacity="60%">{userActivitys.targetLanguageName}</Text>
                         </Flex>
                     </Flex>
                 </Flex>
@@ -82,17 +81,17 @@ console.log(props.userActivitys)
                         w="100%"
                         h="26rem"
                         src={
-                            props.userActivitys?.activityCoverPhoto
-                                ? props.userActivitys?.activityCoverPhoto
+                            userActivitys?.activityCoverPhoto
+                                ? userActivitys?.activityCoverPhoto
                                 : '/images/default-images/default-profile-photo.svg'
                         }
                         ></Image>
                     </Flex>
 
                     <Flex  gap="7%" flexDir="column" p="2%"  width="50%" bgColor="howdyColors.mainBlue">
-                        <Heading color="howdyColors.mainWhite">{props.userActivitys.activityTitle}</Heading>
-                        <Text color="howdyColors.mainWhite">
-                            {props.userActivitys.activityTitle}
+                        <Heading color="howdyColors.mainWhite">{userActivitys.activityTitle}</Heading>
+                        <Text fontSize={['sm', 'md', 'large']} color="howdyColors.mainWhite">
+                            {userActivitys.activityTitle}
                         </Text>
                         
                         <Flex width="20%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
@@ -101,12 +100,12 @@ console.log(props.userActivitys)
                                 src="/images/howdy-images/howdy-coin/Howdy coin.svg"
                                 alt="howdy coin"
                             ></Image>
-                            <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">
-                               {props.userActivitys.priceHowdyCoin}
+                            <Text fontSize={['sm', 'md', 'large']} fontWeight="semibold" color="howdyColors.brownHowdyCoin">
+                               {userActivitys.priceHowdyCoin}
                             </Text>
                         </Flex>
-                        <Flex width="90%" flexDir="column" align="center" justify="center">
-                            <StarRatings starDimension="40px"  rating={props.rating} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
+                        <Flex width="80%" flexDir="column" align="center" justify="center">
+                            <StarRatings starDimension="40px"  rating={rating} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
                             <Button
                                 _hover={{ bg: '#B9C2FD' }}
                                 width={300}
@@ -118,7 +117,7 @@ console.log(props.userActivitys)
                                 type="submit"
                                 borderRadius="50px"
                             >
-                                <Text fontSize={['sm', 'md', 'xx-large']} >ACESSAR</Text>
+                                <Text fontSize={['sm', 'md', 'x-large']} >ACESSAR</Text>
                             </Button>
                         </Flex>
                        

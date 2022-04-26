@@ -180,10 +180,10 @@ const monthlyXpSeries = [
                         {registerChart && 
                         <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />
                         }
-                        <Flex flexDir={'column'} w="30%">
-                        <Heading>Somos mais de 1OO BILHÕES de sonhadores.</Heading>
-                        <Text w="%">O mundo afora requer que tenhamos cada vez mais conhecimentos sobre outras línguas. Não vá sozinho!</Text>
-                    </Flex>
+                        <Flex justify="center" gap={10} flexDir={'column'} w="70%">
+                            <Heading>Somos mais de 1OO BILHÕES de sonhadores.</Heading>
+                            <Text fontSize={['sm', 'medium', 'xx-large']}>O mundo afora requer que tenhamos cada vez mais conhecimentos sobre outras línguas. Não vá sozinho!</Text>
+                        </Flex>
                     </SimpleGrid>
                 </Flex>
                 <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />

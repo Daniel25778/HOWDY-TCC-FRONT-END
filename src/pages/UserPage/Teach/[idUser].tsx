@@ -75,15 +75,18 @@ export default function TeachPage(props: TeachUserPageProps) {
                     <NavLink href={`/UserPage/Learn/${idUser}`} title="Aprendizado"/>
                     <NavLink href={`/UserPage/Teach/${idUser}`} title="Ensinamentos"/>
                 </Grid>
-                <Flex  gap={10} align="center" width="100%" mt="1%" flexDir="column">
-                        {
-                            userActivitys !== 'nulo' && userActivitys?.map(UserActivity => (
-                                <ActivityCreate key={UserActivity.id} userActivitys={UserActivity} user={user}/>
-                            ))
-                        }
-                        
-                        <Box bg="howdyColors.divider" h="1px" w="50%" mt="30"  />
+                <Flex w="100%" justify="center">
+                    <Flex  gap={10} align="center" width="50%" mt="1%" flexDir="column">
+                            {
+                                userActivitys !== 'nulo' && userActivitys?.map(UserActivity => (
+                                    <ActivityCreate key={UserActivity.id} userActivitys={UserActivity} user={user}/>
+                                ))
+                            }
+                            
+                            <Box bg="howdyColors.divider" h="1px" w="50%" mt="30"  />
+                    </Flex>
                 </Flex>
+                
             </Box>
         </>
     )

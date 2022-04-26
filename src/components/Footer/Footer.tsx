@@ -11,7 +11,7 @@ export default function Footer(){
             <Flex gap="2rem" pb="2%"  flexDir="column" w="100%">
 
                 <Flex w="100%" align="center" justifyContent="center">
-                    <Flex w="20%" align="center" justifyContent="space-between">
+                    <Flex w="30%" align="center" justifyContent="space-between">
                         <ChakraLink color="howdyColors.mainBlack" opacity="60%" fontWeight="medium" fontSize={['sm', 'md', 'x-large']}>
                             <Link href="/AboutUs">
                                Sobre nós
@@ -33,7 +33,7 @@ export default function Footer(){
                 </Flex>
 
                 <Flex w="100%"  align="center" justifyContent="center">
-                    <Flex w="10%" align="center" justifyContent="space-between">
+                    <Flex w="15%" align="center" justifyContent="space-between">
                         
                         <IconButton
                             variant="unstyled"

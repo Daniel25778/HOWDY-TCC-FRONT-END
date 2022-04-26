@@ -82,9 +82,9 @@ export default function Posts(props: PostsProps) {
             <Header user={userLogged} />
 
             <Flex mt="6.5%" justifyContent="center" width="100%" py="8%">
-                <Flex width="8%" p="1%" gap="20">
+                <Flex width="15%" p="1%" gap="20">
                     <List size="100%">
-                        <Text fontWeight="bold" marginBottom={5} fontSize={['sm', 'x-small', 'medium']}>
+                        <Text fontWeight="bold" marginBottom={5}  fontSize={['x-small', 'medium', 'x-large']}>
                             Categorias
                         </Text>
                         <Button
@@ -94,7 +94,7 @@ export default function Posts(props: PostsProps) {
                             bgColor={'white'}
                             textColor="#303135"
                             fontWeight="medium"
-                            fontSize={['sm', 'x-small', 'medium']}
+                            fontSize={['x-small', 'medium', 'x-large']}
                         >
                             Amigos
                         </Button>
@@ -105,23 +105,22 @@ export default function Posts(props: PostsProps) {
                             bgColor={'white'}
                             color="#303135"
                             fontWeight="medium"
-                            fontSize={['sm', 'x-small', 'medium']}
+                            fontSize={['x-small', 'medium', 'x-large']}
                         >
                             Popular
                         </Button>
                         {categoryList.length > 0 &&
                             categoryList.map((category) => (
                                 <Button
-                                    justifyContent={'space-between'}
-                                    width="90%"
                                     onClick={() => setCategory(category.idPostCategory)}
-                                    marginBottom={5}
+                                    marginBottom="10%"
                                     bgColor={'white'}
                                     textColor="#303135"
-                                    fontWeight="medium"
+                                    fontWeight="light"
+                                    w="100%"
                                 >
-                                    <Image width="25%" src={category.iconImage} />
-                                    <Text fontSize={['sm', 'x-small', 'medium']}>{category.categoryName}</Text>
+                                    <Image mr="20%" width="15%" src={category.iconImage} />
+                                    <Text fontSize={['x-small', 'medium', 'x-large']}>{category.categoryName}</Text>
                                 </Button>
                             ))}
                     </List>
@@ -133,7 +132,7 @@ export default function Posts(props: PostsProps) {
                         flexDir="column"
                         bgColor="#FFFF"
                         p="1%"
-                        width="40%"
+                        width="60%"
                         borderRadius="20"
                         h="12rem"
                     >
@@ -153,19 +152,20 @@ export default function Posts(props: PostsProps) {
                             <Input
                                 width="100%"
                                 variant="filled"
+                                fontSize={['x-small', 'medium', 'x-large']}
                                 placeholder="Write in English about whatever you want!"
                                 borderRadius="100"
                             />
                         </Flex>
 
-                        <Flex flexDir={'row'} gap="3">
-                            <Menu size="100%" colorScheme={'gray'}>
-                                <MenuButton>
+                        <Flex w="100%" gap="3">
+                            <Menu size="100%" >
+                                <MenuButton >
                                     <Button
-                                        w="110%"
                                         fontWeight="medium"
                                         leftIcon={<MdOutlineCategory color="#29B995" size="1.5rem" />}
                                         justifyContent="space-between"
+                                        fontSize={['medium', 'large', 'x-large']}
                                         rightIcon={<IoMdArrowDropdown />}
                                     >
                                         *Categoria
@@ -174,7 +174,7 @@ export default function Posts(props: PostsProps) {
 
                                 <MenuButton>
                                     <Button
-                                        w="95%"
+                                        fontSize={['medium', 'large', 'x-large']}
                                         fontWeight="medium"
                                         leftIcon={<AiOutlineGlobal color="#A06BD4" size="1.5rem" />}
                                         justifyContent="space-between"
@@ -186,7 +186,7 @@ export default function Posts(props: PostsProps) {
 
                                 <MenuButton>
                                     <Button
-                                        w="80%"
+                                        fontSize={['medium', 'large', 'x-large']}
                                         fontWeight="medium"
                                         leftIcon={<BsCamera color="#2EC4F3" size="1.5rem" />}
                                         justifyContent="space-between"
@@ -196,11 +196,13 @@ export default function Posts(props: PostsProps) {
                                     ></Button>
                                 </MenuButton>
                             </Menu>
-                            <Button bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="100%">
+                            <Button fontSize={['medium', 'large', 'x-large']} bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="100%">
                                 Postar
                             </Button>
                         </Flex>
                     </Flex>
+
+                    {/* we are young */}
 
                     <Flex width="100%" flexDir="column">
                         {posts.length > 0 &&

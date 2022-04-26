@@ -115,29 +115,20 @@ export default function PublicActivities(props: PostsProps) {
             <Flex mt="6.5%" justifyContent="center"  width="100%" py="8%">
                 <Flex width="20%" p="1%" gap="20">
                     <List size="100%">
-                        <Filter></Filter>
-                        {/* <ActivitySelectFilter list={maxPriceFilterList} setHook={setMaxPriceFilter} />
-                        <ActivitySelectFilter list={difficultyList} setHook={setIdDifficultyFilter} />
-                        <ActivitySelectFilter list={orderByList} setHook={setOrderByFilter} /> */}
+                        <Filter setHookDifficulty={setIdDifficultyFilter} setHookMaxPrice={setMaxPriceFilter} setHookOrderBy={setOrderByFilter} orderByList={orderByList} maxPriceFilterList={maxPriceFilterList} difficultyList={difficultyList}  />
                     </List>
                 </Flex>
 
                 <Flex width="100%" align="center" flexDir="column">
-                    <Flex
-                        boxShadow={'md'}
-                        bgColor="#FFFF"
-                        p="1%"
-                        width="100%"
-                        borderRadius="20"
-                    >
-                        <Text>Atividades</Text>
-                        <Button bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="100%">
-                            Postar
+                    <Flex gap="15%" width="50%"align="center">
+                        <Text fontWeight="bold" fontSize={['sm', 'x-small', 'xx-large']}>Atividades</Text>
+                        <Button bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="20%" h="90%">
+                            ENSINE
                         </Button>
                         
                     </Flex>
 
-                    <Flex bgColor="#f2f" justifyContent="center" width="50%" flexDir="column">
+                    <Flex justifyContent="center" width="50%" flexDir="column">
                         {activities.length > 0 &&
                             activities.map((activity) => (
                                 <ActivityCreate

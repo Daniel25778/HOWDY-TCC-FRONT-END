@@ -21,7 +21,6 @@ interface selectData {
 export default function Filter({ orderByList,maxPriceFilterList,difficultyList,setHookOrderBy,setHookDifficulty,setHookMaxPrice,}: ActivitySelectFilterProps){
     function handleSetHookDifficult(value : string | number) {
         const orderBySelected: string | number = value;
-        console.log("eefsdfdsf" + orderBySelected);
         setHookDifficulty(orderBySelected);
     }
 

@@ -47,7 +47,8 @@ export function api() {
                     return {data: []}
                 }
 
-                return error;
+                
+                return Promise.reject(error);
             }
         );
 

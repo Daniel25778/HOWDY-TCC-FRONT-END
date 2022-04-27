@@ -2,10 +2,10 @@ import { Header } from '../components/Header/Header';
 import Post from '../components/Post/Post';
 import { useRouter } from 'next/router';
 import { api as apiFunction } from '../services/api';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getUserLogged } from '../functions/getUserLogged';
 import Loading from '../components/Loading/Loading';
-import { Button, Flex, Image, Input, List, Menu, MenuButton, Text } from '@chakra-ui/react';
+import { Button, Flex, Image, Input, List, Menu, MenuButton, MenuItem, MenuList, Select, Text,useToast } from '@chakra-ui/react';
 import { MdOutlineCategory } from 'react-icons/md';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { AiOutlineGlobal } from 'react-icons/ai';
@@ -25,6 +25,7 @@ export default function Posts(props: PostsProps) {
     }
 
     const [userLogged, setUserLogged] = useState<any>(null);
+    const toast = useToast();
 
     const api = apiFunction();
 
@@ -35,6 +36,9 @@ export default function Posts(props: PostsProps) {
     const [categoryList, setCategoryList] = useState<any[]>([]);
 
     const [friendsList, setFriendsList] = useState<any[]>([]);
+
+    const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
+    const postImageRef = useRef(null);
 
     useEffect(() => {
         getUserLogged(api).then((userLogged) => {
@@ -72,6 +76,66 @@ export default function Posts(props: PostsProps) {
                 .catch((err) => console.log(err));
         }
     }, [category, router.isFallback]);
+
+    function uploadImage() {
+        setAttachedPostImage(false);
+
+        const file = postImageRef.current.files[0];
+        const fileReader = new FileReader();
+    
+        if (file) {
+          fileReader.readAsDataURL(file);
+        }
+    
+        fileReader.onloadend = () => {
+            setAttachedPostImage(true);
+        }
+    }
+
+    function sendPost(e) {
+        e.preventDefault();
+        const inputDescriptionPost = document.getElementById('descriptionPost-input')?.value;
+        const selectCategoryPost = document.getElementById('categoryPost-select')?.value;
+        const selectVisibility = document.getElementById('visibility-select')?.value
+        console.log(inputDescriptionPost, selectCategoryPost, selectVisibility);
+        const formData = new FormData();
+        if(postImageRef.current.files.length === 1 && attachedPostImage !== false) 
+        
+        formData.append("imageContent", postImageRef.current.files[0]);
+        formData.append("textContent", inputDescriptionPost);
+        console.log(selectCategoryPost)
+        switch (selectCategoryPost) {
+            case 'Esportes':
+                formData.append("idPostCategory", "1");
+            case 'Notícias':
+                formData.append("idPostCategory", "2");
+            case 'Jogos':
+                formData.append("idPostCategory", "3"); 
+            case 'Filmes':
+                formData.append("idPostCategory", "4");
+            case 'Moda':
+                formData.append("idPostCategory", "5"); 
+            case 'Dúvidas':
+                formData.append("idPostCategory", "6");  
+        }
+        formData.append("isPublic", selectVisibility);
+
+        api.post(`posts`, formData).then((response) => {
+            console.log('res', response);
+        }).catch((error) =>{
+        switch(error.response.data.error){
+            case 'The text is not written according to the language you want to learn':
+                toast({
+                    title: 'A DESCRIÇÃO DA POSTAGEM DEVE SER ESCRITA NA SUA LÍNGUA DE INTERESSE',
+                    status: 'error',
+                    isClosable: true,
+                    position: 'top',
+                }); 
+            break;
+        }
+        });
+    }
+        
 
     return (
         <>
@@ -152,51 +216,43 @@ export default function Posts(props: PostsProps) {
                             <Input
                                 width="100%"
                                 variant="filled"
+                                type="text"
                                 fontSize={['x-small', 'medium', 'x-large']}
                                 placeholder="Write in English about whatever you want!"
                                 borderRadius="100"
+                                id='descriptionPost-input'
                             />
                         </Flex>
 
                         <Flex w="100%" gap="3">
-                            <Menu size="100%" >
-                                <MenuButton >
-                                    <Button
-                                        fontWeight="medium"
-                                        leftIcon={<MdOutlineCategory color="#29B995" size="1.5rem" />}
-                                        justifyContent="space-between"
-                                        fontSize={['medium', 'large', 'x-large']}
-                                        rightIcon={<IoMdArrowDropdown />}
-                                    >
-                                        *Categoria
-                                    </Button>
-                                </MenuButton>
+                            <Input
+                                type="file"
+                                display="none"
+                                ref={postImageRef}
+                                onChange={uploadImage}
+                            />
 
-                                <MenuButton>
-                                    <Button
-                                        fontSize={['medium', 'large', 'x-large']}
-                                        fontWeight="medium"
-                                        leftIcon={<AiOutlineGlobal color="#A06BD4" size="1.5rem" />}
-                                        justifyContent="space-between"
-                                        rightIcon={<IoMdArrowDropdown />}
-                                    >
-                                        *Visibilidade
-                                    </Button>
-                                </MenuButton>
+                            <Select id="categoryPost-select" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} variant='filled' placeholder='Categoria'>
+                                    {categoryList.length > 0 &&
+                                        categoryList.map((category) => (
+                                        <option>{category.categoryName}</option>
+                                    ))} 
+                            </Select>
 
-                                <MenuButton>
-                                    <Button
-                                        fontSize={['medium', 'large', 'x-large']}
-                                        fontWeight="medium"
-                                        leftIcon={<BsCamera color="#2EC4F3" size="1.5rem" />}
-                                        justifyContent="space-between"
-                                        px="5"
-                                        rightIcon={<IoMdArrowDropdown />}
-                                        textAlign="start"
-                                    ></Button>
-                                </MenuButton>
-                            </Menu>
-                            <Button fontSize={['medium', 'large', 'x-large']} bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="100%">
+                            <Select id="visibility-select" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} variant='filled' placeholder='Visibilidade'>
+                                <option value='true'>Público</option>
+                                <option value='false'>Privado</option>
+                            </Select>
+                    
+                            <Button
+                                onClick={() => {
+                                console.log(`Teste`)
+                                postImageRef.current.click();
+                                }}> 
+                                {<BsCamera color="#2EC4F3" size="5rem" />}
+                            </Button>
+
+                            <Button fontSize={['medium', 'large', 'x-large']} bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="100%" onClick={sendPost}>
                                 Postar
                             </Button>
                         </Flex>

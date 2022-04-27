@@ -12,19 +12,19 @@ export default function Footer(){
 
                 <Flex w="100%" align="center" justifyContent="center">
                     <Flex w="30%" align="center" justifyContent="space-between">
-                        <ChakraLink color="howdyColors.mainBlack" opacity="60%" fontWeight="medium" fontSize={['sm', 'md', 'x-large']}>
+                        <ChakraLink color="howdyColors.mainBlack" opacity="60%" fontWeight="medium" fontSize={['sm', 'md', 'xx-large']}>
                             <Link href="/AboutUs">
                                Sobre nós
                             </Link>
                         </ChakraLink>
 
-                        <ChakraLink color="howdyColors.mainBlack" opacity="60%" fontWeight="medium" fontSize={['sm', 'md', 'x-large']}>
+                        <ChakraLink color="howdyColors.mainBlack" opacity="60%" fontWeight="medium" fontSize={['sm', 'md', 'xx-large']}>
                             <Link href="/AboutUs">
                               Termos de uso
                             </Link>
                         </ChakraLink>
 
-                        <ChakraLink color="howdyColors.mainBlack" opacity="60%" fontWeight="medium" fontSize={['sm', 'md', 'x-large']}>
+                        <ChakraLink color="howdyColors.mainBlack" opacity="60%" fontWeight="medium" fontSize={['sm', 'md', 'xx-large']}>
                             <Link href="/AboutUs">
                               Docentes
                             </Link>

@@ -1,22 +1,15 @@
-import { Box, Flex, Grid, Icon, IconButton, Image, Text, useToast } from '@chakra-ui/react';
+import { Box, Grid, useToast } from '@chakra-ui/react';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
-import { MdTranslate } from 'react-icons/md';
 import { Header } from '../../../components/Header/Header';
 import Loading from '../../../components/Loading/Loading';
 import { NavLink } from '../../../components/NavLink/UserPage/NavLink';
 import UserDataPage from '../../../components/UserDataPage/UserDataPage';
 import { getUserLogged } from '../../../functions/getUserLogged';
 import { api as apiFunction } from '../../../services/api';
-import { api } from '../../../services/api';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Post from '../../../components/Post/Post';
-import { isUndefined } from 'util';
-import Filter from '../../../components/Filter/Filter';
-import Commentary from '../../../components/Comments/Comments';
-import { UserLogged } from '../../../interfaces/UserLogged';
 
 
 interface PostUserPageProps {

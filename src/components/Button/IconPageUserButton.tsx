@@ -9,9 +9,11 @@ interface FriendshipButtonProps {
     bg: string;
     color: string;
     icon: ReactElement<any, string | JSXElementConstructor<any>>;
+    display: string;
+    onclick?: any;
 }
 
-export function IconPageUserButton({ bg, color, icon }: FriendshipButtonProps) {
+export function IconPageUserButton({ bg, color, icon, display,onclick }: FriendshipButtonProps) {
     return (
         <IconButton
             h="80px"
@@ -26,6 +28,8 @@ export function IconPageUserButton({ bg, color, icon }: FriendshipButtonProps) {
             bg={bg}
             color={color}
             icon={icon}
+            display={display}
+            onClick={onclick}
         />
     );
 }

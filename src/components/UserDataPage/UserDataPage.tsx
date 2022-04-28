@@ -16,6 +16,9 @@ import { api as apiFunction } from '../../services/api';
 
 interface UserDataPageProps {
     user?: any;
+    stateButton?: string;
+    stateFlexButton: string;
+    idUser?: any;
 }
 //DADOS RETORNADOS PELO O FIREBASE
 
@@ -36,12 +39,10 @@ interface UserDataPageProps {
 // xpCharts:
 // monthly: (30) [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 // weekly: (7) [0, 0, 0, 0, 0, 0, 0]
-export default function UserDataPage({user}: UserDataPageProps) {
+export default function UserDataPage({user, stateButton,stateFlexButton,idUser}: UserDataPageProps) {
 
     //const createdAt = new Date(user.createdAt);
-    
-    
-    
+
     const weeklyXpSeries = [
 
         { 
@@ -55,6 +56,8 @@ export default function UserDataPage({user}: UserDataPageProps) {
             data: user.xpCharts?.monthly
 
         }];
+
+  
 
     return (
         <>
@@ -78,7 +81,7 @@ export default function UserDataPage({user}: UserDataPageProps) {
                         {user.description}
                         </Text>
                     </Box>
-                    <FriendshipButton idUser={1} />
+                    <FriendshipButton idUserFriend={idUser} stateFlexButton={stateFlexButton} stateButton={stateButton} idUser={user.idUser} />
                 </Flex>
                 <Box bg="howdyColors.divider" h="1px" w="100%" mb="70" />
             </Box>

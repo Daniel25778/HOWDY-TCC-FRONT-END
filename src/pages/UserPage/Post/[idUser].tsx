@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Icon, IconButton, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Grid, Icon, IconButton, Image, Text, useToast } from '@chakra-ui/react';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
@@ -29,10 +29,15 @@ export default  function PostPage(props: PostUserPageProps) {
     const { idUser } = props;
 
     const api = apiFunction();
+    const toast = useToast();
 
     const [user, setUser] = useState<any>('nulo');
 
     const [userPosts, setUserPosts] = useState<any>('nulo');
+
+    const [stateFlexButton, setStateFlexButton] = useState<any>('flex');
+
+    const [stateButton, setStateButton] = useState<string>(null);  
 
 
     
@@ -42,7 +47,29 @@ export default  function PostPage(props: PostUserPageProps) {
         if(!router.isFallback) {
             getUserLogged(api).then((res) => {
                 setUserLogged(res);
-            });
+                
+                api.get(`friendships/isUserMyFriend/${idUser}`).then((res) => {
+                    if(res.data?.message == 'You are not your own friend ;-;'){
+                        console.log('You are not your own friend ;-;');
+                       setStateFlexButton("none")
+                    }else if(res.data.isPending == 0){
+                        setStateButton('areFriends');
+                    }else {
+                        setStateButton('friendShipRequestIsPending');
+                        console.log('This user isggg not your friend ;-;');
+                    }
+                    }).catch((error) =>{
+                        switch(error.response.data.error){
+                            case 'This user is not your friend ;-;':
+                                setStateButton('userIsNotFriend');
+                                console.log('This user isgg not your friend ;-;');
+                            break;
+                        }
+                        });
+            })
+
+            //Resgatar status de amizade do usuario logado
+            
 
             //Pegar usuario atraves do id
 
@@ -67,6 +94,8 @@ export default  function PostPage(props: PostUserPageProps) {
         )
       }
 
+      
+
     return (
         <>
             <Head>
@@ -75,7 +104,7 @@ export default  function PostPage(props: PostUserPageProps) {
                    
             <Header user={userLogged} />
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
-                <UserDataPage user={user}/>
+                <UserDataPage idUser={idUser} stateFlexButton={stateFlexButton} stateButton={stateButton} user={user}/>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                     <NavLink href={`/UserPage/Post/${idUser}`} title="Postagens"></NavLink>
                     <NavLink href={`/UserPage/Friends/${idUser}`} title="Amigos"></NavLink>
@@ -87,7 +116,6 @@ export default  function PostPage(props: PostUserPageProps) {
                         <Post  key={post.id} post={post} userCreator={user} />
                     ))
                 }
-                {/* <Comments></Comments> */}
             </Box>
         </>
     );

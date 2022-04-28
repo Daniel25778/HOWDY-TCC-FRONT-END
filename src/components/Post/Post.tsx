@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, IconButton, Image, Input, InputGroup, Text,useToast } from "@chakra-ui/react";
+import { Button, Flex, Icon, IconButton, Image, Input, InputGroup, Text, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { MdTranslate } from "react-icons/md";
@@ -18,8 +18,8 @@ interface PostProps {
     userLogged?: any;
 }
 
-export default function Post({userCreator, post, userLogged}: PostProps){
-    const createdAt = new Date(post.createdAt).toLocaleDateString('pt-BR',{
+export default function Post({ userCreator, post, userLogged }: PostProps) {
+    const createdAt = new Date(post.createdAt).toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
@@ -28,44 +28,46 @@ export default function Post({userCreator, post, userLogged}: PostProps){
     const [comments, setComments] = useState<any>([]);
     const [display, setDisplay] = useState<any>("none");
     const [colorIconMessage, setColorIconMessage] = useState<any>("howdyColors.mainBlue");
+    const [colorIconHeart, setColorIconHeart] = useState<any>("howdyColors.mainBlue");
     const [colorBoxMessage, setColorBoxMessage] = useState<any>("#fff");
+    const [totalLikes, setTotalLikes] = useState<any>(post.totalLikes);
     const router = useRouter();
     let api = apiFunction();
     const toast = useToast();
-   
-    
-    function handleAccessToProfile(){
+
+
+    function handleAccessToProfile() {
         Router.push(`/UserPage/Post/${post.userCreator.idUser}`)
     }
 
-    function handleAccessComments(){
-       setDisplay("flex")
-       setColorIconMessage("howdyColors.mainWhite");
-       setColorBoxMessage("howdyColors.mainBlue");
-       
-       //Pegar comentarios atraves do id da postagem
-       
-           api.get(`posts/commentary/${post.idPost}`).then(response => {
-               setComments(response.data)
-          }).catch(err => console.log(err))
+    function handleAccessComments() {
+        setDisplay("flex")
+        setColorIconMessage("howdyColors.mainWhite");
+        setColorBoxMessage("howdyColors.mainBlue");
+
+        //Pegar comentarios atraves do id da postagem
+
+        api.get(`posts/commentary/${post.idPost}`).then(response => {
+            setComments(response.data)
+        }).catch(err => console.log(err))
     }
 
-    function handleSendComment(){
+    function handleSendComment() {
         const commentary = document.getElementById('comment-input')?.value;
         console.log(commentary)
-        if(!router.isFallback){
-                api.post(`posts/commentary/${post.idPost}`, {
-                   textContent: commentary,
-                })
+        if (!router.isFallback) {
+            api.post(`posts/commentary/${post.idPost}`, {
+                textContent: commentary,
+            })
                 .then((response: any) => {
                     setComments([...comments, {
                         commenter: userLogged,
                         idPostCommentary: response.data.insertId,
                         textCommentary: commentary,
                         postCommentaryCreatedAt: new Date().toISOString().slice(0, 10),
-                        postCommentaryEditedAt: null 
+                        postCommentaryEditedAt: null
                     }]);
-                    
+
                     toast({
                         title: 'COMENTÁRIO CRIADO COM SUCESSO!',
                         status: 'success',
@@ -84,48 +86,60 @@ export default function Post({userCreator, post, userLogged}: PostProps){
                 });
         }
     }
-    
 
-    return(
+    function handleLike() {
+        setColorIconHeart("howdyColors.mainRed");
+        if (!router.isFallback) {
+            api.post(`posts/like/${post.idPost}`).then(response => {
+                setTotalLikes(totalLikes + 1)
+                console.log('foi')
+
+            }
+            ).catch(err => console.log(err))
+        }
+    }
+
+
+    return (
         <>
-                <Flex  width="100%" align={'center'} mt="5%" flexDir="column">
+            <Flex width="100%" align={'center'} mt="5%" flexDir="column">
                 <Flex mb="1%" gap="3%" width="40%">
                     <Flex>
-                        <Image 
+                        <Image
                             borderRadius="100%"
                             height="5rem"
                             objectFit="cover"
                             src={userCreator?.profilePhoto}
                             alt="profilePhoto"
-                            _hover={{cursor: 'pointer'}}
+                            _hover={{ cursor: 'pointer' }}
                             onClick={handleAccessToProfile}
                         ></Image>
                     </Flex>
                     <Flex>
                         <Flex flexDir="column">
                             <Flex align="center" gap="1%">
-                                <Text 
+                                <Text
                                     color="howdyColors.mainBlack"
                                     fontWeight={'bold'}
                                     fontSize={['sm', 'md', 'x-large']}
                                 >
                                     {userCreator.userName}
                                 </Text>
-                                <Text  color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'md']}>
+                                <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'md']}>
                                     {' '}
                                     ● {createdAt}
                                 </Text>
                             </Flex>
                             <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
-                               {post.textContent}
+                                {post.textContent}
                             </Text>
-                            <IconButton 
+                            <IconButton
                                 w="10%"
                                 aria-label="Open navigation"
                                 bgColor="howdyColors.mainBlue"
                                 borderRadius="15"
                                 icon={
-                                    <Icon 
+                                    <Icon
                                         opacity="2"
                                         as={MdTranslate}
                                         color="howdyColors.mainWhite"
@@ -136,14 +150,12 @@ export default function Post({userCreator, post, userLogged}: PostProps){
                         </Flex>
                     </Flex>
                 </Flex>
-                <Flex mb="1%">
+                <Flex w="40%" mb="1%">
                     <Image
                         borderRadius="50"
-                        height="25rem"
-                        w="50rem"
-                     
-                        src={post.imageContent}
-                        alt="f"
+                        w="100%"
+                        h="100%"
+                        src={post?.imageContent}
                     ></Image>
                 </Flex>
                 <Flex justify="space-between" align="center" width="20%">
@@ -153,8 +165,8 @@ export default function Post({userCreator, post, userLogged}: PostProps){
                             aria-label="Open navigation"
                             bgColor="#ffffff00"
                             borderRadius="15"
-                            onClick ={() => {handleAccessComments()}}
-                            _hover={{cursor: 'pointer'}}
+                            onClick={() => { handleAccessComments() }}
+                            _hover={{ cursor: 'pointer' }}
                             icon={
                                 <Icon
                                     opacity="2"
@@ -164,7 +176,7 @@ export default function Post({userCreator, post, userLogged}: PostProps){
                                 />
                             }
                         ></IconButton>
-                        <Text  color={colorIconMessage} fontSize={['sm', 'md', 'md']}>
+                        <Text color={colorIconMessage} fontSize={['sm', 'md', 'md']}>
                             {post.totalComments}
                         </Text>
                     </Flex>
@@ -175,28 +187,30 @@ export default function Post({userCreator, post, userLogged}: PostProps){
                             aria-label="Open navigation"
                             bgColor="#ffffff33"
                             borderRadius="15"
+                            onClick={() => { handleLike() }}
+                            _hover={{ cursor: 'pointer' }}
                             icon={
                                 <Icon
                                     opacity="2"
                                     as={AiOutlineHeart}
-                                    color="howdyColors.mainBlue"
+                                    color={colorIconHeart}
                                     fontSize={'x-large'}
                                 />
                             }
                         ></IconButton>
                         <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
-                            1 mil
+                            {totalLikes}
                         </Text>
                     </Flex>
                 </Flex>
                 <Flex p="1%" flexDir="column" borderRadius="12" bgColor="howdyColors.mainBlue" display={display} justifyContent="center" width="50%">
-                    {   
+                    {
                         comments.length > 0 && comments?.map(commentary => (
-                            <Commentary key={commentary.idPostCommentary} commentary={commentary}/> 
+                            <Commentary key={commentary.idPostCommentary} commentary={commentary} />
                         ))
-                    } 
+                    }
                     <Flex gap="2%" align="center" w="100%">
-                        <Image borderRadius="100%" width="10%" maxWidth={500}  src={userLogged?.profilePhoto}/>
+                        <Image borderRadius="100%" width="10%" maxWidth={500} src={userLogged?.profilePhoto} />
                         <InputGroup h="60%" width="70%" variant="unstyled">
                             <Input
                                 fontSize={['sm', 'md', 'x-large']}
@@ -207,12 +221,12 @@ export default function Post({userCreator, post, userLogged}: PostProps){
                                 type="text"
                                 focusBorderColor="howdyColors.mainWhite"
                                 borderRadius="100px"
-                                id='comment-input' 
+                                id='comment-input'
                             />
                         </InputGroup>
-                        <Button onClick={handleSendComment}  bgColor='#fff3' textColor={'howdyColors.mainWhite'} w="20%">Comentar</Button>
+                        <Button onClick={handleSendComment} bgColor='#fff3' textColor={'howdyColors.mainWhite'} w="20%">Comentar</Button>
                     </Flex>
-                    
+
                 </Flex>
             </Flex>
         </>

@@ -19,7 +19,6 @@ interface FriendshipButtonProps {
 
 export function FriendshipButton({ idUser, stateButton,stateFlexButton,idUserFriend }: FriendshipButtonProps) {
 
-    const router = useRouter();
     const api = apiFunction();
 
     function handleDeleteFriendship(){
@@ -31,26 +30,18 @@ export function FriendshipButton({ idUser, stateButton,stateFlexButton,idUserFri
     function handleAcceptFriendship(){
         api.put(`friendships/accept/${idUserFriend}`).then(response => {
             console.log(response);
-        });
+        }).catch(error => {
+            console.log(error.message);
+        })
     }
 
-    
-  
-        // useEffect(() => {
-        //     if(!router.isFallback) {
-        //         api.delete(`friendships/${idUserFriend}`).then(response => {
-        //             console.log(response);
-        //         });    
-        //     }
-            
-        // } , [router.isFallback]);
-        
-        // if (router.isFallback) {
-        //     return (
-        //         <Loading />
-        //     )
-        //   }
-    
+    function handleSendFriendship(){
+        api.post(`friendships/${idUserFriend}`).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
 
     return (
         <>
@@ -59,7 +50,7 @@ export function FriendshipButton({ idUser, stateButton,stateFlexButton,idUserFri
                     display={stateFlexButton}
                     bg="howdyColors.mainGreenTransparent"
                     color="howdyColors.mainGreen"
-                    onclick={handleAcceptFriendship}
+                    onclick={handleSendFriendship}
                     icon={<Icon opacity="2" as={BsPersonPlus} fontWeight="black" />}
                 />
             ) : stateButton == 'areFriends' ? (
@@ -70,14 +61,15 @@ export function FriendshipButton({ idUser, stateButton,stateFlexButton,idUserFri
                     icon={<Icon opacity="2" as={BsPersonDash} fontWeight="black" />}
                     onclick={handleDeleteFriendship}
                 />
-            ) : stateButton == 'sendFriendShipRequest' ? (
+            ) : stateButton == 'cancelFriendshipRequest' ? (
                 <IconPageUserButton
                     display={stateFlexButton}
                     bg="howdyColors.mainRedTransparent"
                     color="howdyColors.mainRed"
+                    onclick={handleDeleteFriendship}
                     icon={<Icon opacity="2" as={MdOutlinePersonAddDisabled} fontWeight="black" />}
                 />
-            ) : (
+            ) : stateButton == 'acceptOrDeclineFriendshipRequest' && (
                 <Box w="80px" ml="10%">
                     <IconButton
                         display={stateFlexButton}
@@ -91,6 +83,7 @@ export function FriendshipButton({ idUser, stateButton,stateFlexButton,idUserFri
                         fontSize="40px"
                         bg="howdyColors.mainGreenTransparent"
                         color="howdyColors.mainGreen"
+                        onClick={handleAcceptFriendship}
                         icon={<Icon opacity="2" as={BiCheck} fontWeight="black" />}
                     />
                     <IconButton
@@ -102,6 +95,7 @@ export function FriendshipButton({ idUser, stateButton,stateFlexButton,idUserFri
                         variant="unstyled"
                         aria-label="Open navigation"
                         pt="10px"
+                        onClick={handleDeleteFriendship}
                         fontSize="40px"
                         bg="howdyColors.mainRedTransparent"
                         color="howdyColors.mainRed"

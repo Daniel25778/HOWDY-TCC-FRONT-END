@@ -35,6 +35,7 @@ export default function Posts(props: PostsProps) {
 
     const [categoryList, setCategoryList] = useState<any[]>([]);
 
+
     const [friendsList, setFriendsList] = useState<any[]>([]);
 
     const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
@@ -99,6 +100,7 @@ export default function Posts(props: PostsProps) {
         const selectVisibility = document.getElementById('visibility-select')?.value
         console.log(inputDescriptionPost, selectCategoryPost, selectVisibility);
         const formData = new FormData();
+        
         if(postImageRef.current.files.length === 1 && attachedPostImage !== false) 
         
         formData.append("imageContent", postImageRef.current.files[0]);
@@ -238,7 +240,7 @@ export default function Posts(props: PostsProps) {
                                 onChange={uploadImage}
                             />
 
-                            <Select id="categoryPost-select" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} variant='filled' placeholder='Categoria'>
+                            <Select  id="categoryPost-select" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} variant='filled' placeholder='Categoria'>
                                     {categoryList.length > 0 &&
                                         categoryList.map((category) => (
                                         <option>{category.categoryName}</option>
@@ -258,7 +260,8 @@ export default function Posts(props: PostsProps) {
                                 {<BsCamera color="#2EC4F3" size="5rem" />}
                             </Button>
 
-                            <Button fontSize={['medium', 'large', 'x-large']} bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="100%" onClick={sendPost}>
+                            <Button fontSize={['medium', 'large', 'x-large']} bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="100%" 
+                            onClick={sendPost}>
                                 Postar
                             </Button>
                         </Flex>

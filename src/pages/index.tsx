@@ -4,16 +4,19 @@ import { FormLogin } from '../components/Form/FormLogin';
 import { Flex, Text,Image, Heading, Button, Grid, SimpleGrid, Box} from '@chakra-ui/react';
 import PageCadastro from './register/[isLogged]';
 import { HeaderNotLogged } from '../components/Header/HeaderNotLogged';
+import { useSpring, animated as a } from 'react-spring'
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 import styles from "../styles/swiper.module.scss";
 import { SiVerizon} from 'react-icons/si';
+
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Router from 'next/router';
+
 
 // import Swiper core and required modules
 import SwiperCore, { Pagination, Navigation, Scrollbar, A11y, Autoplay } from 'swiper';
@@ -33,6 +36,8 @@ SwiperCore.use([Pagination, Navigation, Scrollbar, A11y, Autoplay]);
 interface HomeProps {
     user?: any;
 }
+
+
 
 export default function Home(props) {
     const router = useRouter();
@@ -58,6 +63,8 @@ const monthlyXpSeries = [
         data: registerChart
 
     }];
+
+    
     
     return (
         <>
@@ -125,6 +132,7 @@ const monthlyXpSeries = [
 
                     <Flex h={1200} w="100%" >
                         <Flex align="center"  flexDir="column" w="50%">
+                            
                             <Image
                                 w="100%"
                                 h="40%"
@@ -144,7 +152,7 @@ const monthlyXpSeries = [
                             </Grid>
                         </Flex> 
 
-                        <Flex align="center" flexDir="column" w="50%">
+                        <Flex  align="center" flexDir="column" w="50%">
                             <Image
                                 w="100%"
                                 h="40%"

@@ -107,16 +107,22 @@ export default function Posts(props: PostsProps) {
         switch (selectCategoryPost) {
             case 'Esportes':
                 formData.append("idPostCategory", "1");
+                break
             case 'Notícias':
                 formData.append("idPostCategory", "2");
+                break
             case 'Jogos':
                 formData.append("idPostCategory", "3"); 
+                break
             case 'Filmes':
                 formData.append("idPostCategory", "4");
+                break
             case 'Moda':
-                formData.append("idPostCategory", "5"); 
+                formData.append("idPostCategory", "5");
+                break
             case 'Dúvidas':
-                formData.append("idPostCategory", "6");  
+                formData.append("idPostCategory", "6"); 
+                break
         }
         formData.append("isPublic", selectVisibility);
 

@@ -204,8 +204,6 @@ export default function PageUserConfig() {
 
                 <Input onChange={handleChange} type={'file'}></Input>
                 <Button onClick={handleUpload}></Button>
-                <Text>{url}</Text>
-                <progress value={progress} max="100"></progress>
                 <Image src={url}></Image>
 
                 <Flex justify={'center'} align="center" position={'relative'} flexDir={'column'} bottom="2vw">

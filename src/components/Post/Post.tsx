@@ -31,7 +31,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     const [comments, setComments] = useState<any>([]);
     const [display, setDisplay] = useState<any>("none");
     const [colorIconMessage, setColorIconMessage] = useState<any>("howdyColors.mainBlue");
-    const [colorIconHeart, setColorIconHeart] = useState<any>("howdyColors.mainBlue");
+    const [liked, setLiked] = useState<boolean>(post.liked);
     const [colorBoxMessage, setColorBoxMessage] = useState<any>("#fff");
     const [totalLikes, setTotalLikes] = useState<any>(post.totalLikes);
     const [postTextContentTraduct, setPostTextContentTraduct] = useState<any>(null);
@@ -57,6 +57,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     }
 
     function handleSendComment() {
+        //@ts-ignore
         const commentary = document.getElementById('comment-input')?.value;
         console.log(commentary)
         if (!router.isFallback) {
@@ -92,12 +93,20 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     }
 
     function handleLike() {
-        setColorIconHeart("howdyColors.mainRed");
         if (!router.isFallback) {
             api.post(`posts/like/${post.idPost}`).then(response => {
                 setTotalLikes(totalLikes + 1)
-                console.log('foi')
+                setLiked(true)
+            }
+            ).catch(err => console.log(err))
+        }
+    }
 
+    function handleUnlike() {
+        if (!router.isFallback) {
+            api.delete(`posts/like/${post.idPost}`).then(response => {
+                setTotalLikes(totalLikes - 1)
+                setLiked(false)
             }
             ).catch(err => console.log(err))
         }
@@ -220,7 +229,22 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                     </Flex>
 
                     <Flex gap="10%" w="20%" align="center">
-                        <IconButton
+                    {liked ? (<IconButton
+                            w="10%"
+                            aria-label="Open navigation"
+                            bgColor="#ffffff33"
+                            borderRadius="15"
+                            onClick={() => { handleUnlike() }}
+                            _hover={{ cursor: 'pointer' }}
+                            icon={
+                                <Icon
+                                    opacity="2"
+                                    as={AiOutlineHeart}
+                                    color={'howdyColors.mainRed'}
+                                    fontSize={'x-large'}
+                                />
+                            }
+                        ></IconButton>) : (<IconButton
                             w="10%"
                             aria-label="Open navigation"
                             bgColor="#ffffff33"
@@ -231,11 +255,11 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                                 <Icon
                                     opacity="2"
                                     as={AiOutlineHeart}
-                                    color={colorIconHeart}
+                                    color={'howdyColors.mainBlue'}
                                     fontSize={'x-large'}
                                 />
                             }
-                        ></IconButton>
+                        ></IconButton>)}
                         <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
                             {totalLikes}
                         </Text>

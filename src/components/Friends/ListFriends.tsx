@@ -4,7 +4,7 @@ import { MouseEventHandler } from 'react';
 interface ListFriendsProps {
     friendName?: string;
     friendProfilePhoto?: string;
-    onClick: MouseEventHandler<HTMLImageElement>;
+    onClick?: MouseEventHandler<HTMLImageElement>;
 }
 
 export default function ListFriends(props: ListFriendsProps) {

@@ -12,6 +12,7 @@ import Head from 'next/head';
 import ListFriends from '../components/Friends/ListFriends';
 import { io } from 'socket.io-client';
 import { parseCookies } from 'nookies';
+import Chat from '../components/Chat/Chat';
 const socket = io('http://localhost:3333');
 
 interface PostsProps {
@@ -45,6 +46,7 @@ export default function Posts(props: PostsProps) {
     const [categoryList, setCategoryList] = useState<any[]>([]);
 
     const [friendsList, setFriendsList] = useState<any[]>([]);
+    const [friendForChat, setFriendForChat] = useState<any>(null);
 
     const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
 
@@ -88,6 +90,7 @@ export default function Posts(props: PostsProps) {
                 .catch((err) => console.log(err));
         }
     }, [category, router.isFallback]);
+    
 
     function uploadImage() {
         setAttachedPostImage(false);
@@ -131,6 +134,8 @@ export default function Posts(props: PostsProps) {
 
         socket.emit('sendMessage', messageObject);
     }
+
+    
 
     function sendPost(e) {
         e.preventDefault();
@@ -339,15 +344,21 @@ export default function Posts(props: PostsProps) {
                     </Flex>
                 </Flex>
 
-                <Flex flexDir="column" p="1%" bgColor="#29B995" h="70%" width="15%">
+                <Flex flexDir="column" p="1%" bgColor="#29B9" h="70%" width="15%">
                     <Flex alignItems="center" width="50%" h="20%" justify="center">
                         <Text fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']}>
                             Amigos{' '}
                         </Text>
                         <BsPeople size="40%" />
-                    </Flex>
+                    </Flex> 
+
+                    
+
+                    <Chat messages={messages}></Chat>
+                   
                     {friendsList.length > 0 &&
                         friendsList.map((friend) => (
+                            
                             <ListFriends
                                 onClick={() => {
                                     openChat(friend);

@@ -8,9 +8,6 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Commentary from "../Comments/Comments";
 import { useRouter } from 'next/router';
 import { api as apiFunction } from '../../services/api';
-import { createInflateRaw } from "zlib";
-import { Manipulation } from "swiper";
-import { FaLongArrowAltDown } from "react-icons/fa";
 
 interface PostProps {
     userCreator: any;
@@ -29,8 +26,9 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     const [displayTextContentPostTraduct, setDisplayTextContentPostTraduct] = useState<any>("none");
 
     const [comments, setComments] = useState<any>([]);
+    const [totalComments, setTotalComments] = useState<number>(post.totalComments);
     const [display, setDisplay] = useState<any>("none");
-    const [colorIconMessage, setColorIconMessage] = useState<any>("howdyColors.mainBlue");
+    const [isCommentBlockOpen, setIsCommentBlockOpen] = useState<boolean>(false);
     const [liked, setLiked] = useState<boolean>(post.liked);
     const [colorBoxMessage, setColorBoxMessage] = useState<any>("#fff");
     const [totalLikes, setTotalLikes] = useState<any>(post.totalLikes);
@@ -45,15 +43,19 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     }
 
     function handleAccessComments() {
-        setDisplay("flex")
-        setColorIconMessage("howdyColors.mainWhite");
-        setColorBoxMessage("howdyColors.mainBlue");
+        setIsCommentBlockOpen(true)
+        setDisplay("flex");
 
         //Pegar comentarios atraves do id da postagem
 
         api.get(`posts/commentary/${post.idPost}`).then(response => {
             setComments(response.data)
         }).catch(err => console.log(err))
+    }
+
+    function handleCloseComments() {
+        setIsCommentBlockOpen(false)
+        setDisplay("none");
     }
 
     function handleSendComment() {
@@ -65,13 +67,15 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                 textContent: commentary,
             })
                 .then((response: any) => {
-                    setComments([...comments, {
+                    setTotalComments(comments.length + 1)
+
+                    setComments([{
                         commenter: userLogged,
                         idPostCommentary: response.data.insertId,
                         textCommentary: commentary,
                         postCommentaryCreatedAt: new Date().toISOString().slice(0, 10),
                         postCommentaryEditedAt: null
-                    }]);
+                    },...comments,]);
 
                     toast({
                         title: 'COMENTÁRIO CRIADO COM SUCESSO!',
@@ -206,25 +210,40 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                     ></Image>
                 </Flex>
                 <Flex justify="space-between" align="center" width="20%">
-                    <Flex align="center" h="100%" borderRadius="100px 100px 0px 0px" bgColor={colorBoxMessage} justifyContent="center" gap="10%" w="40%">
-                        <IconButton
+                    <Flex align="center" h="100%" borderRadius="100px 100px 0px 0px" bgColor={isCommentBlockOpen ? 'howdyColors.mainBlue' : 'howdyColors.mainWhite'} justifyContent="center" gap="10%" w="40%">
+                        {isCommentBlockOpen ? (<IconButton
                             w="10%"
                             aria-label="Open navigation"
                             bgColor="#ffffff00"
                             borderRadius="15"
-                            onClick={() => { handleAccessComments() }}
+                            onClick={handleCloseComments}
                             _hover={{ cursor: 'pointer' }}
                             icon={
                                 <Icon
                                     opacity="2"
                                     as={AiOutlineMessage}
-                                    color={colorIconMessage}
+                                    color={'howdyColors.mainWhite'}
                                     fontSize={'x-large'}
                                 />
                             }
-                        ></IconButton>
-                        <Text color={colorIconMessage} fontSize={['sm', 'md', 'md']}>
-                            {post.totalComments}
+                        />) : (<IconButton
+                            w="10%"
+                            aria-label="Open navigation"
+                            bgColor="#ffffff00"
+                            borderRadius="15"
+                            onClick={handleAccessComments}
+                            _hover={{ cursor: 'pointer' }}
+                            icon={
+                                <Icon
+                                    opacity="2"
+                                    as={AiOutlineMessage}
+                                    color='howdyColors.mainBlue'
+                                    fontSize={'x-large'}
+                                />
+                            }
+                        />)}
+                        <Text color={isCommentBlockOpen ? 'howdyColors.mainWhite' : 'howdyColors.mainBlack'}  fontSize={['sm', 'md', 'md']}>
+                            {totalComments}
                         </Text>
                     </Flex>
 
@@ -244,7 +263,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                                     fontSize={'x-large'}
                                 />
                             }
-                        ></IconButton>) : (<IconButton
+                        />) : (<IconButton
                             w="10%"
                             aria-label="Open navigation"
                             bgColor="#ffffff33"
@@ -260,7 +279,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                                 />
                             }
                         ></IconButton>)}
-                        <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
+                        <Text color='howdyColors.mainBlack' fontSize={['sm', 'md', 'md']}>
                             {totalLikes}
                         </Text>
                     </Flex>

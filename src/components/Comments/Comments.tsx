@@ -1,12 +1,12 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { Dispatch, SetStateAction } from "react";
 
 interface CommentaryProps {
     commentary?: any;
 }
 
 export default function Commentary(props: CommentaryProps){
-    console.log(props.commentary.commenter.profilePhoto);
     const createdAt = new Date(props.commentary?.postCommentaryCreatedAt).toLocaleDateString('pt-BR',{
         day: '2-digit',
         month: 'short',

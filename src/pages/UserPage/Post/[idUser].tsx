@@ -11,7 +11,6 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Post from '../../../components/Post/Post';
 
-
 interface PostUserPageProps {
     idUser: string;
 }
@@ -31,71 +30,58 @@ export default function PostPage(props: PostUserPageProps) {
 
     const [stateFlexButton, setStateFlexButton] = useState<any>('flex');
 
-    const [stateButton, setStateButton] = useState<string>(null);
-
-
-
-
+    const [friendshipState, setFriendshipState] = useState<string>(null);
 
     useEffect(() => {
         if (!router.isFallback) {
-            getUserLogged(api).then((res) => {
+            getUserLogged(api).then((userLogged) => {
+                setUserLogged(userLogged);
 
-                setUserLogged(res);
-
-
-                api.get(`friendships/isUserMyFriend/${idUser}`).then((res) => {
-                    if (res.data?.message == 'You are not your own friend ;-;') {
-                        console.log('eeeee');
-                        setStateFlexButton("none")
-                    } else if (res.data.length === 0) {
-                        setStateButton('userIsNotFriend');
-                        console.log('beeee');
-                    } else if (res.data.isPending == 0) {
-                        //botão de cancelar amizade
-                        setStateButton('areFriends');
-                        console.log('ceeee');
-                    } else if (res.data.isPending == 1 && userLogged.idUser == res.data.idUserSender) {
-                        //botão de cancelar seu envio de amizade
-                        setStateButton('cancelFriendshipRequest');
-                        console.log('deeee');
-                    } else if (res.data.isPending == 1 && userLogged.idUser == res.data.idUserAcceptor) {
-                        //botão de aceitar ou recusar amizade
-                        setStateButton('acceptOrDeclineFriendshipRequest');
-                        console.log('eeeee');
-                    }//confere se realmente só existem 4 bot
-                }).catch((error) => {
-                    console.log('erro ao ver o etatus de amizade')
-                });
-            })
+                userLogged &&
+                    api
+                        .get(`friendships/isUserMyFriend/${idUser}`)
+                        .then((res) => {
+                            if (res?.data?.message == 'You are not your own friend ;-;') {
+                                setStateFlexButton('none');
+                            } else if (res?.data?.length === 0) {
+                                setFriendshipState('userIsNotFriend');
+                            } else if (res?.data?.isPending == 0) {
+                                //botão de cancelar amizade
+                                setFriendshipState('areFriends');
+                            } else if (res?.data?.isPending == 1 && userLogged?.idUser == res?.data?.idUserSender) {
+                                console.log('caiu');
+                                //botão de cancelar seu envio de amizade
+                                setFriendshipState('cancelFriendshipRequest');
+                            } else if (res?.data?.isPending == 1 && userLogged?.idUser == res?.data?.idUserAcceptor) {
+                                //botão de aceitar ou recusar amizade
+                                setFriendshipState('acceptOrDeclineFriendshipRequest');
+                            } //confere se realmente só existem 4 bot
+                        })
+                        .catch((error) => {
+                            console.log(error.message);
+                        });
+            });
 
             //Resgatar status de amizade do usuario logado
 
-
             //Pegar usuario atraves do id
 
-            api.get(`users/${idUser}`).then(response => {
+            api.get(`users/${idUser}`).then((response) => {
                 response.data && setUser(response.data[0]);
             });
 
             //Pegar postagens do usuario atraves do id
 
-            api.get(`posts/user/${idUser}`).then(response => {
+            api.get(`posts/user/${idUser}`).then((response) => {
                 if (response.data?.error) setUserPosts([]);
                 else if (response.data) setUserPosts(response.data);
-            })
-
-
+            });
         }
     }, [router.isFallback]);
 
     if (router.isFallback) {
-        return (
-            <Loading />
-        )
+        return <Loading />;
     }
-
-
 
     return (
         <>
@@ -105,22 +91,24 @@ export default function PostPage(props: PostUserPageProps) {
 
             <Header user={userLogged} />
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
-                <UserDataPage idUser={idUser} stateFlexButton={stateFlexButton} stateButton={stateButton} user={user} />
+                <UserDataPage
+                    idUser={idUser}
+                    stateFlexButton={stateFlexButton}
+                    friendshipState={friendshipState}
+                    setFriendshipState={setFriendshipState}
+                    user={user}
+                />
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                     <NavLink href={`/UserPage/Post/${idUser}`} title="Postagens"></NavLink>
                     <NavLink href={`/UserPage/Friends/${idUser}`} title="Amigos"></NavLink>
                     <NavLink href={`/UserPage/Learn/${idUser}`} title="Aprendizado"></NavLink>
                     <NavLink href={`/UserPage/Teach/${idUser}`} title="Ensinamentos"></NavLink>
                 </Grid>
-                {
-                    userPosts !== 'nulo' && userPosts.map(post => (
-                        <Post key={post.id} post={post} userCreator={user} />
-                    ))
-                }
+                {userPosts !== 'nulo' && userPosts.map((post) => <Post key={post.id} post={post} userCreator={user} />)}
             </Box>
         </>
     );
-};
+}
 
 export const getStaticPaths: GetStaticPaths = async () => {
     return {
@@ -129,7 +117,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     };
 };
 
-
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { idUser } = params;
 
@@ -137,4 +124,3 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         props: { idUser },
     };
 };
-

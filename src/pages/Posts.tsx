@@ -134,8 +134,13 @@ export default function Posts(props: PostsProps) {
 
     function sendPost(e) {
         e.preventDefault();
+        //@ts-ignore
         const inputDescriptionPost = document.getElementById('descriptionPost-input')?.value;
+
+        //@ts-ignore
         const selectCategoryPost = document.getElementById('categoryPost-select')?.value;
+
+        //@ts-ignore
         const selectVisibility = document.getElementById('visibility-select')?.value;
         console.log(inputDescriptionPost, selectCategoryPost, selectVisibility);
         const formData = new FormData();

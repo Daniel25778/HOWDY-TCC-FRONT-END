@@ -9,55 +9,56 @@ import { WeeklyChart } from '../Chart/WeeklyChart';
 import { MonthlyChart } from '../Chart/MonthlyChart';
 import StarRatings from 'react-star-ratings';
 import ProfilePhotoAndPatent from '../ProfilePhotoAndPatent/ProfilePhotoAndPatent';
-import { getUserLogged } from '../../functions/getUserLogged';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { api as apiFunction } from '../../services/api';
+import { Dispatch, SetStateAction } from 'react';
 
 interface UserDataPageProps {
     user?: any;
-    stateButton?: string;
+    friendshipState?: string;
+    setFriendshipState?: Dispatch<SetStateAction<string>>;
     stateFlexButton: string;
     idUser?: any;
 }
 //DADOS RETORNADOS PELO O FIREBASE
 
 // "idUser": 4,
-    // "profilePhoto": null,
-    // "userName": "GabrielTSR",
-    // "description": "Olá! Sou GabrielTSR, português brasileiro é meu idioma nativo, e desejo aprender a me comunicar em inglês americano.",
-    // "backgroundImage": null,
-    // "subscriptionEndDate": null,
-    // "howdyCoin": 0,
-    // "idTargetLanguage": 2,
-    // "targetLanguageName": "Inglês americano",
-    // "targetLanguageTranslatorName": "en",
-    // "idNativeLanguage": 1,
-    // "nativeLanguageName": "Português brasileiro",
-    // "nativeLanguageTranslatorName": "pt"
+// "profilePhoto": null,
+// "userName": "GabrielTSR",
+// "description": "Olá! Sou GabrielTSR, português brasileiro é meu idioma nativo, e desejo aprender a me comunicar em inglês americano.",
+// "backgroundImage": null,
+// "subscriptionEndDate": null,
+// "howdyCoin": 0,
+// "idTargetLanguage": 2,
+// "targetLanguageName": "Inglês americano",
+// "targetLanguageTranslatorName": "en",
+// "idNativeLanguage": 1,
+// "nativeLanguageName": "Português brasileiro",
+// "nativeLanguageTranslatorName": "pt"
 
 // xpCharts:
 // monthly: (30) [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 // weekly: (7) [0, 0, 0, 0, 0, 0, 0]
-export default function UserDataPage({user, stateButton,stateFlexButton,idUser}: UserDataPageProps) {
-
+export default function UserDataPage({
+    user,
+    friendshipState,
+    setFriendshipState,
+    stateFlexButton,
+    idUser,
+}: UserDataPageProps) {
     //const createdAt = new Date(user.createdAt);
 
     const weeklyXpSeries = [
-
-        { 
-          name: 'weeklyXpSeries', 
-          data: user.xpCharts?.weekly
-        }];
+        {
+            name: 'weeklyXpSeries',
+            data: user.xpCharts?.weekly,
+        },
+    ];
 
     const monthlyXpSeries = [
         {
             name: 'monthlyXpSeries',
-            data: user.xpCharts?.monthly
-
-        }];
-
-  
+            data: user.xpCharts?.monthly,
+        },
+    ];
 
     return (
         <>
@@ -67,9 +68,7 @@ export default function UserDataPage({user, stateButton,stateFlexButton,idUser}:
                     objectFit="cover"
                     w="100%"
                     maxH="25vw"
-                    src={user?.backgroundImage
-                    ? user.backgroundImage
-                    : '/images/Tests/backgroundImage.png'}
+                    src={user?.backgroundImage ? user.backgroundImage : '/images/Tests/backgroundImage.png'}
                 />
                 <Flex w="100%" position="relative" bottom="4vw" pl="8vw">
                     <ProfilePhotoAndPatent user={user} whiteBorder={true} size="12.5vw" />
@@ -78,10 +77,16 @@ export default function UserDataPage({user, stateButton,stateFlexButton,idUser}:
                             {user.userName}
                         </Heading>
                         <Text mt="20px" fontSize="xl" color="howdyColors.mainBlack">
-                        {user.description}
+                            {user.description}
                         </Text>
                     </Box>
-                    <FriendshipButton idUserFriend={idUser} stateFlexButton={stateFlexButton} stateButton={stateButton} idUser={user.idUser} />
+                    <FriendshipButton
+                        idUserFriend={idUser}
+                        stateFlexButton={stateFlexButton}
+                        friendshipState={friendshipState}
+                        setFriendshipState={setFriendshipState}
+                        idUserLogged={user.idUser}
+                    />
                 </Flex>
                 <Box bg="howdyColors.divider" h="1px" w="100%" mb="70" />
             </Box>
@@ -130,36 +135,43 @@ export default function UserDataPage({user, stateButton,stateFlexButton,idUser}:
                 </SimpleGrid>
                 <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
             </Box>
-            {user?.averageEvaluations !== 0 && <Flex flexDir="column">
-                <Flex flexDir="row">
-                    <Text
-                        mb="5"
-                        color="howdyColors.mainBlack"
-                        fontWeight={'bold'}
-                        fontSize={['sm', 'xx-large', 'xxx-large']}
-                    >
-                        Nota média de suas atividades
-                    </Text>
-                    <Flex
-                        filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
-                        ml="6%"
-                        w="20%"
-                        alignItems="center"
-                        justifyContent="center"
-                        bgColor="howdyColors.mainGreenTransparent"
-                        borderRadius="10"
-                        p="1"
-                        color="howdyColors.mainGreen"
-                        fontWeight={'bold'}
-                        fontSize={['sm', 'md', 'xx-large']}
-                    >
-                        EXCELENTE
+            {user?.averageEvaluations !== 0 && (
+                <Flex flexDir="column">
+                    <Flex flexDir="row">
+                        <Text
+                            mb="5"
+                            color="howdyColors.mainBlack"
+                            fontWeight={'bold'}
+                            fontSize={['sm', 'xx-large', 'xxx-large']}
+                        >
+                            Nota média de suas atividades
+                        </Text>
+                        <Flex
+                            filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
+                            ml="6%"
+                            w="20%"
+                            alignItems="center"
+                            justifyContent="center"
+                            bgColor="howdyColors.mainGreenTransparent"
+                            borderRadius="10"
+                            p="1"
+                            color="howdyColors.mainGreen"
+                            fontWeight={'bold'}
+                            fontSize={['sm', 'md', 'xx-large']}
+                        >
+                            EXCELENTE
+                        </Flex>
                     </Flex>
+                    <Box w="10%"></Box>
+                    <StarRatings
+                        rating={2}
+                        starRatedColor="#F2D63F"
+                        numberOfStars={user?.averageEvaluations}
+                        name="rating"
+                    />
+                    <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
                 </Flex>
-                <Box w="10%"></Box>
-                <StarRatings rating={2} starRatedColor="#F2D63F" numberOfStars={user?.averageEvaluations} name="rating" />
-            <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
-            </Flex>}
+            )}
         </>
     );
 }

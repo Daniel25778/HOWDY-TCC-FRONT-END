@@ -2,7 +2,7 @@ import { Flex, Image, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 interface ChatProps {
     messages: any;
-    friendList: any;
+    friendList?: any;
 }
 
 

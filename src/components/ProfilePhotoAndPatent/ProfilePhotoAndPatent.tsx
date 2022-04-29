@@ -26,7 +26,7 @@ export default function ProfilePhotoAndPatent({user, size, whiteBorder = false }
             />
 
             <Flex role="group" position="absolute" bottom="0" right="0">
-                <Image cursor="pointer" zIndex="1" w="4vw" src={`/images/howdy-images/class/${user?.patent}.svg`} />
+            {user?.patent && <Image cursor="pointer" zIndex="1" w="4vw" src={`/images/howdy-images/class/${user.patent}.svg`} />}
                 <Text
                     px="15px"
                     py="2px"

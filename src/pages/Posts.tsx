@@ -344,7 +344,7 @@ export default function Posts(props: PostsProps) {
                     </Flex>
                 </Flex>
 
-                <Flex flexDir="column" p="1%" bgColor="#29B9" h="70%" width="15%">
+                <Flex flexDir="column" p="1%"  boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"  h="70%" width="15%">
                     <Flex alignItems="center" width="50%" h="20%" justify="center">
                         <Text fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']}>
                             Amigos{' '}
@@ -352,13 +352,8 @@ export default function Posts(props: PostsProps) {
                         <BsPeople size="40%" />
                     </Flex> 
 
-                    
-
-                    <Chat messages={messages}></Chat>
-                   
                     {friendsList.length > 0 &&
                         friendsList.map((friend) => (
-                            
                             <ListFriends
                                 onClick={() => {
                                     openChat(friend);

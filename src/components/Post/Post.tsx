@@ -25,12 +25,16 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
         year: 'numeric',
     });
 
+    const [displayTextContentPost, setDisplayTextContentPost] = useState<any>("flex");
+    const [displayTextContentPostTraduct, setDisplayTextContentPostTraduct] = useState<any>("none");
+
     const [comments, setComments] = useState<any>([]);
     const [display, setDisplay] = useState<any>("none");
     const [colorIconMessage, setColorIconMessage] = useState<any>("howdyColors.mainBlue");
     const [colorIconHeart, setColorIconHeart] = useState<any>("howdyColors.mainBlue");
     const [colorBoxMessage, setColorBoxMessage] = useState<any>("#fff");
     const [totalLikes, setTotalLikes] = useState<any>(post.totalLikes);
+    const [postTextContentTraduct, setPostTextContentTraduct] = useState<any>(null);
     const router = useRouter();
     let api = apiFunction();
     const toast = useToast();
@@ -99,6 +103,38 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
         }
     }
 
+    function handleTranslate() {
+        
+        if (!router.isFallback) {
+            api.post(`traductions`, {
+                toLanguage: "pt",
+                texts: [post.textContent]
+            })
+                .then((response: any) => {
+                    setPostTextContentTraduct(response.data)
+                    setDisplayTextContentPostTraduct("flex")
+                    setDisplayTextContentPost("none")
+                    console.log(response.data)
+
+                    toast({
+                        title: 'TRADUÇÃO REALIZADA COM SUCESSO!',
+                        status: 'success',
+                        isClosable: true,
+                        position: 'top',
+                    });
+
+               
+                }).catch((error: any) => {
+                    toast({
+                        title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                        status: 'error',
+                        isClosable: true,
+                        position: 'top',
+                    });
+                });
+        }
+    }
+
 
     return (
         <>
@@ -130,7 +166,8 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                                     ● {createdAt}
                                 </Text>
                             </Flex>
-                            <Text color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
+                            <Text display={displayTextContentPostTraduct}>{postTextContentTraduct}</Text>
+                            <Text display={displayTextContentPost} color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
                                 {post.textContent}
                             </Text>
                             <IconButton
@@ -142,6 +179,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                                     <Icon
                                         opacity="2"
                                         as={MdTranslate}
+                                        onClick={handleTranslate}
                                         color="howdyColors.mainWhite"
                                         fontSize={'x-large'}
                                     />

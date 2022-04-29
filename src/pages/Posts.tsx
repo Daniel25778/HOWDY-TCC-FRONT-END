@@ -190,6 +190,15 @@ export default function Posts(props: PostsProps) {
                             position: 'top',
                         });
                         break;
+
+                        default:
+                            toast({
+                                    title: 'OCORREU UM ERRO NA EDIÇÃO',
+                                    status: 'error',
+                                    isClosable: true,
+                                    position: 'top',
+                                });
+                            break;
                 }
             });
     }

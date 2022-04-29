@@ -14,7 +14,7 @@ import {
     Button,
 } from '@chakra-ui/react';
 import { AiOutlineMail } from 'react-icons/ai';
-import { BsCalendar3, BsPerson } from 'react-icons/bs';
+import { BsCalendar3, BsCamera, BsPerson } from 'react-icons/bs';
 import { GiPadlock } from 'react-icons/gi';
 import { MdArrowDropDown, MdOutlineCake, MdOutlineDescription, MdOutlineMailOutline } from 'react-icons/md';
 import UserDataPage from '../components/UserDataPage/UserDataPage';
@@ -26,7 +26,7 @@ import { Input as MyInput } from '../components/Form/Input';
 import { formatDateToBackend } from '../functions/formatDateToBackEnd';
 import { api as apiFunction } from '../services/api';
 import Router, { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 // import { storage } from '../services/firebaseConfig';
 import { ref, uploadBytes } from 'firebase/storage';
 
@@ -63,6 +63,10 @@ interface NativeLanguage {
 }
 
 export default function PageUserConfig() {
+
+    
+
+
     const resolver = yupResolver(editFormSchema);
 
     const toast = useToast();
@@ -78,6 +82,8 @@ export default function PageUserConfig() {
     const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
     const [user, setUser] = useState<any>('nulo');
     const [nativeLanguages, setNativeLanguages] = useState<NativeLanguage[]>([]);
+    const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
+    const postImageRef = useRef(null);
 
     useEffect(() => {
         if (!router.isFallback) {
@@ -99,95 +105,126 @@ export default function PageUserConfig() {
             });
         }
     }, [router.isFallback]);
+    
+    function uploadImage() {
+        setAttachedPostImage(false);
 
-    const handleEditUser: SubmitHandler<editUserFormData> = async (values) => {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        const file = postImageRef.current.files[0];
+        const fileReader = new FileReader();
 
-        let { email, password, description, name, birthDate, targetLanguage, nativeLanguage } = values;
-
-        targetLanguage = JSON.parse(targetLanguage);
-        nativeLanguage = JSON.parse(nativeLanguage);
-
-        console.log(targetLanguage);
-
-        const birthDateFormatted = formatDateToBackend(birthDate);
-
-        if (nativeLanguage.idNativeLanguage === targetLanguage.idTargetLanguage) {
-            return toast({
-                title: 'O IDIOMA NATIVO, E O IDIOMA DE INTERESSE DEVEM SER DIFERENTES.',
-                status: 'error',
-                isClosable: true,
-                position: 'top',
-            });
+        if (file) {
+            fileReader.readAsDataURL(file);
         }
-        api.put('users', {
-            userName: name,
-            birthDate: birthDateFormatted,
-            idTargetLanguage: targetLanguage.idTargetLanguage,
-            idNativeLanguage: nativeLanguage.idNativeLanguage,
-            description: description,
-        })
-            .then((response: any) => {
-                toast({
-                    title: 'EDIÇÃO REALIZADA COM SUCESSO!',
-                    status: 'success',
-                    isClosable: true,
-                    position: 'top',
-                });
 
-                Router.push(`/UserPage/Post/${userLogged.idUser}`);
+        fileReader.onloadend = () => {
+            setAttachedPostImage(true);
+        };
+    }
+
+    // const handleEditUser: SubmitHandler<editUserFormData> = async (values) => {
+    //     await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    //     let { email, password, description, name, birthDate, targetLanguage, nativeLanguage } = values;
+
+    //     targetLanguage = JSON.parse(targetLanguage);
+    //     nativeLanguage = JSON.parse(nativeLanguage);
+
+    //     console.log(targetLanguage);
+
+    //     const birthDateFormatted = formatDateToBackend(birthDate);
+
+    //     if (nativeLanguage.idNativeLanguage === targetLanguage.idTargetLanguage) {
+    //         return toast({
+    //             title: 'O IDIOMA NATIVO, E O IDIOMA DE INTERESSE DEVEM SER DIFERENTES.',
+    //             status: 'error',
+    //             isClosable: true,
+    //             position: 'top',
+    //         });
+    //     }
+    //     api.put('users', {
+    //         userName: name,
+    //         birthDate: birthDateFormatted,
+    //         idTargetLanguage: targetLanguage.idTargetLanguage,
+    //         idNativeLanguage: nativeLanguage.idNativeLanguage,
+    //         description: description,
+    //     })
+    //         .then((response: any) => {
+    //             toast({
+    //                 title: 'EDIÇÃO REALIZADA COM SUCESSO!',
+    //                 status: 'success',
+    //                 isClosable: true,
+    //                 position: 'top',
+    //             });
+
+    //             Router.push(`/UserPage/Post/${userLogged.idUser}`);
+    //         })
+    //         .catch((error: any) => {
+    //             toast({
+    //                 title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+    //                 status: 'error',
+    //                 isClosable: true,
+    //                 position: 'top',
+    //             });
+    //         });
+    // };
+
+    // const [image, setImage] = useState<any>('nulo');
+    // const [url, setUrl] = useState<any>('nulo');
+    // const [progress, setProgress] = useState<any>('nulo');
+
+    // const handleChange = (e: any) => {
+    //     if (e.target.files[0]) {
+    //         setImage(e.target.files[0]);
+    //     }
+    // };
+
+    function sendProfilePhotoAndBackgroundImage(e) {
+        e.preventDefault();
+        //@ts-ignore
+        const inputDescriptionUser = document.getElementById('inputDescriptionUser')?.value;
+        const inputUserName = document.getElementById('inputUserName')?.value;
+        const inputUserDate = document.getElementById('inputUserDate')?.value;
+
+        const formData = new FormData();
+
+        if (postImageRef.current.files.length === 1 && attachedPostImage !== false)
+            formData.append('backgroundImageFile', postImageRef.current.files[0]);
+            formData.append('description', inputDescriptionUser);
+            formData.append('userName', inputUserName);
+            formData.append('birthDate', inputUserDate);
+
+        api.put(`users`, formData)
+            .then((response) => {
+                console.log('res', response);
             })
-            .catch((error: any) => {
-                toast({
-                    title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
-                    status: 'error',
-                    isClosable: true,
-                    position: 'top',
-                });
+            .catch((error) => {
+                switch (error.response.data.error) {
+                    case 'The text is not written according to the language you want to learn':
+                        toast({
+                            title: 'BLA BLA BLA',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                        });
+                        break;
+
+                    default:
+                        toast({
+                            title: 'OCORREU UM ERRO NA EDIÇÃO',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                        });
+                        break;
+
+                }
             });
-    };
-
-    const [image, setImage] = useState<any>('nulo');
-    const [url, setUrl] = useState<any>('nulo');
-    const [progress, setProgress] = useState<any>('nulo');
-
-    const handleChange = (e: any) => {
-        if (e.target.files[0]) {
-            setImage(e.target.files[0]);
-        }
-    };
-
-    const handleUpload = () => {
-
-
-
-
-        // // Points to the root reference
-        // const storageRef = ref(storage);
-
-        // // Points to 'images'
-        // const imagesRef = ref(storageRef, 'upload-images');
-
-        // // Points to 'images/space.jpg'
-        // // Note that you can use variables to create child values
-        // const fileName = image.name;
-        // const spaceRef = ref(imagesRef, fileName);
-        // // File path is 'images/space.jpg'
-        // const path = spaceRef.fullPath;
-        // // File name is 'space.jpg'
-        // const name = spaceRef.name;
-
-        // // Points to 'images'
-        // const imagesRefAgain = spaceRef.parent;
-
-        // uploadBytes(imagesRef, image).then((snapshot) => {
-        //     console.log('Uploaded a blob or file!');
-        // });
-
-    };
+    }
 
     return (
+       
         <Flex w="100%" bg="howdyColors.mainBlue" justifyContent={'center'} align="center" padding="2%">
+             <Input type="file" display="none" ref={postImageRef} onChange={uploadImage} />
             <Flex w="50%" bg="white" align="center" justify="center" borderRadius={8} flexDir="column">
                 <Flex w="100%" justifyContent={'flex-end'} p="3%">
                     <Text
@@ -201,10 +238,16 @@ export default function PageUserConfig() {
                 </Flex>
 
                 <Image objectFit="cover" w="100%" h="20rem" src={userLogged?.backgroundImage} />
-
-                <Input onChange={handleChange} type={'file'}></Input>
-                <Button onClick={handleUpload}></Button>
-                <Image src={url}></Image>
+                <Button
+                    w="100%"    
+                    onClick={() => {
+                    console.log(`Teste`);
+                    postImageRef.current.click();
+                    }}
+                    >
+                    {<BsCamera color="#2EC4F3" size="5rem" />}
+                </Button>
+                
 
                 <Flex justify={'center'} align="center" position={'relative'} flexDir={'column'} bottom="2vw">
                     <Image
@@ -219,7 +262,6 @@ export default function PageUserConfig() {
 
                 <Flex
                     as="form"
-                    onSubmit={handleSubmit(handleEditUser)}
                     padding="10"
                     bg="white"
                     align="center"
@@ -240,7 +282,7 @@ export default function PageUserConfig() {
                         </InputLeftElement>
                         <MyInput
                             fontWeight="medium"
-                            name="name"
+                            name="inputUserName"
                             placeholder={userLogged?.userName}
                             type="text"
                             error={errors.name}
@@ -280,7 +322,7 @@ export default function PageUserConfig() {
                         </InputLeftElement>
                         <MyInput
                             fontWeight="medium"
-                            name="birthDate"
+                            name="inputUserDate"
                             placeholder="Data nascimento"
                             onFocus={() => document.getElementById('birthDate').setAttribute('type', 'date')}
                             type="text"
@@ -301,7 +343,7 @@ export default function PageUserConfig() {
                         </InputLeftElement>
                         <MyInput
                             fontWeight="medium"
-                            name="description"
+                            name="inputDescriptionUser"
                             placeholder="Descrição"
                             type="text"
                             error={errors.description}
@@ -413,6 +455,7 @@ export default function PageUserConfig() {
                         bg="#CBD2FF"
                         color="howdyColors.mainBlue"
                         type="submit"
+                        onClick={sendProfilePhotoAndBackgroundImage}
                         isLoading={formState.isSubmitting}
                     >
                         SALVAR

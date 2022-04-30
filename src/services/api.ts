@@ -18,12 +18,20 @@ export function api() {
                 return response;
             },
             (error) => {
-                switch (error) {
-                    case 'You does not have an account registered in our system.':
+                switch (error.response.data.error) {
+                    case 'The user was not found':
                         logOut();
                         break;
 
-                    case 'Firebase ID token has \"kid\" claim which does not correspond to a known public key. Most likely the ID token is expired, so get a fresh token from your client app and try again.':
+                    case 'Firebase ID token has "kid" claim which does not correspond to a known public key. Most likely the ID token is expired, so get a fresh token from your client app and try again.':
+                        logOut();
+                        break;
+
+                    case 'Firebase ID token has expired. Get a fresh ID token from your client app and try again (auth/id-token-expired). See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.':
+                        logOut();
+                        break;
+
+                    case 'Decoding Firebase ID token failed. Make sure you passed the entire string JWT which represents an ID token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.':
                         logOut();
                         break;
 
@@ -44,10 +52,9 @@ export function api() {
                 }
 
                 if (error?.response?.status === 404) {
-                    return {data: []}
+                    return { data: [] };
                 }
 
-                
                 return Promise.reject(error);
             }
         );

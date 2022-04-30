@@ -15,11 +15,8 @@ export async function getUserLogged(api) {
                     const { data } = response;
                     data == null && logOut();
 
-                    if (
-                        data === 'This user does not have an account in our system' ||
-                        data === 'The user was not found'
-                    ) {
-                        Router.push('/register/isLogged');
+                    if (data?.message === 'This user does not have an account in our system') {
+                        Router.push('/LoginPage');
                     }
 
                     loggedUserFound = data[0];

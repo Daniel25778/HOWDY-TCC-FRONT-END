@@ -35,7 +35,7 @@ export default {
             api.get(`users/isMyUidExternalRegistered`)
                 .then((response) => {
                     const { data } = response;
-                    if (data === 'This user does not have an account in our system') {
+                    if (data?.message === 'This user does not have an account in our system') {
                         Router.push('/register/isLogged');
                     } else {
                         Router.push('/Posts');

@@ -18,7 +18,7 @@ export function api() {
                 return response;
             },
             (error) => {
-                switch (error.response.data.error) {
+                switch (error?.response?.data?.error) {
                     case 'The user was not found':
                         logOut();
                         break;

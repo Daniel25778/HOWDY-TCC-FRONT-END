@@ -10,12 +10,12 @@ export async function getUserLogged(api) {
         if (cookies['firebaseAccount'] != null) {
             let loggedUserFound = null;
             await api
-                .get(`/users/isMyUidExternalRegistered`)
+                .get(`users/isMyUidExternalRegistered`)
                 .then((response) => {
                     const { data } = response;
                     data == null && logOut();
 
-                    if (data?.message === 'This user does not have an account in our system') {
+                    if (data.length === 0) {
                         Router.push('/LoginPage');
                     }
 

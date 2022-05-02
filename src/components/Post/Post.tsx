@@ -210,7 +210,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                     ></Image>
                 </Flex>
                 <Flex justify="space-between" align="center" width="20%">
-                    <Flex align="center" h="100%" borderRadius="100px 100px 0px 0px" bgColor={isCommentBlockOpen ? 'howdyColors.mainBlue' : 'howdyColors.mainWhite'} justifyContent="center" gap="10%" w="40%">
+                    <Flex align="center" h="100%" borderRadius="100px 100px 0px 0px" bgColor={isCommentBlockOpen ? 'howdyColors.mainBlue' : '#fff'} justifyContent="center" gap="10%" w="40%">
                         {isCommentBlockOpen ? (<IconButton
                             w="10%"
                             aria-label="Open navigation"

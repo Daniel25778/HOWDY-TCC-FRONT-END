@@ -2,7 +2,7 @@ import { extendTheme, Heading } from '@chakra-ui/react';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-
+import '@fontsource/bungee';
 // 1. Import the utilities
 import { createBreakpoints } from '@chakra-ui/theme-tools';
 
@@ -51,8 +51,9 @@ export const themes = extendTheme({
     },
     breakpoints,
     fonts: {
-        heading: 'Roboto, sans-serif',
+        heading: 'Bungee, sans-serif',
         body: 'Roboto, sans-serif',
+        price: 'Bungee, sans-serif',
     },
     styles: {
         global: {

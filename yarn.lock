@@ -1140,6 +1140,11 @@
   resolved "https://registry.npmjs.org/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.6.1.tgz"
   integrity sha512-9FqhNjKQWpQ3fGnSOCovHOm+yhhiorKEqYLAfd525jWavunDJcx8rOW6i6ozAh+FbwcYMkL7b+3j4UR/30MpoQ==
 
+"@fontsource/bungee@^4.5.7":
+  version "4.5.7"
+  resolved "https://registry.yarnpkg.com/@fontsource/bungee/-/bungee-4.5.7.tgz#f1e96153bf6b5ee3592bca61e507a18aee4f2b4e"
+  integrity sha512-rURYNGenDVsSoLCnREbpoFf4bYo8qeO5rberZebxQJhVniFtrPK2NxWOp8JOpZxbQEBizhooqeb70KW5w+X07g==
+
 "@fontsource/league-gothic@^4.5.1":
   version "4.5.1"
   resolved "https://registry.npmjs.org/@fontsource/league-gothic/-/league-gothic-4.5.1.tgz"

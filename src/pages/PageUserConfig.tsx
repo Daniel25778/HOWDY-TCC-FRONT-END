@@ -29,6 +29,8 @@ import Router, { useRouter } from 'next/router';
 import { useEffect, useState,useRef } from 'react';
 // import { storage } from '../services/firebaseConfig';
 import { ref, uploadBytes } from 'firebase/storage';
+import { updatePassword } from 'firebase/auth';
+import {auth} from '../services/firebaseConfig';
 
 type editUserFormData = {
     email?: string;
@@ -64,9 +66,6 @@ interface NativeLanguage {
 
 export default function PageUserConfig() {
 
-    
-
-
     const resolver = yupResolver(editFormSchema);
 
     const toast = useToast();
@@ -82,8 +81,14 @@ export default function PageUserConfig() {
     const [targetLanguages, setTargetLanguages] = useState<TargetLanguage[]>([]);
     const [user, setUser] = useState<any>('nulo');
     const [nativeLanguages, setNativeLanguages] = useState<NativeLanguage[]>([]);
-    const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
-    const postImageRef = useRef(null);
+    const [attachedBackgroundImage, setAttachedBackgroundImage] = useState<boolean>(false);
+    const [attachedProfileImage, setAttachedProfileImage] = useState<boolean>(false);
+    const backgroundImageRef = useRef(null);
+    const profilePhotoImageRef = useRef(null);
+
+    function handleBackProfile() {
+        Router.push(`/UserPage/Post/${userLogged.idUser}`);
+    }
 
     useEffect(() => {
         if (!router.isFallback) {
@@ -107,95 +112,76 @@ export default function PageUserConfig() {
     }, [router.isFallback]);
     
     function uploadImage() {
-        setAttachedPostImage(false);
+        setAttachedBackgroundImage(false);
+        setAttachedProfileImage(false);
 
-        const file = postImageRef.current.files[0];
-        const fileReader = new FileReader();
+        const fileBackground = backgroundImageRef.current.files[0];
+        const fileProfilePhoto = profilePhotoImageRef.current.files[0];
+        
+        const fileReaderBackground = new FileReader();
+        const fileReaderProfilePhoto = new FileReader();
 
-        if (file) {
-            fileReader.readAsDataURL(file);
+        if (fileBackground) {
+            fileReaderBackground.readAsDataURL(fileBackground);
         }
 
-        fileReader.onloadend = () => {
-            setAttachedPostImage(true);
+        fileReaderBackground.onloadend = () => {
+            setAttachedBackgroundImage(true);
+        };
+
+        if (fileProfilePhoto) {
+            fileReaderProfilePhoto.readAsDataURL(fileProfilePhoto);
+        }
+
+        fileReaderProfilePhoto.onloadend = () => {
+            setAttachedProfileImage(true);
         };
     }
-
-    // const handleEditUser: SubmitHandler<editUserFormData> = async (values) => {
-    //     await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    //     let { email, password, description, name, birthDate, targetLanguage, nativeLanguage } = values;
-
-    //     targetLanguage = JSON.parse(targetLanguage);
-    //     nativeLanguage = JSON.parse(nativeLanguage);
-
-    //     console.log(targetLanguage);
-
-    //     const birthDateFormatted = formatDateToBackend(birthDate);
-
-    //     if (nativeLanguage.idNativeLanguage === targetLanguage.idTargetLanguage) {
-    //         return toast({
-    //             title: 'O IDIOMA NATIVO, E O IDIOMA DE INTERESSE DEVEM SER DIFERENTES.',
-    //             status: 'error',
-    //             isClosable: true,
-    //             position: 'top',
-    //         });
-    //     }
-    //     api.put('users', {
-    //         userName: name,
-    //         birthDate: birthDateFormatted,
-    //         idTargetLanguage: targetLanguage.idTargetLanguage,
-    //         idNativeLanguage: nativeLanguage.idNativeLanguage,
-    //         description: description,
-    //     })
-    //         .then((response: any) => {
-    //             toast({
-    //                 title: 'EDIÇÃO REALIZADA COM SUCESSO!',
-    //                 status: 'success',
-    //                 isClosable: true,
-    //                 position: 'top',
-    //             });
-
-    //             Router.push(`/UserPage/Post/${userLogged.idUser}`);
-    //         })
-    //         .catch((error: any) => {
-    //             toast({
-    //                 title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
-    //                 status: 'error',
-    //                 isClosable: true,
-    //                 position: 'top',
-    //             });
-    //         });
-    // };
-
-    // const [image, setImage] = useState<any>('nulo');
-    // const [url, setUrl] = useState<any>('nulo');
-    // const [progress, setProgress] = useState<any>('nulo');
-
-    // const handleChange = (e: any) => {
-    //     if (e.target.files[0]) {
-    //         setImage(e.target.files[0]);
-    //     }
-    // };
 
     function sendProfilePhotoAndBackgroundImage(e) {
         e.preventDefault();
         //@ts-ignore
         const inputDescriptionUser = document.getElementById('inputDescriptionUser')?.value;
+        const inputNewPassword = document.getElementById('inputNewPassword')?.value;
         const inputUserName = document.getElementById('inputUserName')?.value;
-        const inputUserDate = document.getElementById('inputUserDate')?.value;
-
+        const inputUserDate = document.getElementById('birthDate')?.value;
+        const selectNativeLanguage = document.getElementById('nativeLanguage')?.value;
+        const selectTargetLanguage = document.getElementById('targetLanguage')?.value;
+        const selectNativeLanguageFormatted = JSON.parse(selectNativeLanguage);
+        const selectTargetLanguageFormatted = JSON.parse(selectTargetLanguage);
+        console.log("ssss"+inputNewPassword);
+        console.log("ssss"+selectTargetLanguageFormatted.idTargetLanguage);
+        const newTargetLanguage = selectTargetLanguageFormatted.idTargetLanguage
+        const newNativeLanguage = selectNativeLanguageFormatted.idNativeLanguage
         const formData = new FormData();
 
-        if (postImageRef.current.files.length === 1 && attachedPostImage !== false)
-            formData.append('backgroundImageFile', postImageRef.current.files[0]);
+        const userFirebase = auth.currentUser;
+        console.log('!' + userFirebase);
+        updatePassword(userFirebase, inputNewPassword).then(() => {
+            console.log('Senha atualizada com sucesso!');
+        }).catch(() => {
+
+        });
+
+        if (backgroundImageRef.current.files.length === 1 && attachedBackgroundImage !== false && profilePhotoImageRef.current.files.length === 1 && attachedProfileImage !== false)
+            formData.append('backgroundImageFile', backgroundImageRef.current.files[0]);
+            formData.append('profilePhotoFile', profilePhotoImageRef.current.files[0]);
             formData.append('description', inputDescriptionUser);
             formData.append('userName', inputUserName);
             formData.append('birthDate', inputUserDate);
+            formData.append('idTargetLanguage', newTargetLanguage);
+            formData.append('idNativeLanguage', newNativeLanguage);
 
         api.put(`users`, formData)
             .then((response) => {
                 console.log('res', response);
+                toast({
+                    title: 'EDIÇÃO REALIZADA COM SUCESSO!',
+                    status: 'success',
+                    isClosable: true,
+                    position: 'top',
+                });
+                handleBackProfile();
             })
             .catch((error) => {
                 switch (error.response.data.error) {
@@ -224,7 +210,8 @@ export default function PageUserConfig() {
     return (
        
         <Flex w="100%" bg="howdyColors.mainBlue" justifyContent={'center'} align="center" padding="2%">
-             <Input type="file" display="none" ref={postImageRef} onChange={uploadImage} />
+             <Input type="file" display="none" ref={backgroundImageRef} onChange={uploadImage} />
+             <Input type="file" display="none" ref={profilePhotoImageRef} onChange={uploadImage} />
             <Flex w="50%" bg="white" align="center" justify="center" borderRadius={8} flexDir="column">
                 <Flex w="100%" justifyContent={'flex-end'} p="3%">
                     <Text
@@ -238,18 +225,31 @@ export default function PageUserConfig() {
                 </Flex>
 
                 <Image objectFit="cover" w="100%" h="20rem" src={userLogged?.backgroundImage} />
-                <Button
-                    w="100%"    
-                    onClick={() => {
-                    console.log(`Teste`);
-                    postImageRef.current.click();
-                    }}
-                    >
-                    {<BsCamera color="#2EC4F3" size="5rem" />}
-                </Button>
                 
 
-                <Flex justify={'center'} align="center" position={'relative'} flexDir={'column'} bottom="2vw">
+                
+                
+
+                <Flex justify={'center'} align="center" position={'relative'} flexDir={'row'} bottom="2vw">
+                    <Button
+                        w="100%"    
+                        onClick={() => {
+                        console.log(`Teste`);
+                        backgroundImageRef.current.click();
+                        }}
+                        >
+                        {<BsCamera color="#2EC4F3" size="50%" />}
+                    </Button>
+
+                    <Button
+                        w="100%"    
+                        onClick={() => {
+                        console.log(`Teste`);
+                        profilePhotoImageRef.current.click();
+                        }}
+                        >
+                        {<BsCamera color="#2EC4F3" size="50%" />}
+                    </Button>
                     <Image
                         w="100%"
                         h="10rem"
@@ -282,31 +282,12 @@ export default function PageUserConfig() {
                         </InputLeftElement>
                         <MyInput
                             fontWeight="medium"
+                            id='inputUserName'
                             name="inputUserName"
                             placeholder={userLogged?.userName}
                             type="text"
                             error={errors.name}
                             {...register('name')}
-                        />
-                    </InputGroup>
-
-                    <Flex align="center" width="100%">
-                        <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'md', 'large']}>
-                            E-mail
-                        </Text>
-                    </Flex>
-
-                    <InputGroup width="100%" variant="filled" marginBottom="10px">
-                        <InputLeftElement pointerEvents="none">
-                            <MdOutlineMailOutline color="#6A7DFF" />
-                        </InputLeftElement>
-                        <MyInput
-                            fontWeight="medium"
-                            name="email"
-                            placeholder="E-mail"
-                            type="text"
-                            error={errors.email}
-                            {...register('email')}
                         />
                     </InputGroup>
 
@@ -343,8 +324,9 @@ export default function PageUserConfig() {
                         </InputLeftElement>
                         <MyInput
                             fontWeight="medium"
+                            id='inputDescriptionUser'
                             name="inputDescriptionUser"
-                            placeholder="Descrição"
+                            placeholder={userLogged?.description}
                             type="text"
                             error={errors.description}
                             {...register('description')}
@@ -421,6 +403,7 @@ export default function PageUserConfig() {
                             fontWeight="medium"
                             name="password"
                             placeholder="Sua senha"
+                            id="inputNewPassword"
                             type="password"
                             error={errors.password}
                             {...register('password')}
@@ -467,6 +450,7 @@ export default function PageUserConfig() {
                         maxWidth={400}
                         marginTop="6"
                         marginBottom="6"
+                        onClick={handleBackProfile}
                         bg="howdyColors.amateur"
                         color="howdyColors.mainBlack"
                         type="button"
@@ -474,185 +458,6 @@ export default function PageUserConfig() {
                         CANCELAR
                     </Button>
                 </Flex>
-
-                {/* <Flex
-             as="form"
-             w="100%"
-             bgColor="yellow.600"
-             p="5%"
-             justifyContent="center"
-             align="center"
-             flexDir="column"
-             >
-
-                <Flex align="center" width="100%" flexDir="column" gap="2rem">
-
-                    <Flex align="center" width="100%" flexDir="column">
-                      
-                      <Flex align="center" width="90%">
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
-                                Nome de usuário
-                        </Text>
-                      </Flex>
-                    
-                      <InputGroup width="90%" variant="filled">
-                        <InputLeftElement pointerEvents="none">
-                            <BsPerson color="#6A7DFF" />
-                        </InputLeftElement>
-                        <Input
-                            fontWeight="medium"
-                            name="name"
-                            type="text"
-                            placeholder="Helena Pena"
-                        >
-                        </Input>
-                      </InputGroup>  
-
-                    </Flex>
-
-                    <Flex align="center" width="100%" flexDir="column">
-                      
-                      <Flex align="center" width="90%">
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
-                              Email  
-                        </Text>
-                      </Flex>
-                    
-                      <InputGroup width="90%" variant="filled">
-                        <InputLeftElement pointerEvents="none">
-                          <AiOutlineMail color="#6A7DFF" />
-                        </InputLeftElement>
-                        <Input
-                            fontWeight="medium"
-                            name="name"
-                            type="text"
-                            placeholder="helenapena@gmail.com"
-                        >
-                        </Input>
-                      </InputGroup>  
-
-                    </Flex>  
-
-                    <Flex align="center" width="100%" flexDir="column">
-                      
-                      <Flex align="center" width="90%">
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
-                                Data de nascimento
-                        </Text>
-                      </Flex>
-                    
-                      <InputGroup width="90%" variant="filled">
-                        <InputLeftElement pointerEvents="none">
-                            <BsCalendar3 color="#6A7DFF" />
-                        </InputLeftElement>
-                        <Input
-                            fontWeight="medium"
-                            name="name"
-                            type="text"
-                            placeholder="Helena Pena"
-                        >
-                        </Input>
-                      </InputGroup>  
-
-                    </Flex> 
-
-                    <Flex align="center" width="100%" flexDir="column">
-                      
-                      <Flex align="center" width="90%">
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
-                                Senha
-                        </Text>
-                      </Flex>
-                    
-                      <InputGroup width="90%" variant="filled">
-                        <InputLeftElement pointerEvents="none">
-                            <GiPadlock color="#6A7DFF" />
-                        </InputLeftElement>
-                        <Input
-                            fontWeight="medium"
-                            name="name"
-                            type="text"
-                            placeholder="Senha"
-                        >
-                        </Input>
-                      </InputGroup>  
-
-                    </Flex>
-
-                    <Flex align="center" width="100%" flexDir="column">
-                      
-                      <Flex align="center" width="90%">
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
-                                Confirmação de senha
-                        </Text>
-                      </Flex>
-                    
-                      <InputGroup width="90%" variant="filled">
-                        <InputLeftElement pointerEvents="none">
-                            <GiPadlock color="#6A7DFF" />
-                        </InputLeftElement>
-                        <Input
-                            fontWeight="medium"
-                            name="name"
-                            type="text"
-                            placeholder="Confirmação de senha"
-                        >
-                        </Input>
-                      </InputGroup>  
-
-                    </Flex>
-
-                    <Flex align="center" width="100%" flexDir="column">
-                      
-                      <Flex align="center" width="90%">
-                        <Text
-                              color="howdyColors.mainBlack"
-                              fontWeight={'bold'}
-                              fontSize={['sm', 'md', 'large']}
-                              >
-                                Confirmação de senha
-                        </Text>
-                      </Flex>
-                    
-                      <InputGroup width="90%" variant="filled">
-                        <InputLeftElement pointerEvents="none">
-                            <GiPadlock color="#6A7DFF" />
-                        </InputLeftElement>
-                        <Input
-                            fontWeight="medium"
-                            name="name"
-                            type="text"
-                            placeholder="Confirmação de senha"
-                        >
-                        </Input>
-                      </InputGroup>  
-
-                    </Flex>      
-
-                    
-                </Flex>   
-
-            </Flex> */}
             </Flex>
         </Flex>
     );

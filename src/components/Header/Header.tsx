@@ -13,20 +13,65 @@ import {
     MenuItem,
     MenuList,
     Text,
+    useToast,
 } from '@chakra-ui/react';
 import '@fontsource/roboto/400.css';
 import { FiSearch } from 'react-icons/fi';
 import { FaRegBell } from 'react-icons/fa';
 import { IoMdAdd, IoMdArrowDropdown } from 'react-icons/io';
 import { NavLink } from '../NavLink/Header/NavLink';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { logOut } from '../../functions/logOut';
+import { useEffect, useState } from 'react';
+import { api as apiFunction } from '../../services/api';
+import socket from '../../services/sockeio';
 
+
+
+interface Notification{
+    idNotification: number;
+    notificationText: string,
+    wasRead: boolean,
+    createdAt: string,
+    idNotificationType: number,
+    idUserSender: number,
+    idUserReceiver: number,
+    type: string,
+    userSenderName: string,
+    userSenderProfilePhoto: string
+}
 interface HeaderProps {
     user?: any;
 }
 
 export function Header({ user }: HeaderProps) {
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [dysplayBoxNotification, setDysplayBoxNotification] = useState<string>("none");
+    let api = apiFunction();
+    const toast = useToast();
+    const router = useRouter();
+    
+    //Requisição para pegar as notificações
+    useEffect
+    (() => {
+        api.get('/notifications').then(response => {
+            setNotifications(response.data);
+            console.log(response.data);
+        }).catch(error => {})  
+
+        socket.on('receivedNotification', (notification) => {
+            setNotifications([...notifications,notification]);
+        });
+    }, []);
+    
+
+    function handleOpenNotificationsBox() {
+       setDysplayBoxNotification("flex")
+       api.put('/notifications/read').then(response => {
+           console.log(response.data);
+       }).catch(error => {})
+    }
+
     function handleRedirectUserConfig() {
         Router.push('/PageUserConfig');
     }
@@ -41,6 +86,7 @@ export function Header({ user }: HeaderProps) {
 
     const handleSearch = (e) => {
         e.preventDefault();
+        //@ts-ignore
         const value = document.getElementById('search-input')?.value;
         Router.push(`/SearchPage/${value}`);
     };
@@ -147,6 +193,7 @@ export function Header({ user }: HeaderProps) {
                                 bg="howdyColors.mainWhite"
                                 color="howdyColors.mainBlack"
                                 fontWeight="black"
+                                onClick={handleOpenNotificationsBox}
                                 fontSize="1.5rem"
                                 transform="rotate(-15deg)"
                                 icon={<Icon opacity="60%" as={FaRegBell} />}
@@ -163,7 +210,7 @@ export function Header({ user }: HeaderProps) {
                                 bg="howdyColors.mainRed"
                                 fontSize="1rem"
                             >
-                                +9
+                                {notifications.length}
                             </Center>
                         </Box>
                     </Flex>
@@ -193,6 +240,16 @@ export function Header({ user }: HeaderProps) {
                         <NavLink href="/PublicActivities" title="Aprenda" />
                     </Center>
                 </Flex>
+                <Flex
+                    position="absolute"
+                    bottom="-5rem"
+                    display={dysplayBoxNotification}
+                    w="30%"
+                    h="5rem"
+                    bg="gray.100"
+                    borderRadius="10px"
+                    boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+                ></Flex>
             </Flex>
         </Flex>
     );

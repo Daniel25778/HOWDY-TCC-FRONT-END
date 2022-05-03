@@ -10,10 +10,10 @@ import { BsCamera, BsPeople } from 'react-icons/bs';
 import Head from 'next/head';
 
 import ListFriends from '../components/Friends/ListFriends';
-import { io } from 'socket.io-client';
+
 import { parseCookies } from 'nookies';
-import Chat from '../components/Chat/Chat';
-const socket = io('http://localhost:3333');
+
+import socket from '../services/sockeio';
 
 interface PostsProps {
     idUser: string;
@@ -109,9 +109,6 @@ export default function Posts(props: PostsProps) {
 
     function openChat(friend) {
         const cookies = parseCookies();
-
-        //CONECTANDO-SE AO SOCKET.IO
-        socket.emit('authenticate', cookies['firebaseAccount']);
 
         //RESGATAR AS MENSAGENS ANTERIORES
         api.get(`messages/${friend.idUser}`)

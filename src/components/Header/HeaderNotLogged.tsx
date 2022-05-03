@@ -93,12 +93,6 @@ export function HeaderNotLogged({ user }: HeaderProps) {
                         src="/images/howdy-images/logo/logo-blue-howdy-row.svg"
                         alt="howdy logo"
                     ></Image>
-
-                    <Center w="50%" justifyContent={'space-between'}>
-                        <NavLink href="/RankingPage" title="Ranking" />
-                        <NavLink href="/UserPage/Post/3" title="Postagens" />
-                        <NavLink href="/UserPage/Learn/1" title="Aprenda" />
-                    </Center>
                 </Flex>
             </Flex>
         </Flex>

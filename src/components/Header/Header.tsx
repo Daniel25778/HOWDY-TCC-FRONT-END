@@ -31,6 +31,10 @@ export function Header({ user }: HeaderProps) {
         Router.push('/PageUserConfig');
     }
 
+    function handleRedirectToHowdyStore() {
+        Router.push('/StorePage');
+    }
+
     function handleRedirectProfile() {
         Router.push(`/UserPage/Post/${user.idUser}`);
     }
@@ -93,6 +97,7 @@ export function Header({ user }: HeaderProps) {
                                 bg="howdyColors.brownHowdyCoin"
                                 borderRadius="0px 15px 15px 0px"
                                 color="white"
+                                onClick={handleRedirectToHowdyStore}
                                 icon={<Icon opacity="2" as={IoMdAdd} fontWeight="black" />}
                             />
                         </Flex>

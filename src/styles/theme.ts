@@ -51,9 +51,8 @@ export const themes = extendTheme({
     },
     breakpoints,
     fonts: {
-        heading: 'Bungee, sans-serif',
+        heading: 'Roboto, sans-serif',
         body: 'Roboto, sans-serif',
-        price: 'Bungee, sans-serif',
     },
     styles: {
         global: {

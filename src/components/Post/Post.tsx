@@ -154,7 +154,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
             <Flex width="100%" align={'center'} mt="5%" flexDir="column">
                 <Flex mb="1%" gap="3%" width="40%">
                     <Flex>
-                        <Image
+                        {userCreator?.profilePhoto  && <Image
                             borderRadius="100%"
                             height="5rem"
                             objectFit="cover"
@@ -162,7 +162,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                             alt="profilePhoto"
                             _hover={{ cursor: 'pointer' }}
                             onClick={handleAccessToProfile}
-                        ></Image>
+                        ></Image>}
                     </Flex>
                     <Flex>
                         <Flex flexDir="column">

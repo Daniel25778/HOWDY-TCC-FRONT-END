@@ -46,7 +46,10 @@ interface HeaderProps {
 export function Header({ user }: HeaderProps) {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [dysplayBoxNotification, setDysplayBoxNotification] = useState<string>('none');
+    const [isNotificationBlockOpen, setIsNotificationBlockOpen] = useState<boolean>(false);
+
     let api = apiFunction();
+
     const toast = useToast();
     const router = useRouter();
 
@@ -55,17 +58,18 @@ export function Header({ user }: HeaderProps) {
         api.get('/notifications')
             .then((response) => {
                 setNotifications(response.data);
-                console.log(response.data);
             })
             .catch((error) => {});
-
-        socket.on('receivedNotification', (notification) => {
-            setNotifications([...notifications, notification]);
-        });
     }, []);
+
+    socket.on('receivedNotification', (notification) => {
+        console.log("ffff",notifications);
+        setNotifications([...notifications, notification]);
+    });
 
     function handleOpenNotificationsBox() {
         setDysplayBoxNotification('flex');
+        setIsNotificationBlockOpen(true)
         api.put('/notifications/read')
             .then((response) => {
                 console.log(response.data);
@@ -83,6 +87,16 @@ export function Header({ user }: HeaderProps) {
 
     function handleRedirectProfile() {
         Router.push(`/UserPage/Post/${user.idUser}`);
+    }
+
+    function handleCloseNotifications() {
+        setIsNotificationBlockOpen(false)
+        setDysplayBoxNotification("none");
+        const notificationsRead:Notification[] = [...notifications].map((notification) => {
+            notification.wasRead = true;
+            return notification;
+        })
+        setNotifications(notificationsRead);
     }
 
     const handleSearch = (e) => {
@@ -187,32 +201,52 @@ export function Header({ user }: HeaderProps) {
                             </Text>
                         </Flex>
                         <Box w="10px" position="relative">
-                            <IconButton
-                                position="relative"
-                                borderRadius="100%"
-                                aria-label="Open navigation"
-                                bg="howdyColors.mainWhite"
-                                color="howdyColors.mainBlack"
-                                fontWeight="black"
-                                onClick={handleOpenNotificationsBox}
-                                fontSize="1.5rem"
-                                transform="rotate(-15deg)"
-                                icon={<Icon opacity="60%" as={FaRegBell} />}
-                            />
-
-                            <Center
-                                color="howdyColors.mainWhite"
-                                position="absolute"
-                                top="-.5rem"
-                                right="-.8vw"
-                                w="30px"
-                                h="20px"
-                                borderRadius="35%"
-                                bg="howdyColors.mainRed"
-                                fontSize="1rem"
-                            >
-                                {notifications.length}
-                            </Center>
+                                {isNotificationBlockOpen ? (
+                                   <IconButton
+                                        position="relative"
+                                        borderRadius="100%"
+                                        aria-label="Open navigation"
+                                        bg="howdyColors.mainWhite"
+                                        color="howdyColors.mainBlack"
+                                        fontWeight="black"
+                                        onClick={handleCloseNotifications}
+                                        fontSize="1.5rem"
+                                        transform="rotate(-15deg)"
+                                        icon={<Icon opacity="60%" as={FaRegBell} />
+                                }
+                                />) : (
+                                    <IconButton
+                                        position="relative"
+                                        borderRadius="100%"
+                                        aria-label="Open navigation"
+                                        bg="howdyColors.mainWhite"
+                                        color="howdyColors.mainBlack"
+                                        fontWeight="black"
+                                        onClick={handleOpenNotificationsBox}
+                                        fontSize="1.5rem"
+                                        transform="rotate(-15deg)"
+                                        icon={<Icon opacity="60%" as={FaRegBell} />
+                                    }
+                                    
+                                />)}
+                        
+                            {notifications.filter((notification)=> notification.wasRead == false).length > 0 && 
+                               ( <Center
+                                    color="howdyColors.mainWhite"
+                                    position="absolute"
+                                    top="-.5rem"
+                                    right="-.8vw"
+                                    w="30px"
+                                    h="20px"
+                                    borderRadius="35%"
+                                    bg="howdyColors.mainRed"
+                                    fontSize="1rem"
+                                >
+                                {notifications.filter((notification)=> notification.wasRead == false).length}
+                                </Center>
+                               )}
+    
+                            
                         </Box>
                     </Flex>
                 </Flex>
@@ -243,10 +277,11 @@ export function Header({ user }: HeaderProps) {
                 </Flex>
                 <Flex
                     position="absolute"
-                    bottom="-15rem"
+                    top="5rem"
+                    
                     display={dysplayBoxNotification}
                     w="30%"
-                    
+                    flexDir="column"
                     p="2%"
                     bg="gray.100"
                     borderRadius="10px"

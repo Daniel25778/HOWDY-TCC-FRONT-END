@@ -25,20 +25,19 @@ import { logOut } from '../../functions/logOut';
 import { useEffect, useState } from 'react';
 import { api as apiFunction } from '../../services/api';
 import socket from '../../services/sockeio';
+import Notification from '../Notification/Notifiction';
 
-
-
-interface Notification{
+interface Notification {
     idNotification: number;
-    notificationText: string,
-    wasRead: boolean,
-    createdAt: string,
-    idNotificationType: number,
-    idUserSender: number,
-    idUserReceiver: number,
-    type: string,
-    userSenderName: string,
-    userSenderProfilePhoto: string
+    notificationText: string;
+    wasRead: boolean;
+    createdAt: string;
+    idNotificationType: number;
+    idUserSender: number;
+    idUserReceiver: number;
+    type: string;
+    userSenderName: string;
+    userSenderProfilePhoto: string;
 }
 interface HeaderProps {
     user?: any;
@@ -46,30 +45,32 @@ interface HeaderProps {
 
 export function Header({ user }: HeaderProps) {
     const [notifications, setNotifications] = useState<Notification[]>([]);
-    const [dysplayBoxNotification, setDysplayBoxNotification] = useState<string>("none");
+    const [dysplayBoxNotification, setDysplayBoxNotification] = useState<string>('none');
     let api = apiFunction();
     const toast = useToast();
     const router = useRouter();
-    
+
     //Requisição para pegar as notificações
-    useEffect
-    (() => {
-        api.get('/notifications').then(response => {
-            setNotifications(response.data);
-            console.log(response.data);
-        }).catch(error => {})  
+    useEffect(() => {
+        api.get('/notifications')
+            .then((response) => {
+                setNotifications(response.data);
+                console.log(response.data);
+            })
+            .catch((error) => {});
 
         socket.on('receivedNotification', (notification) => {
-            setNotifications([...notifications,notification]);
+            setNotifications([...notifications, notification]);
         });
     }, []);
-    
 
     function handleOpenNotificationsBox() {
-       setDysplayBoxNotification("flex")
-       api.put('/notifications/read').then(response => {
-           console.log(response.data);
-       }).catch(error => {})
+        setDysplayBoxNotification('flex');
+        api.put('/notifications/read')
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {});
     }
 
     function handleRedirectUserConfig() {
@@ -103,9 +104,9 @@ export function Header({ user }: HeaderProps) {
             bg="howdyColors.mainBlue"
         >
             <Flex position="relative" top="0" left="0" w="100%" pl="15%" pr="7%" h="5rem" align="center">
-                <Flex  width="100%" align="center" px="10" justify="space-between">
-                    <Flex >
-                        <Flex  as="form" onSubmit={handleSearch}>
+                <Flex width="100%" align="center" px="10" justify="space-between">
+                    <Flex>
+                        <Flex as="form" onSubmit={handleSearch}>
                             <Box marginRight="5">
                                 <Button type="submit" variant={'ghost'}>
                                     <FiSearch size={30} color="#F2F2F2" />
@@ -242,14 +243,20 @@ export function Header({ user }: HeaderProps) {
                 </Flex>
                 <Flex
                     position="absolute"
-                    bottom="-5rem"
+                    bottom="-15rem"
                     display={dysplayBoxNotification}
                     w="30%"
-                    h="5rem"
+                    
+                    p="2%"
                     bg="gray.100"
                     borderRadius="10px"
                     boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
-                ></Flex>
+                >
+                    {notifications.length > 0 &&
+                        notifications?.map((notification) => (
+                           <Notification notification={notification}></Notification>
+                        ))}
+                </Flex>
             </Flex>
         </Flex>
     );

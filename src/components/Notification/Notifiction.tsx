@@ -1,6 +1,7 @@
 import { Flex, Icon, Image, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { AiOutlineMessage } from 'react-icons/ai';
+import { BsPeople } from 'react-icons/bs';
 
 interface notification {
     idNotification: number;
@@ -62,13 +63,20 @@ export default function Notification({ notification }: NotificationProps) {
                     </Flex>
 
                     <Flex align="center" gap="2">
-                        <Icon
+                        {notification.type === 'Someone texted you' ?
+                            <Icon
                             opacity="2"
                             as={AiOutlineMessage}
                             color={'howdyColors.mainBlue'}
                             fontSize={'xx-large'}
-                        />
-                        
+                        />:
+                        <Icon
+                            opacity="2"
+                            as={BsPeople}
+                            color={'howdyColors.mainBlue'}
+                            fontSize={'xx-large'}
+                            />
+                        }
                         <Text color="gray.500" fontSize={['sm', '', 'medium', 'large']}>{dateCreatedAt} min </Text>
                     </Flex>
                 </Flex>

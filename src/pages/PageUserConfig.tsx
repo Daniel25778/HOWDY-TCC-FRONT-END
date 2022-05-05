@@ -230,34 +230,38 @@ export default function PageUserConfig() {
                 
                 
 
-                <Flex justify={'center'} align="center" position={'relative'} flexDir={'row'} bottom="2vw">
+                <Flex justify={'center'} align="center" position={'relative'} flexDir={'column'} bottom="2vw">
                     <Button
-                        w="100%"    
+                        marginLeft="410%"
+                        w="20%"    
                         onClick={() => {
                         console.log(`Teste`);
                         backgroundImageRef.current.click();
                         }}
                         >
-                        {<BsCamera color="#2EC4F3" size="50%" />}
-                    </Button>
-
-                    <Button
-                        w="100%"    
-                        onClick={() => {
-                        console.log(`Teste`);
-                        profilePhotoImageRef.current.click();
-                        }}
-                        >
-                        {<BsCamera color="#2EC4F3" size="50%" />}
+                        {<BsCamera color="#2EC4F3" size="100%" />}
                     </Button>
                     <Image
-                        w="100%"
-                        h="10rem"
+                    marginTop="-20%"
+                        w="12rem"
+                        h="12rem"
                         borderRadius="100%"
                         objectFit="cover"
                         src={userLogged?.profilePhoto}
                         _hover={{ cursor: 'pointer' }}
                     />
+                    <Button
+                        marginLeft="60%"
+                        marginTop="-12%"
+                        w="20%"     
+                        onClick={() => {
+                        console.log(`Teste`);
+                        profilePhotoImageRef.current.click();
+                        }}
+                        >
+                        {<BsCamera color="#2EC4F3" size="600%" />}
+                    </Button>
+                   
                 </Flex>
 
                 <Flex

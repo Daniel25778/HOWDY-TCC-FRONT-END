@@ -1,7 +1,9 @@
 import { Flex, Icon, Image, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { AiOutlineMessage } from 'react-icons/ai';
-import { BsPeople } from 'react-icons/bs';
+import { BsFillChatSquareTextFill, BsPeople } from 'react-icons/bs';
+import { FaRegEdit } from 'react-icons/fa';
+import { MdAttachMoney } from 'react-icons/md';
 
 interface notification {
     idNotification: number;
@@ -49,8 +51,8 @@ export default function Notification({ notification }: NotificationProps) {
         
         <>
             <Flex w="100%" mb="6%">
-                <Flex align="center">
-                    <Image borderRadius="100%" w="60%" src={notification.userSenderProfilePhoto}></Image>
+                <Flex w="40%" align="center">
+                    <Image borderRadius="100%" w="5rem" h="5rem" src={notification.userSenderProfilePhoto}></Image>
                 </Flex>
                 <Flex  flexDir="column" justifyContent={'center'} w="90%">
                     <Flex flexDir={'column'} w="100%">
@@ -63,19 +65,48 @@ export default function Notification({ notification }: NotificationProps) {
                     </Flex>
 
                     <Flex align="center" gap="2">
-                        {notification.type === 'Someone texted you' ?
+                        {notification.type === 'Friend request pending' ?
                             <Icon
-                            opacity="2"
-                            as={AiOutlineMessage}
-                            color={'howdyColors.mainBlue'}
-                            fontSize={'xx-large'}
-                        />:
-                        <Icon
                             opacity="2"
                             as={BsPeople}
                             color={'howdyColors.mainBlue'}
                             fontSize={'xx-large'}
+                        />: notification.type === 'Someone texted you' ?
+                        <Icon
+                            opacity="2"
+                            as={BsFillChatSquareTextFill}
+                            color={'howdyColors.mainBlue'}
+                            fontSize={'xx-large'}
                             />
+                            : notification.type === 'Friend Request Accepted' ?
+                            <Icon
+                            opacity="2"
+                            as={BsFillChatSquareTextFill}
+                            color={'howdyColors.mainGreen'}
+                            fontSize={'xx-large'}
+                            />
+                            : notification.type === 'Commentary' ?
+                            <Icon
+                            opacity="2"
+                            as={AiOutlineMessage}
+                            color={'howdyColors.mainGreen'}
+                            fontSize={'xx-large'}
+                            />
+                            :  notification.type === 'Someone bought your activity' ?
+                            <Icon
+                            opacity="2"
+                            as={MdAttachMoney}
+                            color={'howdyColors.mainGreen'}
+                            fontSize={'xx-large'}
+                            />
+                            :  
+                            <Icon
+                            opacity="2"
+                            as={FaRegEdit}
+                            color={'howdyColors.mainGreen'}
+                            fontSize={'xx-large'}
+                            />
+
                         }
                         <Text color="gray.500" fontSize={['sm', '', 'medium', 'large']}>{dateCreatedAt} min </Text>
                     </Flex>

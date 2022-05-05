@@ -156,6 +156,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                     <Flex>
                         {userCreator?.profilePhoto  && <Image
                             borderRadius="100%"
+                            width="5rem"
                             height="5rem"
                             objectFit="cover"
                             src={userCreator?.profilePhoto}

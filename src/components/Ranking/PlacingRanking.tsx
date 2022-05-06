@@ -1,4 +1,5 @@
-import { Flex, Icon, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Icon, Image, Text } from "@chakra-ui/react";
+import { useState } from "react";
 import { BiTargetLock } from "react-icons/bi";
 import { FaBaby } from "react-icons/fa";
 
@@ -8,12 +9,14 @@ interface PlacingRankingProps {
 
 export default function PlacingRanking({ranking}: PlacingRankingProps) {
 
+    const [colorPositionRanking, setColorPositionRanking] = useState<string>('howdyColors.mainBlack');
+
     return (
         <>
 
-            <Flex w="100%" mb="5%" >
+            <Flex w="100%" mb="3%" >
                 <Flex align="center"  w="23%">
-                    <Text ml="5%" fontWeight="bold" fontSize={['medium', 'x-large', 'xxx-large']} color="howdyColors.mainBlack">{ranking.positionRanking}˚</Text>
+                    <Text ml="5%" fontWeight="bold" fontSize={['medium', 'x-large', 'xxx-large']} color={colorPositionRanking}>{ranking.positionRanking}˚</Text>
                 </Flex>
                 <Flex align="center"  w="22%">
                     <Flex
@@ -28,7 +31,7 @@ export default function PlacingRanking({ranking}: PlacingRankingProps) {
                         fontWeight={'bold'}
                         fontSize={['sm', 'md', 'xx-large']}
                     >
-                       <Text fontWeight="bold" fontSize={['medium', 'large', 'xx-large']}>{ranking.totalXp}</Text>
+                       <Text  fontWeight="bold" fontSize={['medium', 'large', 'xx-large']}>{ranking.totalXp}</Text>
                     </Flex>
                 </Flex>
                 <Flex  w="35%">
@@ -40,14 +43,16 @@ export default function PlacingRanking({ranking}: PlacingRankingProps) {
                         <Text fontWeight="bold" fontSize={['medium', 'large', 'xx-large']}>{ranking.userName}</Text>
                         <Flex gap="4%" >
                             <Icon as={BiTargetLock} color="howdyColors.mainBlue" fontSize="xx-large" />
-                            <Text fontSize={['medium', 'large', 'large']} color="howdyColors.mainBlue">{ranking.targetLanguageName}</Text>
+                            <Text width="100%" fontSize={['medium', 'medium', 'large']} color="howdyColors.mainBlue">{ranking.targetLanguageName}</Text>
                             <Icon as={FaBaby} color="howdyColors.mainBlue" fontSize="xx-large" />
-                            <Text fontSize={['medium', 'large', 'large']} color="howdyColors.mainBlue">{ranking.nativeLanguageName}</Text>
+                            <Text fontSize={['medium', 'medium', 'large']} color="howdyColors.mainBlue">{ranking.nativeLanguageName}</Text>
                         </Flex>
                     </Flex>
                    
                 </Flex>
+               
             </Flex>
+            <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
 
         </>
     )

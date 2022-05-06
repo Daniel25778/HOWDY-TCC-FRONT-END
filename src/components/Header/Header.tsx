@@ -270,7 +270,7 @@ export function Header({ user }: HeaderProps) {
                     ></Image>
 
                     <Center w="50%" justifyContent={'space-between'}>
-                        <NavLink href="/RankingPage" title="Ranking" />
+                        <NavLink href="/Ranking/RankingPageWeekly" title="Ranking" />
                         <NavLink href="/Posts" title="Postagens" />
                         <NavLink href="/PublicActivities" title="Aprenda" />
                     </Center>

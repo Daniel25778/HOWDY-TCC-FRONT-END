@@ -5,7 +5,7 @@ import { api as apiFunction } from '../services/api';
 import { useEffect, useRef, useState } from 'react';
 import { getUserLogged } from '../functions/getUserLogged';
 import Loading from '../components/Loading/Loading';
-import { Button, Flex, Image, Input, List, Select, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, Icon, IconButton, Image, Input, InputGroup, InputLeftElement, List, Select, Text, useToast } from '@chakra-ui/react';
 import { BsCamera, BsPeople } from 'react-icons/bs';
 import Head from 'next/head';
 
@@ -14,6 +14,11 @@ import ListFriends from '../components/Friends/ListFriends';
 import { parseCookies } from 'nookies';
 
 import socket from '../services/sockeio';
+import Chat from '../components/Message/Message';
+import Message from '../components/Message/Message';
+import { FiSearch } from 'react-icons/fi';
+import { IoMdAdd } from 'react-icons/io';
+import { AiOutlineSend } from 'react-icons/ai';
 
 interface PostsProps {
     idUser: string;
@@ -46,7 +51,10 @@ export default function Posts(props: PostsProps) {
     const [categoryList, setCategoryList] = useState<any[]>([]);
 
     const [friendsList, setFriendsList] = useState<any[]>([]);
+    const [dysplayBoxChat, setDysplayBoxChat] = useState<string>('none');
     const [friendForChat, setFriendForChat] = useState<any>(null);
+    const [isChatBlockOpen, setIsChatBlockOpen] = useState<boolean>(false);
+
 
     const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
 
@@ -68,6 +76,7 @@ export default function Posts(props: PostsProps) {
         });
     }, []);
 
+    
     useEffect(() => {
         if (!router.isFallback) {
             getUserLogged(api).then((res) => {
@@ -107,32 +116,72 @@ export default function Posts(props: PostsProps) {
         };
     }
 
-    function openChat(friend) {
-        const cookies = parseCookies();
+    function handleOpenChatBox(friend) {
+        //@ts-ignore
+        
+        
+        setFriendForChat(friend)
+        setDysplayBoxChat('flex');
+        setIsChatBlockOpen(true)
+        console.log(friendForChat);
 
-        //RESGATAR AS MENSAGENS ANTERIORES
         api.get(`messages/${friend.idUser}`)
-            .then((response) => {
-                setMessages(response.data);
-            })
-            .catch((err) => console.log(err));
+        .then((response) => {
+            setMessages(response.data);
+        })
+        .catch((err) => console.log(err));
 
         socket.on('receivedMessage', (message) => {
             setMessages([...messages, message]);
         });
+    }
 
-        messages.length > 0 && messages.reverse().map((message) => console.log(message));
+    function sendMessage(friend){
+        const cookies = parseCookies();
+        //@ts-ignore
+        const valueTypedByUser = document.getElementById('sendMessage-input')?.value;
 
+        
         var messageObject: any = {
             idUserReceiver: 2,
-            message: 'arra',
+            message: valueTypedByUser,
             idToken: cookies['firebaseAccount'],
         };
 
         socket.emit('sendMessage', messageObject);
     }
 
-    
+    function handleCloseChat() {
+        setIsChatBlockOpen(false)
+        setDysplayBoxChat("none");
+        
+        
+    }
+
+    // function openChat(friend) {
+    //     const cookies = parseCookies();
+
+    //     //RESGATAR AS MENSAGENS ANTERIORES
+    //     api.get(`messages/${friend.idUser}`)
+    //         .then((response) => {
+    //             setMessages(response.data);
+    //         })
+    //         .catch((err) => console.log(err));
+
+    //     socket.on('receivedMessage', (message) => {
+    //         setMessages([...messages, message]);
+    //     });
+
+    //     messages.length > 0 && messages.reverse().map((message) => console.log(message));
+
+    //     var messageObject: any = {
+    //         idUserReceiver: 2,
+    //         message: 'arra',
+    //         idToken: cookies['firebaseAccount'],
+    //     };
+
+    //     socket.emit('sendMessage', messageObject);
+    // }
 
     function sendPost(e) {
         e.preventDefault();
@@ -350,6 +399,54 @@ export default function Posts(props: PostsProps) {
                     </Flex>
                 </Flex>
 
+                <Flex boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)" flexDir="column" borderRadius="50px" p="1.5%"  w="30%" bgColor="howdyColors.mainWhite" position="absolute" display={dysplayBoxChat}>
+                    <Flex gap="5%" align="center" w="50%">
+                        <Image 
+                            borderRadius="100%"
+                            h="4rem"
+                            w="4rem"
+                            objectFit="cover" src={friendForChat?.profilePhoto}>
+                        </Image>
+                        <Text fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']}>{friendForChat?.userName}</Text>
+                    </Flex>
+                    <Box bg="howdyColors.divider" h="1px" w="100%" mb="10" mt="5" />
+                    <Flex flexDir="column">
+                        {
+                            messages.length > 0 && messages.reverse().map((message) => 
+                                <Message message={message} />
+                        )}
+                    </Flex>
+
+                    <Flex justifyContent='space-between' width="100%">
+                        <InputGroup  width="90%" variant="filled">
+                            <Input
+                                px="2%"
+                                borderColor="howdyColors.mainBlack"
+                                name="search"
+                                placeholder="Digite aqui..."
+                                type="text"
+                                focusBorderColor="howdyColors.mainWhite"
+                                borderRadius="100px 100px 100px 100px"
+                                id="sendMessage-input"
+                                
+                                variant={'outline'}
+                            >
+                            </Input>
+
+                        </InputGroup>
+
+                        <IconButton
+                            variant="unstyled"
+                            aria-label="Open navigation"
+                            fontSize="2rem"
+                            onClick={() => sendMessage(friendForChat)}
+                            borderRadius="0px 15px 15px 0px"
+                            color="howdyColors.mainBlue"
+                            icon={<Icon opacity="2" as={AiOutlineSend} fontWeight="black" />}
+                        />
+                    </Flex>       
+                </Flex>
+
                 <Flex flexDir="column" p="1%"  boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"  h="70%" width="15%">
                     <Flex alignItems="center" width="50%" h="20%" justify="center">
                         <Text fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']}>
@@ -357,19 +454,24 @@ export default function Posts(props: PostsProps) {
                         </Text>
                         <BsPeople size="40%" />
                     </Flex> 
-
+                    
                     {friendsList.length > 0 &&
                         friendsList.map((friend) => (
                             <ListFriends
-                                onClick={() => {
-                                    openChat(friend);
-                                }}
+                                onClick={() => handleOpenChatBox(friend)}
                                 key={friend.idUser}
                                 friendName={friend.userName}
                                 friendProfilePhoto={friend.profilePhoto}
                             />
                         ))}
+
+                    
                 </Flex>
+
+                
+
+
+               
             </Flex>
         </>
     );

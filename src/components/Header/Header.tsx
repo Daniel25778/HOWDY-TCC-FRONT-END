@@ -278,7 +278,6 @@ export function Header({ user }: HeaderProps) {
                 <Flex
                     position="absolute"
                     top="5rem"
-                    
                     display={dysplayBoxNotification}
                     w="30%"
                     flexDir="column"
@@ -289,7 +288,7 @@ export function Header({ user }: HeaderProps) {
                 >
                     {notifications.length > 0 &&
                         notifications?.map((notification) => (
-                           <Notification notification={notification}></Notification>
+                           <Notification notification={notification}/>
                         ))}
                 </Flex>
             </Flex>

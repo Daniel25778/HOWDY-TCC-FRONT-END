@@ -33,6 +33,9 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     const [colorBoxMessage, setColorBoxMessage] = useState<any>("#fff");
     const [totalLikes, setTotalLikes] = useState<any>(post.totalLikes);
     const [postTextContentTraduct, setPostTextContentTraduct] = useState<any>(null);
+
+    const [languageTraduct, setLanguageTraduct] = useState<string>("");
+
     const router = useRouter();
     let api = apiFunction();
     const toast = useToast();
@@ -117,10 +120,12 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     }
 
     function handleTranslate() {
-        
+
+        const nativeLanguageTranslatorName = userLogged.nativeLanguageTranslatorName;
+       
         if (!router.isFallback) {
             api.post(`traductions`, {
-                toLanguage: "pt",
+                toLanguage: nativeLanguageTranslatorName,
                 texts: [post.textContent]
             })
                 .then((response: any) => {

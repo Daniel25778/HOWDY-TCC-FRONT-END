@@ -309,7 +309,7 @@ export default function Posts(props: PostsProps) {
                                 placeholder="Visibilidade"
                             >
                                 <option value="true">Público</option>
-                                <option value="false">Privado</option>
+                                <option value="false">Somente amigos</option>
                             </Select>
 
                             <Button

@@ -9,27 +9,31 @@ import { FiSearch } from "react-icons/fi";
 import PlacingRanking from "../../components/Ranking/PlacingRanking";
 import Head from "next/head";
 
+interface RankingWeekly {
+
+}
+
 export default function RankingPage() {
 
     const api = apiFunction();
 
     const [userLogged, setUserLogged] = useState<UserLogged>(null);
-    const [rankingWeekly, setRankingWeekly] = useState<[]>([]);
+    const [rankingWeekly, setRankingWeekly] = useState<any>([]);
+    const [valueInputSearchRanking, setValueInputSearchRanking] = useState<string>('');
 
     useEffect(() => {
+        console.log(valueInputSearchRanking)
         getUserLogged(api).then((userLogged) => {
             if (userLogged) {
                 setUserLogged(userLogged);
             }
-            api.get('/ranking/weekly').then((response) => {
+            api.get(`/ranking/Weekly/?nameFilter=${valueInputSearchRanking}`).then((response) => {
                 setRankingWeekly(response.data);
             }).catch((err) => {
                 console.log(err);
             })
         });
-    }, []);
-
-
+    }, [valueInputSearchRanking]);
     return (
         <>
             <Head>
@@ -57,7 +61,8 @@ export default function RankingPage() {
                         type="text"
                         focusBorderColor="howdyColors.mainWhite"
                         borderRadius="100px 100px 100px 100px"
-                        id="search-input"
+                        id="searchRanking-input"
+                        onChange={(e) =>setValueInputSearchRanking(e.target.value)}
                         variant={'outline'}
                     >
                     </Input>

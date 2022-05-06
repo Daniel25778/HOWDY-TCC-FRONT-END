@@ -142,10 +142,15 @@ export default function PageUserConfig() {
         e.preventDefault();
         //@ts-ignore
         const inputDescriptionUser = document.getElementById('inputDescriptionUser')?.value;
+        //@ts-ignore
         const inputNewPassword = document.getElementById('inputNewPassword')?.value;
+        //@ts-ignore
         const inputUserName = document.getElementById('inputUserName')?.value;
+        //@ts-ignore
         const inputUserDate = document.getElementById('birthDate')?.value;
+        //@ts-ignore
         const selectNativeLanguage = document.getElementById('nativeLanguage')?.value;
+        //@ts-ignore
         const selectTargetLanguage = document.getElementById('targetLanguage')?.value;
         const selectNativeLanguageFormatted = JSON.parse(selectNativeLanguage);
         const selectTargetLanguageFormatted = JSON.parse(selectTargetLanguage);

@@ -8,15 +8,22 @@ interface PlacingRankingProps {
 }
 
 export default function PlacingRanking({ranking}: PlacingRankingProps) {
-
-    const [colorPositionRanking, setColorPositionRanking] = useState<string>('howdyColors.mainBlack');
-
     return (
         <>
-
             <Flex w="100%" mb="3%" >
                 <Flex align="center"  w="23%">
-                    <Text ml="5%" fontWeight="bold" fontSize={['medium', 'x-large', 'xxx-large']} color={colorPositionRanking}>{ranking.positionRanking}˚</Text>
+                    {ranking.positionRanking == 1 ? 
+                        <Text ml="5%" fontWeight="bold" fontSize={['medium', 'x-large', 'xxx-large']}  
+                         color={'howdyColors.mainYellow'}>{ranking.positionRanking}˚</Text>
+                    : ranking.positionRanking == 2 ? 
+                        <Text ml="5%" fontWeight="bold" fontSize={['medium', 'x-large', 'xxx-large']}  
+                         color={'howdyColors.notSelection'}>{ranking.positionRanking}˚</Text>
+                    : ranking.positionRanking == 3 ? 
+                        <Text ml="5%" fontWeight="bold" fontSize={['medium', 'x-large', 'xxx-large']}  
+                         color={'howdyColors.brownHowdyCoin'}>{ranking.positionRanking}˚</Text>
+                    : <Text ml="5%" fontWeight="bold" fontSize={['medium', 'x-large', 'xxx-large']}  
+                       color={'howdyColors.notSelection'}>{ranking.positionRanking}˚</Text>
+                    } 
                 </Flex>
                 <Flex align="center"  w="22%">
                     <Flex
@@ -48,12 +55,9 @@ export default function PlacingRanking({ranking}: PlacingRankingProps) {
                             <Text fontSize={['medium', 'medium', 'large']} color="howdyColors.mainBlue">{ranking.nativeLanguageName}</Text>
                         </Flex>
                     </Flex>
-                   
                 </Flex>
-               
             </Flex>
             <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
-
         </>
     )
 

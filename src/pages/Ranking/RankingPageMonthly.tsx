@@ -15,19 +15,20 @@ export default function RankingPage() {
 
     const [userLogged, setUserLogged] = useState<UserLogged>(null);
     const [rankingMonthly, setRankingMonthly] = useState<[]>([]);
+    const [valueInputSearchRanking, setValueInputSearchRanking] = useState<string>('');
 
     useEffect(() => {
         getUserLogged(api).then((userLogged) => {
             if (userLogged) {
                 setUserLogged(userLogged);
             }
-            api.get('/ranking/monthly').then((response) => {
+            api.get(`/ranking/Monthly/?nameFilter=${valueInputSearchRanking}`).then((response) => {
                 setRankingMonthly(response.data);
             }).catch((err) => {
                 console.log(err);
             })
         });
-    }, []);
+    }, [valueInputSearchRanking]);
 
 
     return (
@@ -58,6 +59,7 @@ export default function RankingPage() {
                         focusBorderColor="howdyColors.mainWhite"
                         borderRadius="100px 100px 100px 100px"
                         id="search-input"
+                        onChange={(e) =>setValueInputSearchRanking(e.target.value)}
                         variant={'outline'}
                     >
                     </Input>

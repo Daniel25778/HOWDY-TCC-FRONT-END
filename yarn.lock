@@ -2822,7 +2822,7 @@ history@^5.2.0:
   dependencies:
     "@babel/runtime" "^7.7.6"
 
-hoist-non-react-statics@^3.3.1:
+hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.1:
   version "3.3.2"
   resolved "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -3578,6 +3578,13 @@ react-icons@^4.3.1:
   version "4.3.1"
   resolved "https://registry.npmjs.org/react-icons/-/react-icons-4.3.1.tgz"
   integrity sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==
+
+react-in-viewport@^1.0.0-alpha.27:
+  version "1.0.0-alpha.27"
+  resolved "https://registry.yarnpkg.com/react-in-viewport/-/react-in-viewport-1.0.0-alpha.27.tgz#6acc5e6714393ce40adde45a1a011803e0acd3da"
+  integrity sha512-+SXe0lh+zcaEdBOTlGTqvzJjDS1dbAgjrUUNGw9CLPrX7vvbmuDzKMrm1yd9Mf5KWpjchWPXBFroaj6e50I80w==
+  dependencies:
+    hoist-non-react-statics "^3.0.0"
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

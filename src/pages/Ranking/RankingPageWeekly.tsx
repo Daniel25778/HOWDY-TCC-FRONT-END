@@ -8,6 +8,7 @@ import { NavLink } from "../../components/NavLink/Header/NavLink";
 import { FiSearch } from "react-icons/fi";
 import PlacingRanking from "../../components/Ranking/PlacingRanking";
 import Head from "next/head";
+import { AnimatePresence } from "framer-motion";
 
 interface RankingWeekly {
 
@@ -76,11 +77,14 @@ export default function RankingPage() {
                         <Text fontWeight="bold" fontSize={['medium', 'x-large', 'xxx-large']} color="howdyColors.mainBlack">Usuário</Text>
                     </Flex>
                     <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />
-                    {
-                        rankingWeekly.length > 0 && rankingWeekly?.map(ranking => (
-                            <PlacingRanking ranking={ranking}/>  
-                        ))
-                    }
+                    <AnimatePresence>
+                        {
+                            rankingWeekly.length > 0 && rankingWeekly?.map(ranking => (
+                                <PlacingRanking ranking={ranking}/>  
+                            ))
+                        }
+                    </AnimatePresence>
+                    
                     
                 </Flex>
             </Flex>

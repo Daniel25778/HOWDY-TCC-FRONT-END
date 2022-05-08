@@ -1,7 +1,7 @@
 import Head from 'next/head';
 // import styles from '../styles/Home.module.css';
 import { FormLogin } from '../components/Form/FormLogin';
-import { Flex, Text,Image, Heading, Button, Grid, SimpleGrid, Box} from '@chakra-ui/react';
+import { Flex, Text,Image, Heading, Button, Grid, SimpleGrid, Box, ScaleFade} from '@chakra-ui/react';
 import PageCadastro from './register/[isLogged]';
 import { HeaderNotLogged } from '../components/Header/HeaderNotLogged';
 import { useSpring, animated as a } from 'react-spring'
@@ -29,6 +29,7 @@ import { useEffect, useState } from 'react';
 import { api as apiFunction } from '../services/api';
 import { useRouter } from 'next/router';
 import Footer from '../components/Footer/Footer';
+import { useInViewport } from 'react-in-viewport';
 
 // install Swiper modules
 SwiperCore.use([Pagination, Navigation, Scrollbar, A11y, Autoplay]);
@@ -64,7 +65,9 @@ const monthlyXpSeries = [
 
     }];
 
-    
+    const {inVewImport} = useInViewport(
+
+    )
     
     return (
         <>
@@ -93,34 +96,39 @@ const monthlyXpSeries = [
                             ></Image>
                         </Flex>
                     </Flex>
+                    <ScaleFade in={}>
                     <Flex>
+
+                       
+                            <Swiper
+                                slidesPerView={1}
+                                cssMode={true}
+                                navigation={true}
+                                pagination={true}
+                                autoplay={{
+                                    delay: 4000,
+                                }}
+                                className={styles.swiper}
+                                mousewheel={true}
+                                keyboard={true}
+                            >
+                                <SwiperSlide >
+                                    <SliderContent image='peopleSliderLandingPage.svg' title='Aprenda e ensine' description='Ensine sua lingua nativa e aprenda outros idiomas' />
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <SliderContent image='peopleSliderLandingPage.svg' title='Plataforma gamificada' description='Aprender e ensinar se tornou mais divertido' />
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <SliderContent image='peopleSliderLandingPage.svg' title='Compartilhe o seu progresso' description='Poste e interaja com varias pessoas'/>
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <SliderContent image='peopleSliderLandingPage.svg' title='Ranking semanal' description='Fique no topo ganhando o maximo de Xp possivel'/>
+                                </SwiperSlide>
+                            </Swiper>
                         
-                        <Swiper
-                            slidesPerView={1}
-                            cssMode={true}
-                            navigation={true}
-                            pagination={true}
-                            autoplay={{
-                                delay: 4000,
-                            }}
-                            className={styles.swiper}
-                            mousewheel={true}
-                            keyboard={true}
-                        >
-                            <SwiperSlide >
-                                <SliderContent image='peopleSliderLandingPage.svg' title='Aprenda e ensine' description='Ensine sua lingua nativa e aprenda outros idiomas' />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <SliderContent image='peopleSliderLandingPage.svg' title='Plataforma gamificada' description='Aprender e ensinar se tornou mais divertido' />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <SliderContent image='peopleSliderLandingPage.svg' title='Compartilhe o seu progresso' description='Poste e interaja com varias pessoas'/>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <SliderContent image='peopleSliderLandingPage.svg' title='Ranking semanal' description='Fique no topo ganhando o maximo de Xp possivel'/>
-                            </SwiperSlide>
-                        </Swiper>
+                        
                     </Flex>
+                    </ScaleFade>
                 </Flex>
                 <Flex py="2%" flexDir="column" bgColor="howdyColors.mainBlack" w="100%" justify="center" align="center">
                     <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium', '2xl']} >

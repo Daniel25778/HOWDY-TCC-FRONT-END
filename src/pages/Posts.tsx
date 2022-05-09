@@ -133,6 +133,10 @@ export default function Posts(props: PostsProps) {
             console.log("MESSAGE")
             console.log(response.data)
             console.log(messages)
+
+            
+
+
         })
         .catch((err) => console.log(err));
     }
@@ -181,6 +185,9 @@ export default function Posts(props: PostsProps) {
 
     //     socket.emit('sendMessage', messageObject);
     // }
+
+
+    
 
     function sendPost(e) {
         e.preventDefault();
@@ -409,12 +416,17 @@ export default function Posts(props: PostsProps) {
                         <Text fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']}>{friendForChat?.userName}</Text>
                     </Flex>
                     <Box bg="howdyColors.divider" h="1px" w="100%" mb="10" mt="5" />
-                    <Flex flexDir="column">
-                        {
-                            messages.length > 0 && messages.reverse().map((message) => 
-                                <Message message={message} />
-                        )}
+                    <Flex justifyContent="flex-end" w="100%" >
+                        <Flex w="100%" flexDir="column">
+                            {
+                                messages.length > 0 && messages.map((message) => 
+                                    
+                                    <Message userLogged={userLogged} message={message} />
+                                    
+                            )}
+                        </Flex>
                     </Flex>
+                    
 
                     <Flex justifyContent='space-between' width="100%">
                         <InputGroup  width="90%" variant="filled">

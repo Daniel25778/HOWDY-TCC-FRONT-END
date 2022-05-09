@@ -15,8 +15,9 @@ import { parseCookies } from 'nookies';
 
 import socket from '../services/sockeio';
 import Message from '../components/Message/Message';
-import { AiOutlineSend } from 'react-icons/ai';
+import { AiFillStar, AiOutlineSend } from 'react-icons/ai';
 import { log } from 'console';
+import { FaHeart, FaRegStar } from 'react-icons/fa';
 
 interface PostsProps {
     idUser: string;
@@ -277,6 +278,10 @@ export default function Posts(props: PostsProps) {
                             textColor="#303135"
                             fontWeight="medium"
                             fontSize={['x-small', 'medium', 'x-large']}
+                            leftIcon={<AiFillStar color="#FFD700" size="2.6rem"/>}
+                            paddingBottom="1rem"
+                            justifyContent="space-around"
+                            marginStart="1rem"
                         >
                             Amigos
                         </Button>
@@ -288,6 +293,10 @@ export default function Posts(props: PostsProps) {
                             color="#303135"
                             fontWeight="medium"
                             fontSize={['x-small', 'medium', 'x-large']}
+                            leftIcon={<FaHeart color="#FA383E" size="2rem"/>}
+                            paddingBottom="1rem"
+                            justifyContent="space-around"
+                            marginStart="1rem"
                         >
                             Popular
                         </Button>

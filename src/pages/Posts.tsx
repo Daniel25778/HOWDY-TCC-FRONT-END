@@ -239,7 +239,7 @@ export default function Posts(props: PostsProps) {
 
                         default:
                             toast({
-                                    title: 'OCORREU UM ERRO NA EDIÇÃO',
+                                    title: 'OCORREU UM ERRO NA POSTAGEM',
                                     status: 'error',
                                     isClosable: true,
                                     position: 'top',

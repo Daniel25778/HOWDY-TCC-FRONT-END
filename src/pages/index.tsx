@@ -25,7 +25,7 @@ import { SliderContent } from '../components/SliderContent/SliderContent';
 import { WeeklyChart } from '../components/Chart/WeeklyChart';
 import { MonthlyChart } from '../components/Chart/MonthlyChart';
 import Loading from '../components/Loading/Loading';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api as apiFunction } from '../services/api';
 import { useRouter } from 'next/router';
 import Footer from '../components/Footer/Footer';
@@ -65,8 +65,13 @@ const monthlyXpSeries = [
 
     }];
 
-    const {inVewImport} = useInViewport(
+    const ref = useRef(null);
 
+    const {inViewport} = useInViewport(
+        ref,
+        { rootMargin: '-15% 0px' },
+        {disconnectOnLeave: false},
+        {}
     )
     
     return (
@@ -96,8 +101,8 @@ const monthlyXpSeries = [
                             ></Image>
                         </Flex>
                     </Flex>
-                    <ScaleFade in={}>
-                    <Flex>
+                    <ScaleFade initialScale={0.9}  in={inViewport} whileHover={{scale: 1.1}}>
+                    <Flex ref={ref}>
 
                        
                             <Swiper

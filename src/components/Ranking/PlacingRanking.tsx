@@ -16,8 +16,10 @@ export default function PlacingRanking({ ranking }: PlacingRankingProps) {
             <MotionFlex
                 w="100%"
                 mb="3%"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2 }}
+                initial={{ opacity: 0,  scale: 0 }}
+                animate={{ opacity: 1, scale:1 }}
+                
+                
             >
                 <Flex align="center" w="23%">
                     {ranking.positionRanking == 1 ? (

@@ -14,11 +14,9 @@ import ListFriends from '../components/Friends/ListFriends';
 import { parseCookies } from 'nookies';
 
 import socket from '../services/sockeio';
-import Chat from '../components/Message/Message';
 import Message from '../components/Message/Message';
-import { FiSearch } from 'react-icons/fi';
-import { IoMdAdd } from 'react-icons/io';
 import { AiOutlineSend } from 'react-icons/ai';
+import { log } from 'console';
 
 interface PostsProps {
     idUser: string;
@@ -59,6 +57,10 @@ export default function Posts(props: PostsProps) {
     const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
 
     const [messages, setMessages] = useState<Message[]>([]);
+
+    socket.on('receivedMessage', (message) => {
+        setMessages([...messages, message]);
+    });
 
     const postImageRef = useRef(null);
 
@@ -116,34 +118,33 @@ export default function Posts(props: PostsProps) {
         };
     }
 
-    function handleOpenChatBox(friend) {
+    function handleOpenChatBox(selectedFriend) {
         //@ts-ignore
         
-        
-        setFriendForChat(friend)
+        setFriendForChat(selectedFriend)
         setDysplayBoxChat('flex');
         setIsChatBlockOpen(true)
-        console.log(friendForChat);
+        console.log(selectedFriend);
 
-        api.get(`messages/${friend.idUser}`)
+        api.get(`messages/${selectedFriend.idUser}`)
         .then((response) => {
             setMessages(response.data);
+
+            console.log("MESSAGE")
+            console.log(response.data)
+            console.log(messages)
         })
         .catch((err) => console.log(err));
-
-        socket.on('receivedMessage', (message) => {
-            setMessages([...messages, message]);
-        });
     }
 
-    function sendMessage(friend){
+    function handleSendMessage(friend){
         const cookies = parseCookies();
         //@ts-ignore
         const valueTypedByUser = document.getElementById('sendMessage-input')?.value;
 
         
         var messageObject: any = {
-            idUserReceiver: 2,
+            idUserReceiver: friend.idUser,
             message: valueTypedByUser,
             idToken: cookies['firebaseAccount'],
         };
@@ -154,8 +155,6 @@ export default function Posts(props: PostsProps) {
     function handleCloseChat() {
         setIsChatBlockOpen(false)
         setDysplayBoxChat("none");
-        
-        
     }
 
     // function openChat(friend) {
@@ -439,7 +438,7 @@ export default function Posts(props: PostsProps) {
                             variant="unstyled"
                             aria-label="Open navigation"
                             fontSize="2rem"
-                            onClick={() => sendMessage(friendForChat)}
+                            onClick={() => handleSendMessage(friendForChat)}
                             borderRadius="0px 15px 15px 0px"
                             color="howdyColors.mainBlue"
                             icon={<Icon opacity="2" as={AiOutlineSend} fontWeight="black" />}

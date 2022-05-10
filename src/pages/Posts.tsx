@@ -18,6 +18,7 @@ import Message from '../components/Message/Message';
 import { AiFillStar, AiOutlineSend } from 'react-icons/ai';
 import { log } from 'console';
 import { FaHeart, FaRegStar } from 'react-icons/fa';
+import  IoCloseSharp, { IoMdClose }  from 'react-icons/io';
 
 interface PostsProps {
     idUser: string;
@@ -155,6 +156,7 @@ export default function Posts(props: PostsProps) {
         };
 
         socket.emit('sendMessage', messageObject);
+        
     }
 
     function handleCloseChat() {
@@ -231,7 +233,9 @@ export default function Posts(props: PostsProps) {
 
         api.post(`posts`, formData)
             .then((response) => {
-                console.log('res', response);
+                toast({
+                    title: 'POSTAGEM ENVIADA COM SUCESSO!',
+                })
             })
             .catch((error) => {
                 switch (error.response.data.error) {
@@ -399,7 +403,7 @@ export default function Posts(props: PostsProps) {
 
                     {/* we are young */}
 
-                    <Flex width="100%" flexDir="column">
+                    <Flex  width="100%" flexDir="column">
                         {posts.length > 0 &&
                             posts.map((post) => {
                                 return (
@@ -414,7 +418,16 @@ export default function Posts(props: PostsProps) {
                     </Flex>
                 </Flex>
 
-                <Flex boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)" flexDir="column" borderRadius="50px" p="1.5%"  w="30%" bgColor="howdyColors.mainWhite" position="absolute" display={dysplayBoxChat}>
+                <Flex bottom="0" right="15%" boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)" flexDir="column" borderRadius="50px" p="1.5%"  w="21%" bgColor="howdyColors.mainWhite" position="absolute" display={dysplayBoxChat}>
+                    <Flex justifyContent="flex-end" width="100%"> 
+                        <Button
+                        
+                            onClick={handleCloseChat}
+                            >
+                            {<IoMdClose  size="2rem" />}
+                        </Button>
+                    </Flex>
+                    
                     <Flex gap="5%" align="center" w="50%">
                         <Image 
                             borderRadius="100%"
@@ -425,8 +438,8 @@ export default function Posts(props: PostsProps) {
                         <Text fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']}>{friendForChat?.userName}</Text>
                     </Flex>
                     <Box bg="howdyColors.divider" h="1px" w="100%" mb="10" mt="5" />
-                    <Flex justifyContent="flex-end" w="100%" >
-                        <Flex w="100%" flexDir="column">
+                    <Flex  w="100%" >
+                        <Flex align={'flex-end'} w="100%" flexDir="column">
                             {
                                 messages.length > 0 && messages.map((message) => 
                                     
@@ -478,6 +491,7 @@ export default function Posts(props: PostsProps) {
                     {friendsList.length > 0 &&
                         friendsList.map((friend) => (
                             <ListFriends
+                           
                                 onClick={() => handleOpenChatBox(friend)}
                                 key={friend.idUser}
                                 friendName={friend.userName}

@@ -12,6 +12,7 @@ export default function ListFriends(props: ListFriendsProps) {
         <>
             <Flex mb="5%" gap="5%" align="center">
                 <Image
+                    cursor="pointer"
                     borderRadius="100%"
                     h="4rem"
                     w="4rem"

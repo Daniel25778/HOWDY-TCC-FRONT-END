@@ -8,6 +8,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Commentary from "../Comments/Comments";
 import { useRouter } from 'next/router';
 import { api as apiFunction } from '../../services/api';
+import { formatDateCreatedAt} from '../../functions/formatDateCreatedAt';
 
 interface PostProps {
     userCreator: any;
@@ -16,11 +17,9 @@ interface PostProps {
 }
 
 export default function Post({ userCreator, post, userLogged }: PostProps) {
-    const createdAt = new Date(post.createdAt).toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-    });
+    
+ 
+
 
     const [displayTextContentPost, setDisplayTextContentPost] = useState<any>("flex");
     const [displayTextContentPostTraduct, setDisplayTextContentPostTraduct] = useState<any>("none");
@@ -28,6 +27,16 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     const [comments, setComments] = useState<any>([]);
     const [totalComments, setTotalComments] = useState<number>(post.totalComments);
     const [display, setDisplay] = useState<any>("none");
+    const [datePost, setDatePost] = useState<any>("");
+
+
+    useEffect(() => {
+        setDatePost(formatDateCreatedAt(post.createdAt))
+    }, [datePost])
+
+
+    console.log(post.createdAt)
+
     const [isCommentBlockOpen, setIsCommentBlockOpen] = useState<boolean>(false);
     const [liked, setLiked] = useState<boolean>(post.liked);
     const [colorBoxMessage, setColorBoxMessage] = useState<any>("#fff");
@@ -156,9 +165,9 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
 
     return (
         <>
-            <Flex width="100%" align={'center'} mt="5%" flexDir="column">
-                <Flex mb="1%" gap="3%" width="40%">
-                    <Flex>
+            <Flex  width="100%" align={'center'} mt="5%" flexDir="column">
+                <Flex  mb="1%" gap="3%" width="40%">
+                    <Flex >
                         {userCreator?.profilePhoto  && <Image
                             borderRadius="100%"
                             width="5rem"
@@ -170,8 +179,8 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                             onClick={handleAccessToProfile}
                         ></Image>}
                     </Flex>
-                    <Flex>
-                        <Flex flexDir="column">
+                    <Flex width="15rem" >
+                        <Flex w="100%"  flexDir="column">
                             <Flex align="center" gap="1%">
                                 <Text
                                     color="howdyColors.mainBlack"
@@ -180,9 +189,9 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                                 >
                                     {userCreator.userName}
                                 </Text>
-                                <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'md']}>
+                                <Text width="100%" color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'md']}>
                                     {' '}
-                                    ● {createdAt}
+                                    ● {datePost}
                                 </Text>
                             </Flex>
                             <Text display={displayTextContentPostTraduct}>{postTextContentTraduct}</Text>

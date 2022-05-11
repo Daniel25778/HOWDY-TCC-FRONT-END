@@ -16,7 +16,9 @@ interface MessageProps {
 export default function Message({message, userLogged}: MessageProps) {
 
     const toast = useToast();
-
+    const [translatedText, setTranslatedText] = useState<any>('');
+    const [displayTextContentPostTraduct, setDisplayTextContentPostTraduct] = useState<any>('');
+    const [displayTextContentPost, setDisplayTextContentPost] = useState<any>('');
     const api = apiFunction();
     const router = useRouter();
 
@@ -24,12 +26,15 @@ export default function Message({message, userLogged}: MessageProps) {
 
         const nativeLanguageTranslatorName = userLogged.nativeLanguageTranslatorName;
        
-        if (!router.isFallback) {
+        console.log(message.textContent);
             api.post(`traductions`, {
                 toLanguage: nativeLanguageTranslatorName,
-                texts: [message.textContent]// arrumar aqui
+                texts: [message.textContent]
             })
                 .then((response: any) => {
+                    setTranslatedText(response.data)
+                    setDisplayTextContentPostTraduct("flex")
+                    setDisplayTextContentPost("none")
                     toast({
                         title: 'TRADUÇÃO REALIZADA COM SUCESSO!',
                         status: 'success',
@@ -46,7 +51,7 @@ export default function Message({message, userLogged}: MessageProps) {
                         position: 'top',
                     });
                 });
-        }
+        
     }
     
      
@@ -57,7 +62,8 @@ export default function Message({message, userLogged}: MessageProps) {
             {message.idUserSender == userLogged.idUser ? (
                 <Flex  align={'flex-end'} flexDir="column"  w="60%">
                     <Flex p="3%" bgColor="howdyColors.mainBlue" width="100%" borderRadius="50px 35px 0px 50px">
-                        <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['sm', 'medium', 'x-large']}>
+                        <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['sm', 'medium', 'x-large']}  display={displayTextContentPostTraduct}>{translatedText}</Text>
+                        <Text display={displayTextContentPost} color="howdyColors.mainWhite" fontWeight="medium" fontSize={['sm', 'medium', 'x-large']}>
                             {message.textContent}
                         </Text>
                     </Flex>
@@ -85,7 +91,8 @@ export default function Message({message, userLogged}: MessageProps) {
             ) : (
                 <Flex align={'flex-start'} flexDir="column"  w="100%">
                     <Flex p="3%"   bgColor="howdyColors.mainBlack" width="50%" borderRadius="0px 50px 50px 35px">
-                        <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['sm', 'medium', 'x-large']}>
+                    <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['sm', 'medium', 'x-large']}  display={displayTextContentPostTraduct}>{translatedText}</Text>
+                        <Text display={displayTextContentPost} color="howdyColors.mainWhite" fontWeight="medium" fontSize={['sm', 'medium', 'x-large']}>
                             {message.textContent}
                         </Text>
                     </Flex>
@@ -100,6 +107,7 @@ export default function Message({message, userLogged}: MessageProps) {
                                 <Icon
                                     opacity="2"
                                     as={MdTranslate}
+                                    onClick={handleTranslate}
                                     color="howdyColors.mainWhite"
                                     fontSize={'x-large'}
                                 />

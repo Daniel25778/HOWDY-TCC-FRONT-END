@@ -4,6 +4,7 @@ import { BiTargetLock } from "react-icons/bi";
 import { IoMdAdd } from "react-icons/io";
 import StarRatings from "react-star-ratings";
 import ProfilePhotoAndPatent from "../ProfilePhotoAndPatent/ProfilePhotoAndPatent";
+import { useRouter } from 'next/router';
 
 interface ActivityCreateProps {
     name?: string;
@@ -26,6 +27,13 @@ export function ActivityCreate({rating,userActivitys, user = null}: ActivityCrea
     useEffect(() => {
         setHaveActivitys(userActivitys === undefined);
     })
+
+    const router = useRouter();
+
+
+    function handleAccessActivityBreakdown() {
+        router.push(`/ActivityBreakdown/${userActivitys.idActivity}`);
+    }
 
     return(
         <>
@@ -107,6 +115,7 @@ export function ActivityCreate({rating,userActivitys, user = null}: ActivityCrea
                         <Flex width="80%" flexDir="column" align="center" justify="center">
                             <StarRatings starDimension="40px"  rating={rating} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
                             <Button
+                                onClick={handleAccessActivityBreakdown}
                                 _hover={{ bg: '#B9C2FD' }}
                                 width={300}
                                 h="70px"

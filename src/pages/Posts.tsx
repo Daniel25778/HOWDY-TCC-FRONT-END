@@ -5,7 +5,7 @@ import { api as apiFunction } from '../services/api';
 import { useEffect, useRef, useState } from 'react';
 import { getUserLogged } from '../functions/getUserLogged';
 import Loading from '../components/Loading/Loading';
-import { Box, Button, Flex, Icon, IconButton, Image, Input, InputGroup, InputLeftElement, List, Select, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, Icon, IconButton, Image, Input, InputGroup, InputLeftElement, List, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useDisclosure, useToast } from '@chakra-ui/react';
 import { BsCamera, BsPeople } from 'react-icons/bs';
 import Head from 'next/head';
 
@@ -19,6 +19,8 @@ import { AiFillStar, AiOutlineSend } from 'react-icons/ai';
 import { log } from 'console';
 import { FaHeart, FaRegStar } from 'react-icons/fa';
 import  IoCloseSharp, { IoMdClose }  from 'react-icons/io';
+import { GrClose } from 'react-icons/gr';
+import { VscChromeClose } from 'react-icons/vsc';
 
 interface PostsProps {
     idUser: string;
@@ -54,7 +56,7 @@ export default function Posts(props: PostsProps) {
     const [dysplayBoxChat, setDysplayBoxChat] = useState<string>('none');
     const [friendForChat, setFriendForChat] = useState<any>(null);
     const [isChatBlockOpen, setIsChatBlockOpen] = useState<boolean>(false);
-
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
 
@@ -121,26 +123,27 @@ export default function Posts(props: PostsProps) {
     }
 
     function handleOpenChatBox(selectedFriend) {
+
+        console.log(userLogged)
         //@ts-ignore
-        
-        setFriendForChat(selectedFriend)
-        setDysplayBoxChat('flex');
-        setIsChatBlockOpen(true)
-        console.log(selectedFriend);
-
-        api.get(`messages/${selectedFriend.idUser}`)
-        .then((response) => {
-            setMessages(response.data);
-
-            console.log("MESSAGE")
-            console.log(response.data)
-            console.log(messages)
-
-            
-
-
-        })
-        .catch((err) => console.log(err));
+        if(userLogged.isPro == true) {
+            setFriendForChat(selectedFriend)
+            setDysplayBoxChat('flex');
+            setIsChatBlockOpen(true)
+            console.log(selectedFriend);
+    
+            api.get(`messages/${selectedFriend.idUser}`)
+            .then((response) => {
+                setMessages(response.data);
+    
+                console.log("MESSAGE")
+                console.log(response.data)
+                console.log(messages)
+            })
+            .catch((err) => console.log(err));
+        }else{
+            onOpen()
+        } 
     }
 
     function handleSendMessage(friend){
@@ -162,6 +165,10 @@ export default function Posts(props: PostsProps) {
     function handleCloseChat() {
         setIsChatBlockOpen(false)
         setDysplayBoxChat("none");
+    }
+
+    function handleAccessStore() {
+        router.push('/StorePage');
     }
 
     // function openChat(friend) {
@@ -320,6 +327,34 @@ export default function Posts(props: PostsProps) {
                             ))}
                     </List>
                 </Flex>
+
+                <Modal  isCentered  isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay bgColor="#3030303" />
+                    <ModalContent bgColor="howdyColors.mainBlack" alignItems="center">
+                        <ModalHeader >
+                        <Image
+                            width={100}
+                            objectFit="cover"
+                            
+                            src="/images/illustrations/Vector.svg"
+                            alt="howdy logo"
+                        />
+                        </ModalHeader>
+                        <ModalCloseButton />
+                        
+                        <ModalBody  justifyContent="center" align="center">
+                            <Text color="howdyColors.mainWhite" mb="5%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Apenas quem é PRO pode acessar!</Text>
+                            <Text  color="howdyColors.mainWhite" fontSize={['sm', 'medium', 'large']} >Desbloqueie esta função adquirindo a assinatura!</Text>
+                        </ModalBody>
+
+                        <ModalFooter gap="5%">
+                            <Button onClick={handleAccessStore} color="howdyColors.mainGreen" bgColor='howdyColors.mainGreenTransparent' >DESBLOQUEAR</Button>
+                            <Button bgColor="howdyColors.mainRedTransparent" onClick={onClose} mr={3} >
+                                <VscChromeClose color="#FA383E"/>
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
 
                 <Flex width="70%" align="center" flexDir="column">
                     <Flex
@@ -491,21 +526,13 @@ export default function Posts(props: PostsProps) {
                     {friendsList.length > 0 &&
                         friendsList.map((friend) => (
                             <ListFriends
-                           
                                 onClick={() => handleOpenChatBox(friend)}
                                 key={friend.idUser}
                                 friendName={friend.userName}
                                 friendProfilePhoto={friend.profilePhoto}
                             />
                         ))}
-
-                    
                 </Flex>
-
-                
-
-
-               
             </Flex>
         </>
     );

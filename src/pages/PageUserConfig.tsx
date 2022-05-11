@@ -12,6 +12,14 @@ import {
     FormErrorMessage,
     useToast,
     Button,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalFooter,
+    ModalBody,
 } from '@chakra-ui/react';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsCalendar3, BsCamera, BsPerson } from 'react-icons/bs';
@@ -31,6 +39,7 @@ import { useEffect, useState,useRef } from 'react';
 import { ref, uploadBytes } from 'firebase/storage';
 import { updatePassword } from 'firebase/auth';
 import {auth} from '../services/firebaseConfig';
+import { VscChromeClose } from 'react-icons/vsc';
 
 type editUserFormData = {
     email?: string;
@@ -71,6 +80,8 @@ export default function PageUserConfig() {
     const toast = useToast();
     const router = useRouter();
 
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     const { register, handleSubmit, formState } = useForm({
         resolver: resolver,
     });
@@ -110,6 +121,10 @@ export default function PageUserConfig() {
             });
         }
     }, [router.isFallback]);
+
+    function handleAccessStore() {
+        router.push('/StorePage');
+    }
     
     function uploadImage() {
         setAttachedBackgroundImage(false);
@@ -232,6 +247,34 @@ export default function PageUserConfig() {
                 <Image objectFit="cover" w="100%" h="20rem" src={userLogged?.backgroundImage} />
                 
 
+
+                <Modal  isCentered  isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay bgColor="#3030303" />
+                    <ModalContent bgColor="howdyColors.mainBlack" alignItems="center">
+                        <ModalHeader >
+                        <Image
+                            width={100}
+                            objectFit="cover"
+                            
+                            src="/images/illustrations/Vector.svg"
+                            alt="howdy logo"
+                        />
+                        </ModalHeader>
+                        <ModalCloseButton />
+                        
+                        <ModalBody  justifyContent="center" align="center">
+                            <Text color="howdyColors.mainWhite" mb="5%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Apenas quem é PRO pode acessar!</Text>
+                            <Text  color="howdyColors.mainWhite" fontSize={['sm', 'medium', 'large']} >Desbloqueie esta função adquirindo a assinatura!</Text>
+                        </ModalBody>
+
+                        <ModalFooter gap="5%">
+                            <Button onClick={handleAccessStore} color="howdyColors.mainGreen" bgColor='howdyColors.mainGreenTransparent' >DESBLOQUEAR</Button>
+                            <Button bgColor="howdyColors.mainRedTransparent" onClick={onClose} mr={3} >
+                                <VscChromeClose color="#FA383E"/>
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
                 
                 
 
@@ -239,9 +282,11 @@ export default function PageUserConfig() {
                     <Button
                         marginLeft="410%"
                         w="20%"    
-                        onClick={() => {
-                        console.log(`Teste`);
-                        backgroundImageRef.current.click();
+                        onClick={() => {if(userLogged.isPro = true){
+                            backgroundImageRef.current.click();
+                        }else{
+                            onOpen()
+                        }
                         }}
                         >
                         {<BsCamera color="#2EC4F3" size="100%" />}

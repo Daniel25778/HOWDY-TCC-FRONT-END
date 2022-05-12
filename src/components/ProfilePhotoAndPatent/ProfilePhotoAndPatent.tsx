@@ -33,7 +33,7 @@ export default function ProfilePhotoAndPatent({user, size, whiteBorder = false }
                     w="90px"
                     fontWeight="black"
                     color="white"
-                    bg={`howdyColors.${user.patent}`}
+                    bg={`howdyColors.${user?.patent}`}
                     borderRadius="0 10px 10px 0"
                     position="absolute"
                     bottom=".5vw"
@@ -48,7 +48,7 @@ export default function ProfilePhotoAndPatent({user, size, whiteBorder = false }
                         zIndex: '0',
                     }}
                 >
-                    {user.patent?.substring(0, 1).toUpperCase() + user.patent?.substring(1)}
+                    {user?.patent?.substring(0, 1).toUpperCase() + user?.patent?.substring(1)}
                 </Text>
             </Flex>
         </Center>

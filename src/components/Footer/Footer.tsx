@@ -8,7 +8,7 @@ import Link from 'next/link';
 export default function Footer(){
     return(
         <>
-            <Flex gap="2rem" pb="2%"  flexDir="column" w="100%">
+            <Flex  bgColor="howdyColors.mainWhite" gap="2rem" py="2%" pb="2%"  flexDir="column" w="100%">
 
                 <Flex w="100%" align="center" justifyContent="center">
                     <Flex w="30%" align="center" justifyContent="space-between">

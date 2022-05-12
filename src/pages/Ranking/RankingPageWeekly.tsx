@@ -55,7 +55,6 @@ export default function RankingPage() {
                         children={<FiSearch size="5rem" color='#6A7DFF' />}
                     />
                     <Input
-                    
                         px="2%"
                         borderColor="howdyColors.mainBlue"
                         name="search"

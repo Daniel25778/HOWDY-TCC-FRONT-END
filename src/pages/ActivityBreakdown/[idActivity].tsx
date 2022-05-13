@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, Icon, IconButton, Image, SimpleGrid, Text } from "@chakra-ui/react";
+import { Button, Flex, Grid, Icon, IconButton, Image, SimpleGrid, Text, useToast } from "@chakra-ui/react";
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -13,6 +13,7 @@ import Footer from "../../components/Footer/Footer";
 import ProfilePhotoAndPatent from "../../components/ProfilePhotoAndPatent/ProfilePhotoAndPatent";
 import { IoMdAdd } from "react-icons/io";
 import { BiTargetLock } from "react-icons/bi";
+import { AiOutlineFile } from "react-icons/ai";
 
 interface ActivityBreakdownProps {
     idActivity: string;
@@ -51,11 +52,13 @@ interface Activity {
     teachingTopicList: TeachingTopic[]
     createdAt: string
     minimumRequirements: string
+    difficultyName: string
+  
 }
 
 export default function ActivityBreakdown(props: ActivityBreakdownProps) {
 
-    
+    const toast = useToast();
     const [userLogged, setUserLogged] = useState<any>(null);
 
     const { idActivity } = props;
@@ -90,6 +93,19 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
     }
 
     console.log(activity);
+
+    function handleBuyActivity() {
+        api.post(`/activities/buy/${idActivity}`).then(response => {
+            toast({
+                title: 'COMPRA REALIZADA COM SUCESSO!',
+                status: 'success',
+                isClosable: true,
+                position: 'top',
+            });
+            console.log(response.data);
+        }
+        ).catch(err => console.log(err))
+    }
 
     return (
         <>
@@ -127,6 +143,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                         bg="#CBD2FF"
                         color="howdyColors.mainBlue"
                         type="submit"
+                        onClick={() => handleBuyActivity()}
                         >
                             <Text fontSize={['sm', 'medium', 'x-large']} fontWeight="semibold" color="howdyColors.mainBlue">
                                 COMPRAR
@@ -137,11 +154,16 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                 </Flex>
                 <Flex flexDir="column" w="100%" p="3%">
                     <Text mt="5%" mb="3%" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} color="howdyColors.mainBlack">Dificuldade</Text>
-                    <Text  mb="3%" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} color="howdyColors.mainBlack">Basic</Text>
+                    <Flex ml="5%" gap="2%" align="center" >
+                        <Text  mb="3%" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} color="howdyColors.mainBlue">●</Text>
+                        <Text  mb="3%"  fontSize={['medium', 'medium', 'large']} color="howdyColors.mainBlack">{activity?.difficultyName}</Text>
+                    </Flex>
+                    <Text  mb="3%" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} color="howdyColors.mainBlack">Esta atividade Inclui:</Text>
+                    <Flex ml="5%"  gap="2%" align="center" >
+                        <AiOutlineFile  color="#6A7DFF"/>
+                        <Text fontSize={['medium', 'medium', 'large']} color="howdyColors.mainBlack">{activity?.totalQuestion} Questões objetivas</Text>
+                    </Flex>
                 </Flex>
-                
-                
-                
             </Flex>
             <Flex  flexDir="column" justifyContent="center" width="100%" py="10%">
                 

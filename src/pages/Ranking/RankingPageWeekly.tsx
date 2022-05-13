@@ -28,7 +28,7 @@ export default function RankingPage() {
             if (userLogged) {
                 setUserLogged(userLogged);
             }
-            api.get(`/ranking/Weekly/?nameFilter=${valueInputSearchRanking}`).then((response) => {
+            api.get(`/ranking/weekly/?nameFilter=${valueInputSearchRanking}`).then((response) => {
                 setRankingWeekly(response.data);
             }).catch((err) => {
                 console.log(err);

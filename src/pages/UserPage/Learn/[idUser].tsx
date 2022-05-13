@@ -64,7 +64,8 @@ export default function LearnPage(props: LearnPageProps) {
             </Head>
                 <Header user={userLogged}/>
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
-                <UserDataPage user={user}></UserDataPage>
+                {/* @ts-ignore */}
+                <UserDataPage user={user}/>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                     <NavLink href={`/UserPage/Post/${idUser}`} title="Postagens"></NavLink>
                     <NavLink href={`/UserPage/Friends/${idUser}`} title="Amigos"></NavLink>
@@ -78,7 +79,7 @@ export default function LearnPage(props: LearnPageProps) {
                 <Flex  gap={10} align="center" width="100%" mt="1%" flexDir="column">
                         {
                             userUnlockedActivitys !== 'nulo' && userUnlockedActivitys?.map(unlockedActivity => (
-                                <Activity key={unlockedActivity.id} userUnlockedActivitys={unlockedActivity} user={unlockedActivity.userCreator}></Activity>
+                                <Activity key={unlockedActivity.id} userUnlockedActivitys={unlockedActivity} user={unlockedActivity.userCreator}/>
                             ))
                         }
                         

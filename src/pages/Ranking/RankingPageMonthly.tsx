@@ -22,8 +22,9 @@ export default function RankingPage() {
             if (userLogged) {
                 setUserLogged(userLogged);
             }
-            api.get(`/ranking/Monthly/?nameFilter=${valueInputSearchRanking}`).then((response) => {
+            api.get(`/ranking/monthly/?nameFilter=${valueInputSearchRanking}`).then((response) => {
                 setRankingMonthly(response.data);
+                console.log(response.data);
             }).catch((err) => {
                 console.log(err);
             })

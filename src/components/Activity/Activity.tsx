@@ -4,6 +4,7 @@ import { BiTargetLock } from "react-icons/bi";
 import { IoMdAdd } from "react-icons/io";
 import StarRatings from "react-star-ratings";
 import ProfilePhotoAndPatent from "../ProfilePhotoAndPatent/ProfilePhotoAndPatent";
+import { useRouter } from 'next/router';
 
 interface ActivityProps {
     name?: string;
@@ -15,13 +16,26 @@ interface ActivityProps {
 
 }
 
-export function Activity(props: ActivityProps) {
+export function Activity({userUnlockedActivitys,user}: ActivityProps) {
+    const createdAt = new Date(userUnlockedActivitys.createdAt).toLocaleDateString('pt-BR',{
+        day: '2-digit',
+        month: 'short',
+    });
+
+    const router = useRouter();
+
 
     const [haveActivitys, setHaveActivitys] = useState<any>([]);
 
     useEffect(() => {
-        setHaveActivitys(props.userUnlockedActivitys === undefined);
+        setHaveActivitys(userUnlockedActivitys === undefined);
     })
+
+    console.log(userUnlockedActivitys);
+
+    function handleAccessActivity() {
+        router.push(`/DoActivityPage/${userUnlockedActivitys.idActivity}`);
+    }
 
     return(
         <>
@@ -51,9 +65,9 @@ export function Activity(props: ActivityProps) {
 
                 <Flex mb="2%" width="100%">
                     <Flex width="70%" gap="3%" align="center">
-                        <ProfilePhotoAndPatent user={props.user} size='9rem'></ProfilePhotoAndPatent>
-                        <Heading>{props.userUnlockedActivitys.userCreator.userName}</Heading>
-                        <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>● 19 Nov</Text>
+                        <ProfilePhotoAndPatent user={user} size='9rem'></ProfilePhotoAndPatent>
+                        <Heading>{userUnlockedActivitys.userCreator.userName}</Heading>
+                        <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>● {createdAt}</Text>
                     </Flex>
                   
                    <Flex>
@@ -61,7 +75,7 @@ export function Activity(props: ActivityProps) {
                             <Icon w="40%" height="40%" color="howdyColors.mainBlue" fontSize="larger">
                                 <BiTargetLock />
                             </Icon>
-                            <Text fontSize={['sm', 'md', 'xx-large']} color="howdyColors.mainBlack" opacity="60%">Inglês</Text>
+                            <Text fontSize={['sm', 'md', 'xx-large']} color="howdyColors.mainBlack" opacity="60%">{userUnlockedActivitys.targetLanguageName}</Text>
                         </Flex>
                     </Flex>
                 </Flex>
@@ -75,16 +89,16 @@ export function Activity(props: ActivityProps) {
                         objectFit="cover"
                         w="100%"
                         h="26rem"
-                        src="/images/Tests/image 22.png"
+                        src={userUnlockedActivitys.activityCoverPhoto}
                         >
 
                         </Image>
                     </Flex>
 
                     <Flex  gap="7%" flexDir="column" p="2%"  width="50%" bgColor="howdyColors.mainBlue">
-                        <Heading color="howdyColors.mainWhite">{props.userUnlockedActivitys.activityTitle}</Heading>
+                        <Heading color="howdyColors.mainWhite">{userUnlockedActivitys.activityTitle}</Heading>
                         <Text color="howdyColors.mainWhite">
-                            {props.userUnlockedActivitys.activityTitle}
+                            {userUnlockedActivitys.activityTitle}
                         </Text>
                         
                         <Flex width="20%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
@@ -94,11 +108,11 @@ export function Activity(props: ActivityProps) {
                                 alt="howdy coin"
                             ></Image>
                             <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">
-                               0
+                            {userUnlockedActivitys.priceHowdyCoin}
                             </Text>
                         </Flex>
                         <Flex width="90%" flexDir="column" align="center" justify="center">
-                            <StarRatings starDimension="40px"  rating={2} starRatedColor="#F2D63F" numberOfStars={5} name="rating" />
+                            <StarRatings starDimension="40px"  rating={userUnlockedActivitys.totalRating} starRatedColor="#F2D63F" numberOfStars={userUnlockedActivitys.totalStars} name="rating" />
                             <Button
                                 _hover={{ bg: '#B9C2FD' }}
                                 width={300}
@@ -109,6 +123,7 @@ export function Activity(props: ActivityProps) {
                                 color="howdyColors.mainWhite"
                                 type="submit"
                                 borderRadius="50px"
+                                onClick={handleAccessActivity}
                             >
                                 <Text fontSize={['sm', 'md', 'xx-large']} >ACESSAR</Text>
                             </Button>

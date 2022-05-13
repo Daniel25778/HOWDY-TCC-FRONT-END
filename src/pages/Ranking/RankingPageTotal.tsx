@@ -22,7 +22,7 @@ export default function RankingPage() {
             if (userLogged) {
                 setUserLogged(userLogged);
             }
-            api.get(`/ranking/Total/?nameFilter=${valueInputSearchRanking}`).then((response) => {
+            api.get(`/ranking/total/?nameFilter=${valueInputSearchRanking}`).then((response) => {
                 setRankingTotal(response.data);
             }).catch((err) => {
                 console.log(err);

@@ -46,7 +46,7 @@ export default function TeachPage(props: TeachUserPageProps) {
 
            //Pegar postagens do usuario atraves do id
 
-           api.get(`activities/user?idUserCreator=${idUser}&maxPrice=200&idDifficulty=1&orderBy=rating`).then(response => {
+           api.get(`activities/${idUser}`).then(response => {
             if(response.data?.error) setUserActivitys([]);
             else if(response.data) {
                 setUserActivitys(response.data);
@@ -68,6 +68,7 @@ export default function TeachPage(props: TeachUserPageProps) {
             {console.log("sfsfs" + userActivitys)}
                 <Header user={userLogged} />
             <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
+                {/* @ts-ignore */}
                 <UserDataPage user={user}></UserDataPage>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                     <NavLink href={`/UserPage/Post/${idUser}`} title="Postagens"/>

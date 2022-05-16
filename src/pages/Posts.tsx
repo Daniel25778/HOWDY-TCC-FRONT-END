@@ -126,7 +126,7 @@ export default function Posts(props: PostsProps) {
 
         console.log(userLogged)
         //@ts-ignore
-        if(userLogged.isPro == true) {
+        if(userLogged.isPro) {
             setFriendForChat(selectedFriend)
             setDysplayBoxChat('flex');
             setIsChatBlockOpen(true)
@@ -170,35 +170,7 @@ export default function Posts(props: PostsProps) {
     function handleAccessStore() {
         router.push('/StorePage');
     }
-
-    // function openChat(friend) {
-    //     const cookies = parseCookies();
-
-    //     //RESGATAR AS MENSAGENS ANTERIORES
-    //     api.get(`messages/${friend.idUser}`)
-    //         .then((response) => {
-    //             setMessages(response.data);
-    //         })
-    //         .catch((err) => console.log(err));
-
-    //     socket.on('receivedMessage', (message) => {
-    //         setMessages([...messages, message]);
-    //     });
-
-    //     messages.length > 0 && messages.reverse().map((message) => console.log(message));
-
-    //     var messageObject: any = {
-    //         idUserReceiver: 2,
-    //         message: 'arra',
-    //         idToken: cookies['firebaseAccount'],
-    //     };
-
-    //     socket.emit('sendMessage', messageObject);
-    // }
-
-
     
-
     function sendPost(e) {
         e.preventDefault();
         //@ts-ignore

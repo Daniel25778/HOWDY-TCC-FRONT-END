@@ -8,8 +8,16 @@ import {
     InputGroup,
     InputLeftElement,
     Link,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     SimpleGrid,
     Text,
+    useDisclosure,
     useToast,
 } from '@chakra-ui/react';
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
@@ -29,6 +37,8 @@ import { BiTargetLock } from 'react-icons/bi';
 import { AiOutlineFile } from 'react-icons/ai';
 import { GiPadlock } from 'react-icons/gi';
 import Question from '../../components/Question/Question';
+import { VscChromeClose } from 'react-icons/vsc';
+import { FiShare } from 'react-icons/fi';
 
 interface QuestionsPageProps {
     idActivity: string;
@@ -37,8 +47,12 @@ interface QuestionsPageProps {
 export default function ActivityBreakdown(props: QuestionsPageProps) {
     const { idActivity } = props;
     const [questionsContent, setQuestionsContent] = useState<any>(null);
+    const [wasMade, setWasRead] = useState<boolean>(false);
+    const [correctAlternatives, setCorrectAlternatives] = useState<any>(null);
+    const [selectedAlternatives, setSelectedAlternatives] = useState<number[]>([]);
 
     const router = useRouter();
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const api = apiFunction();
 
@@ -48,6 +62,7 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                 .then((response) => {
                     const responseData = response.data;
                     setQuestionsContent(responseData);
+                    setSelectedAlternatives(responseData.map(() => 0));
                 })
                 .catch((err) => console.log(err));
         }
@@ -60,6 +75,20 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
     function handleAccessToQuestions() {
         router.push(`/QuestionsActivityPage/${idActivity}`);
     }
+
+    function handleFinishedActivity() {
+        setWasRead(true);
+        api.post(`questions/correction/${idActivity}`, {
+            selectedIdAlternatives: selectedAlternatives,
+        })
+        .then((response) => {
+            setCorrectAlternatives(response.data);
+            console.log(response.data);
+        })
+        .catch((err) => console.log(err));
+            
+    }
+
     console.log(questionsContent?.formattedQuestions[0].alternatives);
 
     return (
@@ -67,6 +96,28 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
             <Head>
                 <title>HOWDY - REALIZAÇÃO DA ATIVIDADE</title>
             </Head>
+
+            <Modal isCentered  isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay bgColor="#3030303" />
+                    <ModalContent   bgColor="howdyColors.mainWhite" >
+                        <ModalHeader justifyContent='center'  display="flex">
+                            <img width="50%" src="/images/default-images/check.gif" alt="Check gif" />
+                        </ModalHeader>
+                        <ModalCloseButton />
+                        
+                        <ModalBody  justifyContent="center" align="center">
+                            <Text color="howdyColors.mainBlack" mb="5%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Lição concluida!</Text>
+                            <Text  color="howdyColors.mainBlack" fontSize={['sm', 'medium', 'large']} >Você já está pronto para compartilhar sua experiência em sua rede social! Vamos lá?</Text>
+                        </ModalBody>
+
+                        <ModalFooter display="flex" justifyContent='center' gap="5%">
+                            <Button  color="howdyColors.mainBlue" bgColor='#B9C2FD' gap="4%" > <FiShare size="2rem"  color="#6A7DFF"/> COMPARTILHAR</Button>
+                            <Button bgColor="howdyColors.mainRedTransparent" onClick={onClose} mr={3} >
+                                <VscChromeClose color="#FA383E"/>
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
 
             <Flex w="100%" bg="howdyColors.mainBlue" justifyContent={'center'} align="center" padding="2%">
                 <Flex w="50%" bg="white" align="center" borderRadius={8} flexDir="column">
@@ -87,7 +138,7 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                             fontSize={['sm', 'md', 'xx-large']}
                             mb="2%"
                         >
-                            Questoes
+                            Questões
                         </Text>
                         <Image
                             w="100%"
@@ -97,20 +148,34 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                             src={questionsContent?.activityData.activityCoverPhoto}
                         ></Image>
                         {questionsContent?.formattedQuestions.length > 0 &&
-                            questionsContent?.formattedQuestions.map((formattedQuestion) => (
-                                <Question idActivity={idActivity} formattedQuestion={formattedQuestion}></Question>
+                            questionsContent?.formattedQuestions?.map((formattedQuestion, indexQuestion) => (
+                                <Question wasMade={wasMade} responseResult={correctAlternatives} indexQuestion={indexQuestion} idActivity={idActivity} selectedAlternatives={selectedAlternatives} setSelectedAlternatives={setSelectedAlternatives} formattedQuestion={formattedQuestion}/>
                             ))}
 
                         <Flex justifyContent="flex-end" w="100%">
-                            <Button
-                                w="30%"
-                                _hover={{ bg: '#B9C2FD' }}
-                                color="howdyColors.mainBlue"
-                                type="submit"
-                                // onClick={handleFinishedActivity}
-                            >
-                                FINALIZAR
-                            </Button>
+                            {wasMade  ? (
+                                <Button
+                                    w="30%"
+                                    _hover={{ bg: '#B9C2FD' }}
+                                    color="howdyColors.mainBlue"
+                                    type="submit"
+                                   
+                                    onClick={onOpen}
+                                >
+                                    CONCLUIR
+                                </Button>) : (
+                                    <Button
+                                    w="30%"
+                                    _hover={{ bg: '#B9C2FD' }}
+                                    color="howdyColors.mainBlue"
+                                    type="submit"
+                                    onClick={handleFinishedActivity}
+                                >
+                                    FINALIZAR
+                                </Button>
+                                )
+                            }
+                            
                         </Flex>
                     </Flex>
                 </Flex>

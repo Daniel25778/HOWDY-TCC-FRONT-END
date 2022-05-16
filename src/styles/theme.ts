@@ -29,7 +29,6 @@ export const themes = extendTheme({
             mainYellow: '#FFCC4D',
             mainGreenTransparent: '#cbe7e0',
             mainGreenLight: '#5EF2CD',
-            mainRed: '#FA383E',
             mainRedTransparent: '#FA383E33',
             lightBlue: '#2EC4F3',
             noob: '#428C49',

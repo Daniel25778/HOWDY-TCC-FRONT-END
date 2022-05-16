@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { parseCookies } from 'nookies';
+import { goToIncompleteRegisterPage } from '../functions/goToIncompleteRegisterPage';
 import { logOut } from '../functions/logOut';
 
 export function api() {
@@ -19,10 +20,6 @@ export function api() {
             },
             (error) => {
                 switch (error?.response?.data?.error) {
-                    case 'The user was not found':
-                        logOut();
-                        break;
-
                     case 'Firebase ID token has "kid" claim which does not correspond to a known public key. Most likely the ID token is expired, so get a fresh token from your client app and try again.':
                         logOut();
                         break;

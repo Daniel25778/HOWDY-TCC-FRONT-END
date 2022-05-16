@@ -1,8 +1,7 @@
 import { UserLogged } from './../interfaces/UserLogged';
-import Router from 'next/router';
 import { parseCookies } from 'nookies';
-import { api as apiFunction } from '../services/api';
 import { logOut } from './logOut';
+import { goToIncompleteRegisterPage } from './goToIncompleteRegisterPage';
 
 export async function getUserLogged(api) {
     if (typeof window !== 'undefined') {
@@ -13,10 +12,10 @@ export async function getUserLogged(api) {
                 .get(`users/isMyUidExternalRegistered`)
                 .then((response) => {
                     const { data } = response;
-                    data == null && logOut();
+                    data == null && false;
 
                     if (data.length === 0) {
-                        Router.push('/LoginPage');
+                        goToIncompleteRegisterPage()
                     }
 
                     loggedUserFound = data[0];

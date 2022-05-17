@@ -24,21 +24,24 @@ import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import StarRatings from 'react-star-ratings';
 import { Header } from '../../components/Header/Header';
 import Loading from '../../components/Loading/Loading';
 import { getUserLogged } from '../../functions/getUserLogged';
 import { api as apiFunction } from '../../services/api';
 import { FcCheckmark } from 'react-icons/fc';
 import Footer from '../../components/Footer/Footer';
+import StarRating from 'react-star-rating'
 import ProfilePhotoAndPatent from '../../components/ProfilePhotoAndPatent/ProfilePhotoAndPatent';
-import { IoMdAdd } from 'react-icons/io';
+import { IoMdAdd, IoMdTrophy } from 'react-icons/io';
 import { BiTargetLock } from 'react-icons/bi';
 import { AiOutlineFile } from 'react-icons/ai';
 import { GiPadlock } from 'react-icons/gi';
 import Question from '../../components/Question/Question';
 import { VscChromeClose } from 'react-icons/vsc';
 import { FiShare } from 'react-icons/fi';
+import CreatePost from '../../components/CreatePost/CreatePost';
+import { BsFillShareFill } from 'react-icons/bs';
+import StarRatings from 'react-star-ratings';
 
 interface QuestionsPageProps {
     idActivity: string;
@@ -48,13 +51,23 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
     const { idActivity } = props;
     const [questionsContent, setQuestionsContent] = useState<any>(null);
     const [wasMade, setWasRead] = useState<boolean>(false);
+    const [buttonAvaliation, setButtonAvaliation] = useState<string>('none');
+    const [buttonConcluded, setButtonConcluded] = useState<string>('flex');
     const [correctAlternatives, setCorrectAlternatives] = useState<any>(null);
     const [selectedAlternatives, setSelectedAlternatives] = useState<number[]>([]);
+    
 
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen: isOpenShareModal, onOpen: onOpenShareModal , onClose: onCloseShareModal } = useDisclosure()
+    const { isOpen: isOpenAvaliationModal, onOpen: onOpenAvaliationModal , onClose: onCloseAvaliationModal } = useDisclosure()
+    const [modalShareDisplay, setModalShareDisplay] = useState<any>(onOpenShareModal);
+
+    const [rating, setRating] = useState<number>(5);
 
     const api = apiFunction();
+
+    const toast = useToast();
 
     useEffect(() => {
         if (!router.isFallback) {
@@ -76,6 +89,7 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
         router.push(`/QuestionsActivityPage/${idActivity}`);
     }
 
+
     function handleFinishedActivity() {
         setWasRead(true);
         api.post(`questions/correction/${idActivity}`, {
@@ -89,7 +103,37 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
             
     }
 
-    console.log(questionsContent?.formattedQuestions[0].alternatives);
+    function handleEvaluateActivity() {
+        api.post(`evaluations/${idActivity}`, {
+            stars: rating,
+        }).then((response: any) => {
+            router.push(`/Posts`);
+            toast({
+                title: 'AVALIAÇÃO ENVIADA COM SUCESSO!',
+                status: 'success',
+                isClosable: true,
+                position: 'top',
+            });
+
+        
+        }).catch((error: any) => {
+            toast({
+                title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                status: 'error',
+                isClosable: true,
+                position: 'top',
+            });
+        });
+    }
+
+    function handleDisplayNoneButton(){
+        onOpen()
+        setButtonConcluded("none")
+        setButtonAvaliation("flex")
+    }
+
+      
+    
 
     return (
         <>
@@ -111,13 +155,60 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                         </ModalBody>
 
                         <ModalFooter display="flex" justifyContent='center' gap="5%">
-                            <Button  color="howdyColors.mainBlue" bgColor='#B9C2FD' gap="4%" > <FiShare size="2rem"  color="#6A7DFF"/> COMPARTILHAR</Button>
+                            <Button onClick={onOpenShareModal} color="howdyColors.mainBlue" bgColor='#B9C2FD' gap="4%" > <FiShare size="2rem"  color="#6A7DFF"/> COMPARTILHAR</Button>
                             <Button bgColor="howdyColors.mainRedTransparent" onClick={onClose} mr={3} >
                                 <VscChromeClose color="#FA383E"/>
                             </Button>
                         </ModalFooter>
                     </ModalContent>
-                </Modal>
+            </Modal>
+
+            <Modal  isCentered size={"6xl"} isOpen={isOpenShareModal} onClose={onCloseShareModal}>
+                    <ModalOverlay bgColor="#3030303" />
+                    <ModalContent w="100%"  bgColor="howdyColors.mainWhite" >
+                        <ModalHeader justifyContent='center'  display="flex">
+                            <BsFillShareFill size="10rem" color="#6A7DFF"/>
+                        </ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody flexDir="column" display="flex" align="center"  w="100%">
+                            <Text color="howdyColors.mainBlack" mb="3%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Compartilhe com o mundo as suas conquistas!</Text>
+                            <CreatePost setModalShareDisplay={setModalShareDisplay}/>
+                        </ModalBody>
+                    </ModalContent>
+            </Modal>
+
+            <Modal  isCentered size={"md"} isOpen={isOpenAvaliationModal} onClose={onCloseAvaliationModal}>
+                    <ModalOverlay bgColor="#3030303" />
+                    <ModalContent w="100%"  bgColor="white" >
+                        <ModalHeader justifyContent='center'  display="flex">
+                            <IoMdTrophy size="5rem" color="#6A7DFF"/>
+                        </ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody flexDir="column" display="flex" alignItems="center"  w="100%">
+                            <Text color="howdyColors.mainBlack" mb="3%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Avalie a atividade!</Text>
+                            <Text mb="5%" color="howdyColors.mainBlack" fontSize={['sm', 'medium', 'large']} >Indique uma nota para este aprendizado!</Text>
+                            <StarRatings
+                                numberOfStars={5}
+                                name='rating'
+                                starRatedColor="#FFD700"
+                                starHoverColor="#FFD700"
+                                rating={rating}
+                                changeRating={(newRating) => setRating(newRating)}
+                            />
+                            <Button
+                                mt="5%"
+                                display={buttonAvaliation}
+                                w="30%"
+                                _hover={{ bg: '#B9C2FD' }}
+                                color="howdyColors.mainBlue"
+                                type="submit"
+                                onClick={handleEvaluateActivity}
+                            >
+                                AVALIAR
+                            </Button>
+                        </ModalBody>
+                    </ModalContent>
+            </Modal>
 
             <Flex w="100%" bg="howdyColors.mainBlue" justifyContent={'center'} align="center" padding="2%">
                 <Flex w="50%" bg="white" align="center" borderRadius={8} flexDir="column">
@@ -127,6 +218,7 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                             color="howdyColors.mainBlack"
                             fontWeight={'bold'}
                             fontSize={['sm', 'md', 'xx-large']}
+                            
                         >
                             {questionsContent?.activityData.activityTitle}
                         </Text>
@@ -159,8 +251,8 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                                     _hover={{ bg: '#B9C2FD' }}
                                     color="howdyColors.mainBlue"
                                     type="submit"
-                                   
-                                    onClick={onOpen}
+                                    display={buttonConcluded}
+                                    onClick={handleDisplayNoneButton}
                                 >
                                     CONCLUIR
                                 </Button>) : (
@@ -175,6 +267,17 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                                 </Button>
                                 )
                             }
+                            <Button
+                                display={buttonAvaliation}
+                                w="30%"
+                                _hover={{ bg: '#B9C2FD' }}
+                                color="howdyColors.mainBlue"
+                                type="submit"
+                                onClick={onOpenAvaliationModal}
+                            >
+                                AVALIAR
+                            </Button>
+                            
                             
                         </Flex>
                     </Flex>

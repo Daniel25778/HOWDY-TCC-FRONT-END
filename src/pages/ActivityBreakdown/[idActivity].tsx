@@ -172,7 +172,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                     <Text w='55%' mb="5%" fontWeight="medium" fontSize={['medium', 'large', 'xx-large']} color="howdyColors.mainWhite" >{activity?.activityTitle}</Text>
                     <Text w='55%' mb="5%" fontSize={['medium', 'medium', 'large']} color="howdyColors.mainWhite">{activity?.activitySubtitle}</Text>
                     <Flex mb="4%" align="center" w="100%">
-                        <Text w="5%" fontSize={['medium', 'x-large', 'xx-large']} color="howdyColors.mainYellow">{activity?.totalRating}</Text>
+                        <Text w="5%" fontSize={['medium', 'x-large', 'xx-large']} color="howdyColors.mainYellow">{activity?.totalStars}</Text>
                         <StarRatings
                             starDimension="40px"
                             rating={activity?.starsRating}

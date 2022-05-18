@@ -30,6 +30,7 @@ export const themes = extendTheme({
             mainGreenTransparent: '#cbe7e0',
             mainGreenLight: '#5EF2CD',
             mainRedTransparent: '#FA383E33',
+            mainRed: '#FA383E',
             lightBlue: '#2EC4F3',
             noob: '#428C49',
             master: '#7A00F3',

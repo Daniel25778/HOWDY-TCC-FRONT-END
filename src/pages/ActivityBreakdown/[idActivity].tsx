@@ -206,7 +206,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                     <Text mt="5%" mb="3%" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} color="howdyColors.mainBlack">Criador da Atividade</Text>
                     <Flex flexDir="column">
                         <Flex gap="5%" align="center">
-                            <ProfilePhotoAndPatent size="8rem" user={activity?.userCreator}/>
+                            <ProfilePhotoAndPatent size="10rem" user={activity?.userCreator}/>
                             <Text fontWeight="medium" fontSize={['x-small', 'medium', 'xx-large']} color="howdyColors.mainBlack">{activity?.userCreator?.userName}</Text>
                         </Flex>
                         <Text ml="15%" w="32%" fontSize={['x-small', 'medium', 'large']} color="howdyColors.mainBlack">{activity?.userCreator?.description}</Text>

@@ -105,6 +105,10 @@ export default function PublicActivities(props: PostsProps) {
         { value: 'recents', label: 'Mais Novas' },
     ];
 
+    function handleAccessCreateActivity() {
+        router.push('/CreateActivityPage');
+    }
+
     return (
         <>
             <Head>
@@ -120,12 +124,11 @@ export default function PublicActivities(props: PostsProps) {
                 </Flex>
 
                 <Flex width="100%" align="center" flexDir="column">
-                    <Flex gap="15%" width="50%"align="center">
+                    <Flex gap="15%" width="50%" align="center">
                         <Text fontWeight="bold" fontSize={['sm', 'x-small', 'xx-large']}>Atividades</Text>
-                        <Button bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} w="20%" h="90%">
+                        <Button onClick={handleAccessCreateActivity} bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} px="5%">
                             ENSINE
                         </Button>
-                        
                     </Flex>
 
                     <Flex justifyContent="center" width="50%" flexDir="column">

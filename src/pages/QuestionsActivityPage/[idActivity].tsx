@@ -148,7 +148,7 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                             <img width="50%" src="/images/default-images/check.gif" alt="Check gif" />
                         </ModalHeader>
                         <ModalCloseButton />
-                        
+                        {/* @ts-ignore */}
                         <ModalBody  justifyContent="center" align="center">
                             <Text color="howdyColors.mainBlack" mb="5%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Lição concluida!</Text>
                             <Text  color="howdyColors.mainBlack" fontSize={['sm', 'medium', 'large']} >Você já está pronto para compartilhar sua experiência em sua rede social! Vamos lá?</Text>
@@ -170,6 +170,7 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                             <BsFillShareFill size="10rem" color="#6A7DFF"/>
                         </ModalHeader>
                         <ModalCloseButton />
+                        {/* @ts-ignore */}
                         <ModalBody flexDir="column" display="flex" align="center"  w="100%">
                             <Text color="howdyColors.mainBlack" mb="3%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Compartilhe com o mundo as suas conquistas!</Text>
                             <CreatePost setModalShareDisplay={setModalShareDisplay}/>
@@ -218,7 +219,6 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
                             color="howdyColors.mainBlack"
                             fontWeight={'bold'}
                             fontSize={['sm', 'md', 'xx-large']}
-                            
                         >
                             {questionsContent?.activityData.activityTitle}
                         </Text>

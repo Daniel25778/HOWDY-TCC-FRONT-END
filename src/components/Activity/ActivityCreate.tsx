@@ -63,7 +63,7 @@ export function ActivityCreate({rating,userActivitys, user = null}: ActivityCrea
 
                 <Flex mb="2%" width="100%">
                     <Flex width="70%" gap="3%" align="center">
-                        <ProfilePhotoAndPatent user={user} size='9rem'/>
+                        <ProfilePhotoAndPatent user={user} size='11rem'/>
                         <Heading>{user ? user.userName : userActivitys.userCreator.userName}</Heading>
                         {console.log(userActivitys.userCreator.userName)}
                         <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>● {createdAt}</Text>

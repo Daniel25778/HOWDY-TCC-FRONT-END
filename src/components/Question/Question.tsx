@@ -48,6 +48,7 @@ export default function Question({ formattedQuestion,selectedAlternatives, respo
             console.log(selectedAlternatives)
         }
     }
+console.log(responseResult)
     return (
         <>
             <Flex flexDir="column" mb="5%" w="100%">
@@ -61,8 +62,21 @@ export default function Question({ formattedQuestion,selectedAlternatives, respo
                             borderRadius="10px"
                             borderWidth={1}
                             borderStyle={'solid'}
+                            position="relative"
                             borderColor="howdyColors.mainBlack"
                         >
+                            { wasMade && alternative.idAlternative == responseResult?.correctAlternatives[indexQuestion].idAlternative && selectedAlternatives[indexQuestion] == responseResult?.correctAlternatives[indexQuestion].idAlternative ?
+                                <Flex right="100%" top="30%" position="absolute" w="6%" flexDir="column">
+                                    <Text
+                                        color="howdyColors.mainBlue"
+                                        fontWeight={'bold'}
+                                        fontSize={['sm', 'md', 'large']}
+                                        >
+                                            + {responseResult.totalXpGained}XP
+                                    </Text>
+                                </Flex>
+                                : ""
+                            }
                             <Flex
                                 cursor={'pointer'}
                                 onClick={() => {

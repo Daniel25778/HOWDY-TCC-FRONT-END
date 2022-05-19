@@ -2,7 +2,7 @@ import { Box, Button, Flex, Grid, Icon, IconButton, Image, Input, InputGroup, In
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StarRatings from "react-star-ratings";
 import { Header } from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
@@ -23,87 +23,174 @@ interface ActivityBreakdownProps {
 }
 
 interface TeachingTopic{
-    idTeachingTopic: number;
     teachingTopicText: string;
 }
 
-interface Activity {
-    userCreator: {
-        idUser: number
-        userName: string,
-        profilePhoto: string
-        isPro: boolean
-        totalXp: number
-        patent: string
-        description: string
-    },
-    didIUnlockThisActivity: string,
-    idActivity: number,
-    activityCoverPhoto: string,
-    activitySubtitle: string
+interface TheoricalContentBlock{
+    title?: string;
+    displayOrder?: number;
+    text?: string;
+    afterTextOriginalImageLink?: string;
+    linkDaImagemTextoOriginal?: string;
+    afterTitleOriginalImageLink?: string;
+    linkDaImagemTítuloOriginal?: string;
+}
+
+interface Alternatives{
+    textContent: string;
+    isCorrect: boolean;
+}
+
+interface Question{
+    statement: string;
+    alternatives: Alternatives[];
+}
+
+interface ActivityJsonData {
     activityTitle: string
+    activitySubtitle: string
     description: string
     priceHowdyCoin: number
-    idTargetLanguage: number
-    targetLanguageName: string
-    totalRating: number
-    totalStars: number
-    starsRating: number
-    totalQuestion: number
-    totalTheoricalContentBlock: number
-    totalStudent: number
-    teachingTopicList: TeachingTopic[]
-    createdAt: string
     minimumRequirements: string
-    difficultyName: string
-  
+    idDifficulty: number
+    theoricalContentBlocks: TheoricalContentBlock[]
+    teachingTopics: TeachingTopic[]
+    questions: Question[]
 }
+
+interface ActivityImages {
+    activityCoverPhoto?: any,
+    afterTextImage1?: any,
+    afterTitleImages?: any,
+}
+
 
 export default function ActivityBreakdown(props: ActivityBreakdownProps) {
 
     const [userLogged, setUserLogged] = useState<any>(null);
 
     const [activityContent, setActivityContent] = useState<any>(null);
-    const [topicsLearn, setTopicsLearn] = useState<string[]>([]);
+    const [difficulties, setDifficulties] = useState<any>(null);
+    const [isAlternativeCorrect, setIsAlternativeCorrect] = useState<boolean>(false);
+    const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
     
-    const [theoreticalContent,  setTheoreticalContent] = useState<string[]>([]);
-    const [questionContent,  setQuestionContent] = useState<string[]>([]);
-   
-
+    const [topicsLearn, setTopicsLearn] = useState<TeachingTopic[]>([]);
+    
+    const [theoreticalContent,  setTheoreticalContent] = useState<TheoricalContentBlock[]>([]);
+    const [questionContent,  setQuestionContent] = useState<Question[]>([]);
+    const [alternativeContent,  setAlternativeContent] = useState<Alternatives[]>([]);
     const router = useRouter();
 
     const api = apiFunction();
 
+    const theoricalBlockImageRef = useRef(null);
 
-
+    
     useEffect(() => {
-        if (!router.isFallback) {
-            getUserLogged(api).then((userLogged) => {
-                userLogged && setUserLogged(userLogged);
-            });
 
-            // api.get(`/activities/content/${idActivity}`).then(response => {
-            //     const responseData = response.data;
-            //     setActivityContent(responseData);
-            // }
-            // ).catch(err => console.log(err))
+        api.get(`/difficulties`).then(response => {
+            const responseData = response.data;
+            setDifficulties(responseData);
         }
-    }, [router.isFallback])
+        ).catch(err => console.log(err))
 
-    if (router.isFallback) {
-        return <Loading />;
+    } , [router.isFallback]);
+
+    function uploadImage() {
+        setAttachedPostImage(false);
+
+        const file = theoricalBlockImageRef.current.files[0];
+        const fileReader = new FileReader();
+
+        if (file) {
+            fileReader.readAsDataURL(file);
+        }
+
+        fileReader.onloadend = () => {
+            setAttachedPostImage(true);
+        };
     }
+
+
+    function sendActivity(){
+                const formData = new FormData();
+                //@ts-ignore
+                const nameTeaching = document.getElementById('nameTeaching')?.value;
+                //@ts-ignore
+                const subtitle = document.getElementById('subtitle')?.value;
+                //@ts-ignore
+                const optionDifficulty = document.getElementById('optionDifficulty')?.value;
+                //@ts-ignore
+                const priceActivity = document.getElementById('priceActivity')?.value;
+                //@ts-ignore
+                const descriptionActivity = document.getElementById('descriptionActivity')?.value;
+                //@ts-ignore
+                const topicsTeaching = document.getElementById('topicsTeaching')?.value;
+
+                console.log(topicsTeaching);
+                //@ts-ignore
+                const minimumRequirements = document.getElementById('minimumRequirements')?.value;
+
+               
+                const jsonData : ActivityJsonData = {
+                    activityTitle: nameTeaching,
+                    activitySubtitle: subtitle,
+                    description: descriptionActivity,
+                    priceHowdyCoin: parseInt(priceActivity),
+                    minimumRequirements: minimumRequirements,
+                    idDifficulty: parseInt(optionDifficulty),
+                    theoricalContentBlocks: theoreticalContent,
+                    teachingTopics: topicsLearn,
+                    questions: questionContent,
+                }
+
+                if (theoricalBlockImageRef.current.files.length === 1 && attachedPostImage !== false)
+                    formData.append('afterTitleImages', theoricalBlockImageRef.current.files[0]);
+
+                const jsonDataFormatted = JSON.stringify(jsonData);
+                formData.append('jsonData', jsonDataFormatted);
+
+                console.log(jsonDataFormatted);
+    
+                api.post(`/activities`, formData).then(response => {
+                    const responseData = response.data;
+                    console.log("ffffffffff" + responseData);
+                }
+                ).catch(err => console.log(err))
+        }
+    
+        if (router.isFallback) {
+            return <Loading />;
+        }
+    
+    
 
     function handleDeleteTopicLearn(idTopic: number) {
         let newTopicsLearn = [...topicsLearn];
+        //@ts-ignore
         newTopicsLearn.splice(newTopicsLearn.indexOf(idTopic.toString()), 1);
         setTopicsLearn(newTopicsLearn);
     }
 
     function handleDeleteTheoreticalContent(idTheoreticalContent: number) {
         let newTheoreticalContent = [...theoreticalContent];
+        //@ts-ignore
         newTheoreticalContent.splice(newTheoreticalContent.indexOf(idTheoreticalContent.toString()), 1);
         setTheoreticalContent(newTheoreticalContent);
+    }
+
+    function handleDeleteQuestionContent(idQuestionContent: number) {
+        let newQuestionContent = [...questionContent];
+        //@ts-ignore
+        newQuestionContent.splice(newQuestionContent.indexOf(idQuestionContent.toString()), 1);
+        setQuestionContent(newQuestionContent);
+    }
+
+    function handleDeleteAlternativeContent(idAlternativeContent: number) {
+        let newAlternativeContent = [...alternativeContent];
+        //@ts-ignore
+        newAlternativeContent.splice(newAlternativeContent.indexOf(idAlternativeContent.toString()), 1);
+        setAlternativeContent(newAlternativeContent);
     }
 
     console.log(activityContent?.theoricalContentBlocks[0]);
@@ -113,6 +200,8 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
             <Head>
                 <title>HOWDY - REALIZAÇÃO DA ATIVIDADE</title>
             </Head>
+
+            <Input type="file" display="none" ref={theoricalBlockImageRef} onChange={uploadImage} />
            
             <Flex w="100%" bg="howdyColors.mainBlue" justifyContent={'center'} align="center" padding="2%">
                 <Flex w="50%" bg="white"   borderRadius={8} flexDir="column">
@@ -149,6 +238,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                             name="passwordConfirm"
                             placeholder="Nome do ensinamento"
                             variant="filled"
+                            id="nameTeaching"
                             type="text"
                             mb="5%"
                             />
@@ -165,6 +255,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                             name="passwordConfirm"
                             placeholder="Subtítulo da atividade"
                             variant="filled"
+                            id="subtitle"
                             type="text"
                             mb="5%"
                             />
@@ -184,8 +275,11 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 iconColor="howdyColors.mainBlue"
                                 mb="5%"
                             >
-                                <option>
-                                </option>
+
+                            {difficulties?.map((difficulty) => (
+                                <option id="optionDifficulty" value={difficulty.idDifficulty}>{difficulty.difficultyName}</option>
+                            ))}
+                                
                             </Select>
 
                             <Text
@@ -211,7 +305,8 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     name="passwordConfirm"
                                     placeholder="Digite o preço desejado"
                                     variant="filled"
-                                    type="text"
+                                    id="priceActivity"
+                                    type="number"
                                     />
                             </Flex>
 
@@ -228,6 +323,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 name="passwordConfirm"
                                 placeholder="Descrição da atividade"
                                 variant="filled"
+                                id="descriptionActivity"
                                 type="text"
                                 />
                         </Flex>
@@ -250,6 +346,14 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     name="passwordConfirm"
                                     placeholder="Tópicos que serão ensinados"
                                     variant="filled"
+                                    id="topicsTeaching"
+                                    onChange={(e) =>{
+                                            let topicsLearnModified = [...topicsLearn]
+                                            //@ts-ignore
+                                            topicsLearnModified[index] = e.target.value
+                                            setTopicsLearn(topicsLearnModified)
+                                        }
+                                    }
                                     type="text"
                                 />
                                 <IconButton
@@ -271,7 +375,9 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     color="howdyColors.mainWhite"
                                     bgColor={'howdyColors.mainBlue'}
                                     borderRadius="10px 0px 0px 10px"
-                                    onClick={() => setTopicsLearn([...topicsLearn, ''])}
+                                    onClick={() => setTopicsLearn([...topicsLearn, {
+                                        teachingTopicText: ""}
+                                    ])}
                                     icon={<Icon opacity="2" as={AiOutlinePlus} fontWeight="black" />}
                                 />
                                 <Text
@@ -302,6 +408,14 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     name="passwordConfirm"
                                     placeholder="Requisitos mínimos"
                                     variant="filled"
+                                    onChange={(e) =>{
+                                        let requirementsModified = [...topicsLearn]
+                                        //@ts-ignore
+                                        requirementsModified[index] = e.target.value
+                                        setTopicsLearn(requirementsModified)
+                                        }
+                                    }
+                                    id="minimumRequirements"
                                     type="text"
                                 />
                         </Flex>
@@ -332,6 +446,9 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 name="passwordConfirm"
                                 placeholder="Titulo"
                                 variant="filled"
+                                onChange={(e) =>setTheoreticalContent([{ 
+                                    title:  e.target.value,
+                                }])}
                                 type="text"
                                 mb="5%"
                             />
@@ -345,7 +462,12 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                             </Text>
                             <Flex w="100%">
                                 <Image
+                                    cursor={'pointer'}
                                     borderRadius="10"
+                                    onClick={() => {
+                                        console.log(`Teste`);
+                                        theoricalBlockImageRef.current.click();
+                                    }}
                                     src="/images/Tests/backgroundImage.png">
                                 </Image>
                             </Flex>
@@ -412,7 +534,15 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     color="howdyColors.mainWhite"
                                     bgColor={'howdyColors.mainBlue'}
                                     borderRadius="10px 0px 0px 10px"
-                                    onClick={() => setTheoreticalContent([...theoreticalContent, ''])}
+                                    onClick={() => setTheoreticalContent([...theoreticalContent, {
+                                        title: "",
+                                        displayOrder: 0,
+                                        text: "",
+                                        afterTextOriginalImageLink: "",
+                                        linkDaImagemTextoOriginal: "",
+                                        afterTitleOriginalImageLink: "",
+                                        linkDaImagemTítuloOriginal: ""
+                                    }])}
                                     icon={<Icon opacity="2" as={AiOutlinePlus} fontWeight="black" />}
                                 />
                                 <Text
@@ -435,61 +565,128 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                         >
                             Questões
                         </Text>
-                        
-                        
-                        <Text
-                            color="howdyColors.mainBlack"
-                            fontWeight={'medium'}
-                            fontSize={['sm', 'md', 'large']}
-                            mb="2%"
-                            >
-                            * Enunciado
-                        </Text>
-                        <Input
-                            fontWeight="medium"
-                            name="passwordConfirm"
-                            placeholder="Enunciado"
-                            variant="filled"
-                            type="text"
-                            mb="5%"
-                        />
 
-                        <Text
-                            color="howdyColors.mainBlack"
-                            fontWeight={'medium'}
-                            fontSize={['sm', 'md', 'large']}
-                            mb="2%"
-                            >
-                            * Alternativa 1
-                        </Text>
-                        <Flex mb="3%" justifyContent='center' width='100%'>
-                            <Input
-                                fontWeight="medium"
-                                name="passwordConfirm"
-                                placeholder="Alternativa"
-                                variant="filled"
-                                type="text"
-                                mb="5%"
-                            />
-                            <IconButton
-                                
-                                variant="unstyled"
-                                aria-label="Open navigation"
-                                fontSize="40px"
-                                color="howdyColors.mainWhite"
-                                borderRadius="20px"
-                                // onClick={() => {handleDeleteTheoreticalContent(index)}}
-                                icon={<Icon borderRadius="20px" opacity="2" bgColor="#0FA958" as={BsCheckCircle} fontWeight="black" />}
-                            />
-                             <IconButton
-                                variant="unstyled"
-                                aria-label="Open navigation"
-                                fontSize="30px"
-                                color="howdyColors.mainRed"
-                                // onClick={() => {handleDeleteTheoreticalContent(index)}}
-                                icon={<Icon opacity="2" as={FaRegTrashAlt} fontWeight="black" />}
-                            />
-                        </Flex>
+                        {questionContent && questionContent.map((questions, index) => (
+                            <Flex flexDir="column">
+                                <Flex gap="4%">
+                                    <Text
+                                        color="howdyColors.mainBlue"
+                                        fontWeight={'bold'}
+                                        fontSize={['sm', 'md', 'x-large']}
+                                        mb="5%"
+                                    >
+                                        Questão {index + 1}
+                                    </Text>
+                                    <IconButton
+                                        variant="unstyled"
+                                        aria-label="Open navigation"
+                                        fontSize="30px"
+                                        color="howdyColors.mainRed"
+                                        onClick={() => {handleDeleteQuestionContent(index)}}
+                                        icon={<Icon opacity="2" as={FaRegTrashAlt} fontWeight="black" />}
+                                    />
+                                </Flex>
+                                   
+                                <Text
+                                    color="howdyColors.mainBlack"
+                                    fontWeight={'medium'}
+                                    fontSize={['sm', 'md', 'large']}
+                                    mb="2%"
+                                    >
+                                    * Enunciado
+                                </Text>
+                                <Input
+                                    fontWeight="medium"
+                                    name="passwordConfirm"
+                                    placeholder="Enunciado"
+                                    variant="filled"
+                                    type="text"
+                                    mb="5%"
+                                />
+
+                                {alternativeContent && alternativeContent.map((alternative, index) => (
+
+                                    <Flex flexDir="column" w="100%">
+                                        <Text
+                                            color="howdyColors.mainBlack"
+                                            fontWeight={'medium'}
+                                            fontSize={['sm', 'md', 'large']}
+                                            mb="2%"
+                                            >
+                                            * Alternativa {index + 1}
+                                        </Text>
+                                        <Flex mb="3%" justifyContent='center' width='100%'>
+                                            <Input
+                                                fontWeight="medium"
+                                                name="passwordConfirm"
+                                                placeholder="Alternativa"
+                                                variant="filled"
+                                                type="text"
+                                                mb="3%"
+                                            />
+                                            {isAlternativeCorrect ? (
+                                                <IconButton
+                                                    variant="unstyled"
+                                                    aria-label="Open navigation"
+                                                    fontSize="40px"
+                                                    color="howdyColors.mainWhite"
+                                                    borderRadius="20px"
+                                                    onClick={() => setIsAlternativeCorrect(false)}
+                                                    icon={<Icon borderRadius="20px" opacity="2" bgColor="#0FA958" as={BsCheckCircle} fontWeight="black" />}
+                                                />
+                                            
+                                                ): (
+                                                    <IconButton
+                                                        variant="unstyled"
+                                                        aria-label="Open navigation"
+                                                        fontSize="40px"
+                                                        color="howdyColors.mainWhite"
+                                                        borderRadius="20px"
+                                                        onClick={() => setIsAlternativeCorrect(true)}
+                                                        icon={<Icon borderRadius="20px" opacity="2" bgColor="#939393" as={BsCheckCircle} fontWeight="black" />}
+                                                    />
+                                                )
+                                            }
+                                            
+                                            <IconButton
+                                                variant="unstyled"
+                                                aria-label="Open navigation"
+                                                fontSize="30px"
+                                                color="howdyColors.mainRed"
+                                                onClick={() => {handleDeleteAlternativeContent(index)}}
+                                                icon={<Icon opacity="2" as={FaRegTrashAlt} fontWeight="black" />}
+                                            />
+                                        </Flex>
+                                    </Flex>
+                                ))}
+
+                            <Flex mb="3%"  gap="1%"  alignItems="center" >
+                                <IconButton
+                                    variant="unstyled"
+                                    aria-label="Open navigation"
+                                    fontSize="30px"
+                                    color="howdyColors.mainWhite"
+                                    bgColor={'howdyColors.mainBlue'}
+                                    borderRadius="10px 0px 0px 10px"
+                                    onClick={() => setAlternativeContent([...alternativeContent, {
+                                        textContent: "",
+                                        isCorrect: null
+                                    }])}
+                                    icon={<Icon opacity="2" as={AiOutlinePlus} fontWeight="black" />}
+                                />
+                                <Text
+                                    color="howdyColors.mainBlack"
+                                    fontWeight={'medium'}
+                                    fontSize={['sm', 'md', 'large']}
+                                >
+                                    {alternativeContent.length}/6
+                                </Text>
+                            </Flex>
+
+                            <Box bg="howdyColors.divider" h="1px" w="100%"  mb="30" />
+
+                            </Flex>
+                        ))}
                         
                     </Flex>
 
@@ -501,7 +698,13 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                             color="howdyColors.mainWhite"
                             bgColor={'howdyColors.mainBlue'}
                             borderRadius="10px 0px 0px 10px"
-                            onClick={() => setQuestionContent([...questionContent, ''])}
+                            onClick={() => setQuestionContent([...questionContent, {
+                                statement: "",
+                                alternatives: [{
+                                    textContent: "",
+                                    isCorrect: null
+                                }]
+                            }])}
                             icon={<Icon opacity="2" as={AiOutlinePlus} fontWeight="black" />}
                         />
                         <Text
@@ -511,6 +714,18 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                         >
                             {questionContent.length}/10
                         </Text>
+                    </Flex>
+                    <Flex px='10%' py='5%' w="100%" justifyContent="flex-end">
+                        <Button
+                            _hover={{ bg: '#B9C2FD' }}
+                            w="20%"
+                            bg="#CBD2FF"
+                            color="howdyColors.mainBlue"
+                            type="submit"
+                            onClick={sendActivity}
+                        >
+                            <Text>CONCLUIR</Text>
+                        </Button>
                     </Flex>
                 </Flex>
             </Flex>

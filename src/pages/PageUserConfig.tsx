@@ -282,7 +282,7 @@ export default function PageUserConfig() {
                     <Button
                         marginLeft="410%"
                         w="20%"    
-                        onClick={() => {if(userLogged.isPro = false){
+                        onClick={() => {if(userLogged.isPro = true){
                             backgroundImageRef.current.click();
                         }else{
                             onOpen()

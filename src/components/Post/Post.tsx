@@ -17,10 +17,6 @@ interface PostProps {
 }
 
 export default function Post({ userCreator, post, userLogged }: PostProps) {
-    
- 
-
-
     const [displayTextContentPost, setDisplayTextContentPost] = useState<any>("flex");
     const [displayTextContentPostTraduct, setDisplayTextContentPostTraduct] = useState<any>("none");
 

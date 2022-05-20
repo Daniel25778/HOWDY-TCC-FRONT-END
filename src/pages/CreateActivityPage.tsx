@@ -38,7 +38,8 @@ interface TheoricalContentBlock{
 
 interface Alternatives{
     textContent: string;
-    isCorrect: boolean;
+    isCorrect?: boolean;
+    idAlternative: number;
 }
 
 interface Question{
@@ -272,12 +273,13 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                             <Select
                                 placeholder="Selecione uma dificuldade"
                                 variant="filled"
+                                id="optionDifficulty"
                                 iconColor="howdyColors.mainBlue"
                                 mb="5%"
                             >
 
                             {difficulties?.map((difficulty) => (
-                                <option id="optionDifficulty" value={difficulty.idDifficulty}>{difficulty.difficultyName}</option>
+                                <option  >{difficulty.difficultyName}</option>
                             ))}
                                 
                             </Select>
@@ -621,10 +623,13 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                                 name="passwordConfirm"
                                                 placeholder="Alternativa"
                                                 variant="filled"
+                                                onChange={(e) =>setAlternativeContent([{ 
+                                                    textContent: e.target.value
+                                                }])}
                                                 type="text"
                                                 mb="3%"
                                             />
-                                            {isAlternativeCorrect ? (
+                                            {isAlternativeCorrect && alternativeContent.idAlternative === selectedAlternatives[indexQuestion] ? (
                                                 <IconButton
                                                     variant="unstyled"
                                                     aria-label="Open navigation"
@@ -670,7 +675,8 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     borderRadius="10px 0px 0px 10px"
                                     onClick={() => setAlternativeContent([...alternativeContent, {
                                         textContent: "",
-                                        isCorrect: null
+                                        isCorrect: null,
+                                        idAlternative: 0
                                     }])}
                                     icon={<Icon opacity="2" as={AiOutlinePlus} fontWeight="black" />}
                                 />
@@ -702,7 +708,8 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 statement: "",
                                 alternatives: [{
                                     textContent: "",
-                                    isCorrect: null
+                                    isCorrect: null,
+                                    idAlternative: 0
                                 }]
                             }])}
                             icon={<Icon opacity="2" as={AiOutlinePlus} fontWeight="black" />}

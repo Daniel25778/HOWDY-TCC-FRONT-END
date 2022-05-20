@@ -43,7 +43,7 @@ export function Activity({userUnlockedActivitys,user}: ActivityProps) {
         {
         haveActivitys ?
             <Flex align="center" flexDir="column" p="5%" width="100%" justify="center">
-                <Flex borderRadius="15" w="80%" h="10vh" justify="center" align="center">
+                <Flex borderRadius="16" w="80%" h="10vh" justify="center" align="center">
                     <Text color="howdyColors.mainBlack"
                     fontWeight={'bold'}
                     fontSize ={['sm', 'xx-large', 'xx-large']}

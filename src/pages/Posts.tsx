@@ -273,7 +273,7 @@ export default function Posts(props: PostsProps) {
                     </Flex>
                 </Flex>
 
-                <Flex bottom="0" right="15%" boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)" flexDir="column" borderRadius="50px" p="1.5%"  w="21%" bgColor="howdyColors.mainWhite" position="absolute" display={dysplayBoxChat}>
+                <Flex bottom="0" right="20%" boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)" flexDir="column" borderRadius="50px"  p="1.5%"  w="21%" bgColor="howdyColors.mainWhite" position="fixed" display={dysplayBoxChat}>
                     <Flex justifyContent="flex-end" width="100%"> 
                         <Button
                         

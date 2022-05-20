@@ -39,12 +39,13 @@ interface TheoricalContentBlock{
 interface Alternatives{
     textContent: string;
     isCorrect?: boolean;
-    idAlternative: number;
+    idActivity?: string;
 }
 
 interface Question{
     statement: string;
     alternatives: Alternatives[];
+    idCorrectAlternative?: number;
 }
 
 interface ActivityJsonData {
@@ -71,15 +72,38 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
     const [userLogged, setUserLogged] = useState<any>(null);
 
     const [activityContent, setActivityContent] = useState<any>(null);
+    
     const [difficulties, setDifficulties] = useState<any>(null);
     const [isAlternativeCorrect, setIsAlternativeCorrect] = useState<boolean>(false);
     const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
+    const [selectedAlternatives, setSelectedAlternatives] = useState<number[]>([0]);
     
     const [topicsLearn, setTopicsLearn] = useState<TeachingTopic[]>([]);
     
-    const [theoreticalContent,  setTheoreticalContent] = useState<TheoricalContentBlock[]>([]);
-    const [questionContent,  setQuestionContent] = useState<Question[]>([]);
-    const [alternativeContent,  setAlternativeContent] = useState<Alternatives[]>([]);
+    const [aTheoreticalContent,  setATheoreticalContent] = useState<TheoricalContentBlock[]>([
+        {
+            title: "",
+            displayOrder: 1,
+            text: "",
+            afterTextOriginalImageLink: "",
+            linkDaImagemTextoOriginal: "",
+            afterTitleOriginalImageLink: "",
+            linkDaImagemTítuloOriginal: "", 
+        }
+    ]);
+    const [questionsContent,  setQuestionsContent] = useState<Question[]>([
+        {
+            statement: "",
+            alternatives: [{
+                textContent: "",
+                isCorrect: true,
+            },
+            {
+                textContent: "",
+                isCorrect: false,
+            }]
+        }
+    ]);
     const router = useRouter();
 
     const api = apiFunction();
@@ -140,18 +164,19 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                     priceHowdyCoin: parseInt(priceActivity),
                     minimumRequirements: minimumRequirements,
                     idDifficulty: parseInt(optionDifficulty),
-                    theoricalContentBlocks: theoreticalContent,
+                    theoricalContentBlocks: aTheoreticalContent,
                     teachingTopics: topicsLearn,
-                    questions: questionContent,
+                    questions: questionsContent,
                 }
 
                 if (theoricalBlockImageRef.current.files.length === 1 && attachedPostImage !== false)
                     formData.append('afterTitleImages', theoricalBlockImageRef.current.files[0]);
+                    console.log("afterTitleImages", theoricalBlockImageRef.current.files[0]);
 
                 const jsonDataFormatted = JSON.stringify(jsonData);
                 formData.append('jsonData', jsonDataFormatted);
 
-                console.log(jsonDataFormatted);
+                console.log(jsonData);
     
                 api.post(`/activities`, formData).then(response => {
                     const responseData = response.data;
@@ -173,28 +198,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
         setTopicsLearn(newTopicsLearn);
     }
 
-    function handleDeleteTheoreticalContent(idTheoreticalContent: number) {
-        let newTheoreticalContent = [...theoreticalContent];
-        //@ts-ignore
-        newTheoreticalContent.splice(newTheoreticalContent.indexOf(idTheoreticalContent.toString()), 1);
-        setTheoreticalContent(newTheoreticalContent);
-    }
-
-    function handleDeleteQuestionContent(idQuestionContent: number) {
-        let newQuestionContent = [...questionContent];
-        //@ts-ignore
-        newQuestionContent.splice(newQuestionContent.indexOf(idQuestionContent.toString()), 1);
-        setQuestionContent(newQuestionContent);
-    }
-
-    function handleDeleteAlternativeContent(idAlternativeContent: number) {
-        let newAlternativeContent = [...alternativeContent];
-        //@ts-ignore
-        newAlternativeContent.splice(newAlternativeContent.indexOf(idAlternativeContent.toString()), 1);
-        setAlternativeContent(newAlternativeContent);
-    }
-
-    console.log(activityContent?.theoricalContentBlocks[0]);
+    
     
     return (
         <>
@@ -279,7 +283,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                             >
 
                             {difficulties?.map((difficulty) => (
-                                <option  >{difficulty.difficultyName}</option>
+                                <option value={difficulty.idDifficulty}>{difficulty.difficultyName}</option>
                             ))}
                                 
                             </Select>
@@ -433,7 +437,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                         >
                             Blocos de conteúdo teórico
                         </Text>
-                        {theoreticalContent  && theoreticalContent.map((theoreticalContent, index) => (
+                        {aTheoreticalContent  && aTheoreticalContent.map((theoreticalContent, index) => (
                             <Flex flexDir="column" px="10%" w="100%">
                             <Text
                                 color="howdyColors.mainBlack"
@@ -448,7 +452,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 name="passwordConfirm"
                                 placeholder="Titulo"
                                 variant="filled"
-                                onChange={(e) =>setTheoreticalContent([{ 
+                                onChange={(e) =>setATheoreticalContent([{ 
                                     title:  e.target.value,
                                 }])}
                                 type="text"
@@ -480,6 +484,9 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 placeholder="Digite aqui a fonte da imagem"
                                 variant="filled"
                                 type="text"
+                                onChange={(e) =>setATheoreticalContent([{ 
+                                    afterTitleOriginalImageLink:  e.target.value,
+                                }])}
                                 mb="5%"
                             />
                              <Text
@@ -494,7 +501,12 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 fontWeight="medium"
                                 name="passwordConfirm"
                                 placeholder="Conteúdo escrito"
-                                variant="filled"
+                                variant="filled"    
+                                onChange={(e) => {
+                                    let newQuestions = [...aTheoreticalContent];
+                                    newQuestions[index].text = e.target.value;
+                                    setQuestionsContent(newQuestions);
+                                }}
                                 type="text"
                                 mb="5%"
                             />
@@ -518,7 +530,10 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     aria-label="Open navigation"
                                     fontSize="30px"
                                     color="howdyColors.mainRed"
-                                    onClick={() => {handleDeleteTheoreticalContent(index)}}
+                                    onClick={() => {
+                                        let newQuestions = [...questionsContent];
+                                        newQuestions.splice(newQuestions.indexOf(indexQuestion[indexQuestion]?.toString()), 1)
+                                        setQuestionsContent(newQuestions);}}
                                     icon={<Icon opacity="2" as={FaRegTrashAlt} fontWeight="black" />}
                                 />
                             </Flex>
@@ -536,7 +551,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     color="howdyColors.mainWhite"
                                     bgColor={'howdyColors.mainBlue'}
                                     borderRadius="10px 0px 0px 10px"
-                                    onClick={() => setTheoreticalContent([...theoreticalContent, {
+                                    onClick={() => setATheoreticalContent([...aTheoreticalContent, {
                                         title: "",
                                         displayOrder: 0,
                                         text: "",
@@ -552,7 +567,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     fontWeight={'medium'}
                                     fontSize={['sm', 'md', 'large']}
                                 >
-                                    {theoreticalContent.length}/3
+                                    {aTheoreticalContent.length}/3
                                 </Text>
                         </Flex>
                     </Flex>
@@ -568,7 +583,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                             Questões
                         </Text>
 
-                        {questionContent && questionContent.map((questions, index) => (
+                        {questionsContent && questionsContent.map((questions, indexQuestion) => (
                             <Flex flexDir="column">
                                 <Flex gap="4%">
                                     <Text
@@ -577,14 +592,17 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                         fontSize={['sm', 'md', 'x-large']}
                                         mb="5%"
                                     >
-                                        Questão {index + 1}
+                                        Questão {indexQuestion + 1}
                                     </Text>
                                     <IconButton
                                         variant="unstyled"
                                         aria-label="Open navigation"
                                         fontSize="30px"
                                         color="howdyColors.mainRed"
-                                        onClick={() => {handleDeleteQuestionContent(index)}}
+                                        onClick={() => {
+                                            let newQuestions = [...questionsContent];
+                                            newQuestions.splice(newQuestions.indexOf(indexQuestion[indexQuestion]?.toString()), 1)
+                                            setQuestionsContent(newQuestions);}}
                                         icon={<Icon opacity="2" as={FaRegTrashAlt} fontWeight="black" />}
                                     />
                                 </Flex>
@@ -603,10 +621,15 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     placeholder="Enunciado"
                                     variant="filled"
                                     type="text"
+                                    onChange={(e) => {
+                                        let newQuestions = [...questionsContent];
+                                        newQuestions[indexQuestion].statement = e.target.value;
+                                        setQuestionsContent(newQuestions);
+                                    }}
                                     mb="5%"
                                 />
 
-                                {alternativeContent && alternativeContent.map((alternative, index) => (
+                                {questionsContent[indexQuestion]?.alternatives.map((alternative, index) => (
 
                                     <Flex flexDir="column" w="100%">
                                         <Text
@@ -623,42 +646,43 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                                 name="passwordConfirm"
                                                 placeholder="Alternativa"
                                                 variant="filled"
-                                                onChange={(e) =>setAlternativeContent([{ 
-                                                    textContent: e.target.value
-                                                }])}
+                                                onChange={(e) => {
+                                                    let newQuestions = [...questionsContent];
+                                                    newQuestions[indexQuestion].alternatives[index].textContent = e.target.value;
+                                                    setQuestionsContent(newQuestions);
+                                                }}
                                                 type="text"
                                                 mb="3%"
                                             />
-                                            {isAlternativeCorrect && alternativeContent.idAlternative === selectedAlternatives[indexQuestion] ? (
+                                        
                                                 <IconButton
                                                     variant="unstyled"
                                                     aria-label="Open navigation"
                                                     fontSize="40px"
                                                     color="howdyColors.mainWhite"
                                                     borderRadius="20px"
-                                                    onClick={() => setIsAlternativeCorrect(false)}
-                                                    icon={<Icon borderRadius="20px" opacity="2" bgColor="#0FA958" as={BsCheckCircle} fontWeight="black" />}
+                                                    onClick={(e) => {
+                                                            let newQuestions = [...questionsContent];
+                                                            newQuestions[indexQuestion].alternatives.map((alternative, index) => {
+                                                                newQuestions[indexQuestion].alternatives[index].isCorrect = false;
+                                                            })
+                                                            newQuestions[indexQuestion].alternatives[index].isCorrect = true;
+                                                            setQuestionsContent(newQuestions);
+                                                            console.log("ddddd",newQuestions);
+                                                    }}
+                                                    icon={<Icon borderRadius="20px" opacity="2" bgColor={
+                                                        questionsContent[indexQuestion].alternatives[index].isCorrect ? 'howdyColors.mainGreen' : 'gray'
+                                                    } as={BsCheckCircle} fontWeight="black" />}
                                                 />
-                                            
-                                                ): (
-                                                    <IconButton
-                                                        variant="unstyled"
-                                                        aria-label="Open navigation"
-                                                        fontSize="40px"
-                                                        color="howdyColors.mainWhite"
-                                                        borderRadius="20px"
-                                                        onClick={() => setIsAlternativeCorrect(true)}
-                                                        icon={<Icon borderRadius="20px" opacity="2" bgColor="#939393" as={BsCheckCircle} fontWeight="black" />}
-                                                    />
-                                                )
-                                            }
-                                            
                                             <IconButton
                                                 variant="unstyled"
                                                 aria-label="Open navigation"
                                                 fontSize="30px"
                                                 color="howdyColors.mainRed"
-                                                onClick={() => {handleDeleteAlternativeContent(index)}}
+                                                onClick={() =>  {
+                                                    let newQuestions = [...questionsContent];
+                                                    newQuestions[indexQuestion].alternatives.splice(newQuestions.indexOf(alternative[index]?.idAlternative.toString()), 1)
+                                                    setQuestionsContent(newQuestions);}}
                                                 icon={<Icon opacity="2" as={FaRegTrashAlt} fontWeight="black" />}
                                             />
                                         </Flex>
@@ -673,11 +697,15 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     color="howdyColors.mainWhite"
                                     bgColor={'howdyColors.mainBlue'}
                                     borderRadius="10px 0px 0px 10px"
-                                    onClick={() => setAlternativeContent([...alternativeContent, {
-                                        textContent: "",
-                                        isCorrect: null,
-                                        idAlternative: 0
-                                    }])}
+                                    onClick={(e) => {
+                                        let newQuestions = [...questionsContent];
+                                        newQuestions[indexQuestion].alternatives.push({
+                                            textContent: "",
+                                            isCorrect: false
+
+                                        })
+                                        setQuestionsContent(newQuestions);
+                                    }}
                                     icon={<Icon opacity="2" as={AiOutlinePlus} fontWeight="black" />}
                                 />
                                 <Text
@@ -685,7 +713,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     fontWeight={'medium'}
                                     fontSize={['sm', 'md', 'large']}
                                 >
-                                    {alternativeContent.length}/6
+                                    {questionsContent[indexQuestion].alternatives.length}/6
                                 </Text>
                             </Flex>
 
@@ -704,14 +732,21 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                             color="howdyColors.mainWhite"
                             bgColor={'howdyColors.mainBlue'}
                             borderRadius="10px 0px 0px 10px"
-                            onClick={() => setQuestionContent([...questionContent, {
-                                statement: "",
-                                alternatives: [{
-                                    textContent: "",
-                                    isCorrect: null,
-                                    idAlternative: 0
-                                }]
-                            }])}
+                            onClick={() => {
+                                if(questionsContent.length < 10){
+                                    setQuestionsContent([...questionsContent, {
+                                        statement: "",
+                                        alternatives: [{
+                                            textContent: "",
+                                            isCorrect: true,
+                                        },
+                                        {
+                                            textContent: "",
+                                            isCorrect: false,
+                                        }]
+                                    }])
+                                }
+                            }}
                             icon={<Icon opacity="2" as={AiOutlinePlus} fontWeight="black" />}
                         />
                         <Text
@@ -719,7 +754,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                             fontWeight={'medium'}
                             fontSize={['sm', 'md', 'large']}
                         >
-                            {questionContent.length}/10
+                            {questionsContent.length}/10
                         </Text>
                     </Flex>
                     <Flex px='10%' py='5%' w="100%" justifyContent="flex-end">

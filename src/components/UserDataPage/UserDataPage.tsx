@@ -100,7 +100,7 @@ export default function UserDataPage({
                         >
                             Desempenho
                         </Text>
-                        <Flex
+                        <Flex  gap={"2%"} 
                             filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
                             ml="6%"
                             w="20%"
@@ -112,11 +112,25 @@ export default function UserDataPage({
                             color="howdyColors.mainGreen"
                             fontWeight={'bold'}
                             fontSize={['sm', 'md', 'xx-large']}
+                            
                         >
-                            {user.totalXp}
+                            <Flex  >
+                            {user.totalXp} 
+                            </Flex>
+
+                            <Flex>
+                                <Text>
+                                    XP
+                                </Text>
+                            </Flex>
+                            
+
+
+
                         </Flex>
                         <Flex gap="5%" ml="6%" justify={'center'} align={'center'}>
-                            <Icon color="howdyColors.mainGreen" fontSize="x-large">
+                            
+                            <Icon color="howdyColors.mainGreen"  fontSize="x-large">
                                 <BiTargetLock />
                             </Icon>
                             <Text color="howdyColors.mainGreen">{user.targetLanguageName}</Text>

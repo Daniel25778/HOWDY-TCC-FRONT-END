@@ -27,6 +27,7 @@ import { api as apiFunction } from '../../services/api';
 import socket from '../../services/sockeio';
 import Notification from '../Notification/Notifiction';
 
+
 interface Notification {
     idNotification: number;
     notificationText: string;
@@ -97,6 +98,10 @@ export function Header({ user }: HeaderProps) {
             return notification;
         })
         setNotifications(notificationsRead);
+    }
+
+    function handleRedirectLandingPage() {
+        Router.push('/');
     }
 
     const handleSearch = (e) => {
@@ -267,7 +272,11 @@ export function Header({ user }: HeaderProps) {
                         height="3rem"
                         src="/images/howdy-images/logo/logo-blue-howdy-row.svg"
                         alt="howdy logo"
-                    ></Image>
+                        onClick={handleRedirectLandingPage}
+                        cursor={"pointer"}
+                    >
+
+                    </Image>
 
                     <Center w="50%" justifyContent={'space-between'}>
                         <NavLink href="/Ranking/RankingPageWeekly" title="Ranking" />

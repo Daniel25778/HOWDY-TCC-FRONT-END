@@ -73,6 +73,10 @@ const monthlyXpSeries = [
         {disconnectOnLeave: false},
         {}
     )
+
+    function handleAccessStore() {
+        Router.push('/StorePage');
+    }
     
     return (
         <>
@@ -91,7 +95,7 @@ const monthlyXpSeries = [
                             <Heading fontSize="4xl" wordBreak="break-word">idiomas interagindo!</Heading>
                             <Heading>Come on, baby!</Heading>
                             <Text mt="4%" w="65%">Acesse exercícios e interações com pessoas do mundo inteiro que carregam o mesmo objetivo.</Text>
-                            <Button mt="4%" color="howdyColors.mainGreen" bgColor="howdyColors.mainGreenTransparent" borderRadius="25" w="40%" >Subscribe now</Button>
+                            <Button onClick={handleAccessStore} mt="4%" color="howdyColors.mainGreen" bgColor="howdyColors.mainGreenTransparent" borderRadius="25" w="40%" >Subscribe now</Button>
                         </Flex>
                         <Flex w="50%">
                             <Image 
@@ -121,7 +125,7 @@ const monthlyXpSeries = [
                                     <SliderContent image='peopleSliderLandingPage.svg' title='Aprenda e ensine' description='Ensine sua lingua nativa e aprenda outros idiomas' />
                                 </SwiperSlide>
                                 <SwiperSlide>
-                                    <SliderContent image='peopleSliderLandingPage.svg' title='Plataforma gamificada' description='Aprender e ensinar se tornou mais divertido' />
+                                    <SliderContent image='landingPageImage.svg' title='Plataforma gamificada' description='Aprender e ensinar se tornou mais divertido' />
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SliderContent image='peopleSliderLandingPage.svg' title='Compartilhe o seu progresso' description='Poste e interaja com varias pessoas'/>

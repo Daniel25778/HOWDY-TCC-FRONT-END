@@ -86,9 +86,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
             displayOrder: 1,
             text: "",
             afterTextOriginalImageLink: "",
-            linkDaImagemTextoOriginal: "",
             afterTitleOriginalImageLink: "",
-            linkDaImagemTítuloOriginal: "", 
         }
     ]);
     const [questionsContent,  setQuestionsContent] = useState<Question[]>([
@@ -171,7 +169,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
 
                 if (theoricalBlockImageRef.current.files.length === 1 && attachedPostImage !== false)
                     formData.append('afterTitleImages', theoricalBlockImageRef.current.files[0]);
-                    console.log("afterTitleImages", theoricalBlockImageRef.current.files[0]);
+                    formData.append('activityCoverPhotoImage', theoricalBlockImageRef.current.files[0]);
 
                 const jsonDataFormatted = JSON.stringify(jsonData);
                 formData.append('jsonData', jsonDataFormatted);
@@ -182,7 +180,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                     const responseData = response.data;
                     console.log("ffffffffff" + responseData);
                 }
-                ).catch(err => console.log(err))
+                ).catch(err => console.log(err.message))
         }
     
         if (router.isFallback) {
@@ -437,7 +435,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                         >
                             Blocos de conteúdo teórico
                         </Text>
-                        {aTheoreticalContent  && aTheoreticalContent.map((theoreticalContent, index) => (
+                        {aTheoreticalContent  && aTheoreticalContent.map((theoreticalContent, indexTheorical) => (
                             <Flex flexDir="column" px="10%" w="100%">
                             <Text
                                 color="howdyColors.mainBlack"
@@ -452,9 +450,11 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 name="passwordConfirm"
                                 placeholder="Titulo"
                                 variant="filled"
-                                onChange={(e) =>setATheoreticalContent([{ 
-                                    title:  e.target.value,
-                                }])}
+                                onChange={(e) => {
+                                    let newTheoricalContent = [...aTheoreticalContent];
+                                    newTheoricalContent[indexTheorical].title = e.target.value;
+                                    setATheoreticalContent(newTheoricalContent);
+                                }}
                                 type="text"
                                 mb="5%"
                             />
@@ -484,9 +484,11 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 placeholder="Digite aqui a fonte da imagem"
                                 variant="filled"
                                 type="text"
-                                onChange={(e) =>setATheoreticalContent([{ 
-                                    afterTitleOriginalImageLink:  e.target.value,
-                                }])}
+                                onChange={(e) => {
+                                    let newTheoricalContent = [...aTheoreticalContent];
+                                    newTheoricalContent[indexTheorical].afterTextOriginalImageLink = e.target.value;
+                                    setATheoreticalContent(newTheoricalContent);
+                                }}
                                 mb="5%"
                             />
                              <Text
@@ -503,9 +505,9 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 placeholder="Conteúdo escrito"
                                 variant="filled"    
                                 onChange={(e) => {
-                                    let newQuestions = [...aTheoreticalContent];
-                                    newQuestions[index].text = e.target.value;
-                                    setQuestionsContent(newQuestions);
+                                    let newTheoricalContent = [...aTheoreticalContent];
+                                    newTheoricalContent[indexTheorical].text = e.target.value;
+                                    setATheoreticalContent(newTheoricalContent);
                                 }}
                                 type="text"
                                 mb="5%"
@@ -531,9 +533,9 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     fontSize="30px"
                                     color="howdyColors.mainRed"
                                     onClick={() => {
-                                        let newQuestions = [...questionsContent];
-                                        newQuestions.splice(newQuestions.indexOf(indexQuestion[indexQuestion]?.toString()), 1)
-                                        setQuestionsContent(newQuestions);}}
+                                        let newTheoricalContent = [...aTheoreticalContent];
+                                        newTheoricalContent.splice(newTheoricalContent.indexOf(indexTheorical[indexTheorical]?.toString()), 1)
+                                        setATheoreticalContent(newTheoricalContent);}}
                                     icon={<Icon opacity="2" as={FaRegTrashAlt} fontWeight="black" />}
                                 />
                             </Flex>

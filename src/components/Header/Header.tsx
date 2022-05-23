@@ -276,8 +276,10 @@ export function Header({ user }: HeaderProps) {
                     </Center>
                 </Flex>
                 <Flex
-                    position="absolute"
+                    position="fixed"
+                    
                     top="5rem"
+                    right="5rem"
                     display={dysplayBoxNotification}
                     w="30%"
                     flexDir="column"

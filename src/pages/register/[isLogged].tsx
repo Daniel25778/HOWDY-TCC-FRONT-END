@@ -4,12 +4,25 @@ import { Image } from '@chakra-ui/react';
 import { Text } from '@chakra-ui/react';
 import '@fontsource/roboto/400.css';
 import { FormCadastro } from '../../components/Form/FormCadastro';
+import { useEffect, useState } from 'react';
+import { api as apiFunction } from '../../services/api';
 
 interface PageCadastroProps {
     isLogged: string;
 }
 
+
+
 export default function PageCadastro(props: PageCadastroProps) {
+
+    const [userCadaster, setUserCadaster] = useState<any>(null);
+    const api = apiFunction();
+    
+    useEffect(() => {
+            api?.get(`users/total`).then(response => {
+                setUserCadaster(response.data.totalUsers);
+            });
+    } , []);
     const { isLogged } = props;
     return (
         <Flex
@@ -44,10 +57,12 @@ export default function PageCadastro(props: PageCadastroProps) {
                                 fontSize={50}
                                 color="howdyColors.mainGreenLight"
                             >
-                                100 BILHÕES
+                                {userCadaster - 1} sonhador{
+                                userCadaster == 1 ? 'es' : ''
+                            }
                             </Text>
                             <Text fontWeight="bold" fontSize={35}>
-                                já se cadastraram
+                                já se { userCadaster > 9 ? 'cadastraram' : 'cadastrou'}
                             </Text>
                         </Text>
                     </Flex>

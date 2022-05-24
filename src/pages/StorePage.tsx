@@ -57,7 +57,7 @@ export default function () {
 				switch (error.response.data.error) {
 					case `You need at least ${howdyCoinsWanted} howdy coins to get this assignature`:
 						toast({
-							title: "VOCÊ NÃO POSSUI MOEDAS SUFICIENTES PARA ESTA ASSINATURA",
+							title: "VOCÊ NÃO POSSUI HOWDY COINS SUFICIENTES PARA ESTA ASSINATURA",
 							status: "error",
 							isClosable: true,
 							position: "top",

@@ -1,6 +1,6 @@
 import { Flex, Icon, Image, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { AiOutlineMessage } from 'react-icons/ai';
+import { AiOutlineMessage, AiOutlineWechat } from 'react-icons/ai';
 import { BsFillChatSquareTextFill, BsPeople } from 'react-icons/bs';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdAttachMoney } from 'react-icons/md';
@@ -69,19 +69,19 @@ export default function Notification({ notification }: NotificationProps) {
                             <Icon
                             opacity="2"
                             as={BsPeople}
-                            color={'howdyColors.mainBlue'}
+                            color={'howdyColors.mainGreen'}
                             fontSize={'xx-large'}
                         />: notification.type === 'Someone texted you' ?
                         <Icon
                             opacity="2"
-                            as={BsFillChatSquareTextFill}
-                            color={'howdyColors.mainBlue'}
+                            as={AiOutlineWechat}
+                            color={'howdyColors.mainGreen'}
                             fontSize={'xx-large'}
                             />
                             : notification.type === 'Friend Request Accepted' ?
                             <Icon
                             opacity="2"
-                            as={BsFillChatSquareTextFill}
+                            as={BsPeople}
                             color={'howdyColors.mainGreen'}
                             fontSize={'xx-large'}
                             />

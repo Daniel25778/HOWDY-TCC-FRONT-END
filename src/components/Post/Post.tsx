@@ -1,6 +1,6 @@
 import { Button, Flex, Icon, IconButton, Image, Input, InputGroup, Text, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { MdTranslate } from "react-icons/md";
 import { isUndefined } from "util";
 import Router from 'next/router';
@@ -21,6 +21,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     const [displayTextContentPostTraduct, setDisplayTextContentPostTraduct] = useState<any>("none");
 
     const [comments, setComments] = useState<any>([]);
+    const [wasTraduct, setWasTraduct] = useState<boolean>(true);
     const [totalComments, setTotalComments] = useState<number>(post.totalComments);
     const [display, setDisplay] = useState<any>("none");
     const [datePost, setDatePost] = useState<any>("");
@@ -126,12 +127,53 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
 
     function handleTranslate() {
 
+        setWasTraduct(true)
         const nativeLanguageTranslatorName = userLogged.nativeLanguageTranslatorName;
        
         if (!router.isFallback) {
+            if(post.textContent == postTextContentTraduct){
+                api.post(`traductions`, {
+                    toLanguage: nativeLanguageTranslatorName,
+                    texts: [post.textContent]
+                })
+                    .then((response: any) => {
+                        setPostTextContentTraduct(response.data)
+                        setDisplayTextContentPostTraduct("flex")
+                        setDisplayTextContentPost("none")
+                       
+    
+                        toast({
+                            title: 'TRADUÇÃO REALIZADA COM SUCESSO!',
+                            status: 'success',
+                            isClosable: true,
+                            position: 'top',
+                        });
+    
+                   
+                    }).catch((error: any) => {
+                        toast({
+                            title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                            status: 'error',
+                            isClosable: true,
+                            position: 'top',
+                        });
+                    });
+            }
+            
+        }
+    }
+
+    function handleTranslateAgain() {
+        setWasTraduct(false)
+
+        const targetLanguageTranslatorName = userLogged.targetLanguageTranslatorName;
+
+        console.log(postTextContentTraduct)
+       
+        if (!router.isFallback) {
             api.post(`traductions`, {
-                toLanguage: nativeLanguageTranslatorName,
-                texts: [post.textContent]
+                toLanguage: targetLanguageTranslatorName,
+                texts: [postTextContentTraduct[0]]
             })
                 .then((response: any) => {
                     setPostTextContentTraduct(response.data)
@@ -203,7 +245,9 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                                     <Icon
                                         opacity="2"
                                         as={MdTranslate}
-                                        onClick={handleTranslate}
+                                        onClick={
+                                        wasTraduct ? handleTranslate : handleTranslateAgain
+                                        }
                                         color="howdyColors.mainWhite"
                                         fontSize={'x-large'}
                                     />
@@ -269,7 +313,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                             icon={
                                 <Icon
                                     opacity="2"
-                                    as={AiOutlineHeart}
+                                    as={AiFillHeart}
                                     color={'howdyColors.mainRed'}
                                     fontSize={'x-large'}
                                 />
@@ -302,7 +346,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                         ))
                     }
                     <Flex gap="2%" align="center" w="100%">
-                        <Image borderRadius="100%" width="10%" maxWidth={500} src={userLogged?.profilePhoto} />
+                        <Image borderRadius="100%" width="5rem" height="5rem" src={userLogged?.profilePhoto} />
                         <InputGroup h="60%" width="70%" variant="unstyled">
                             <Input
                                 fontSize={['sm', 'md', 'x-large']}

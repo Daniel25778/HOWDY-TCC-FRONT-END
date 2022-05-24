@@ -43,18 +43,19 @@ interface HomeProps {
 export default function Home(props) {
     const router = useRouter();
 
-    if (router.isFallback) {
-        return (
-            <Loading />
-        )
-    }
 
     const api = apiFunction();
     const [registerChart, setRegisterChart] = useState<any>(null);
-
+   
+    const [userCadaster, setUserCadaster] = useState<any>(null);
+    
     useEffect(() => {
             api?.get(`users/historic`).then(response => {
-                response.data && setRegisterChart(response.data.chartData);
+                setRegisterChart(response.data.chartData);
+            });
+
+            api?.get(`users/total`).then(response => {
+                setUserCadaster(response.data.totalUsers);
             });
     } , []);
 
@@ -125,7 +126,7 @@ const monthlyXpSeries = [
                                     <SliderContent image='peopleSliderLandingPage.svg' title='Aprenda e ensine' description='Ensine sua lingua nativa e aprenda outros idiomas' />
                                 </SwiperSlide>
                                 <SwiperSlide>
-                                    <SliderContent image='landingPageImage.svg' title='Plataforma gamificada' description='Aprender e ensinar se tornou mais divertido' />
+                                    <SliderContent image='peopleSliderLandingPage.svg' title='Plataforma gamificada' description='Aprender e ensinar se tornou mais divertido' />
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <SliderContent image='peopleSliderLandingPage.svg' title='Compartilhe o seu progresso' description='Poste e interaja com varias pessoas'/>
@@ -206,7 +207,9 @@ const monthlyXpSeries = [
                         <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />
                         }
                         <Flex justify="center" gap={10} flexDir={'column'} w="70%">
-                            <Heading>Somos mais de 1OO BILHÕES de sonhadores.</Heading>
+                            <Heading>Somos mais de {userCadaster - 1} sonhador{
+                                userCadaster == 1 ? 'es' : ''
+                            } .</Heading>
                             <Text fontSize={['sm', 'medium', 'xx-large']}>O mundo afora requer que tenhamos cada vez mais conhecimentos sobre outras línguas. Não vá sozinho!</Text>
                         </Flex>
                     </SimpleGrid>

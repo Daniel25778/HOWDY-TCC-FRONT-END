@@ -20,6 +20,7 @@ export function SliderContent(props: SliderContentProps) {
                 backgroundSize="cover"
                 flexDir="column"
                 color="white.800"
+                bgBlendMode={['darken', 'darken']}
             >
                 <Heading color="howdyColors.mainWhite" mb={5} fontSize={['3xl', '5xl']} fontWeight={700}>
                     {props.title}

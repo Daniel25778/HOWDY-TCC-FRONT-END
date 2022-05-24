@@ -17,7 +17,7 @@ export default function Commentary(props: CommentaryProps){
             <Flex mb="3%" w="100%" >
                 <Flex p="2%" borderRadius="12" width="100%" bgColor="#fff">
                     <Flex align="center"  width="55%" >
-                        <Image borderRadius="100%" width="40%" maxWidth={500}  src={props.commentary.commenter?.profilePhoto}/>
+                        <Image borderRadius="100%" width="5rem" height="5rem" objectFit="cover" src={props.commentary.commenter?.profilePhoto}/>
                         <Flex ml="10%" w="" align="center" h="50%" justifyContent="space-between" flexDir="column">
                             <Text fontWeight="medium" fontSize={['sm', 'smaller', 'md']}>{props.commentary.commenter.userName}</Text>
                             <Text fontSize={['sm', 'smaller', 'md']}>{createdAt}</Text>

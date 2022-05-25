@@ -60,6 +60,8 @@ export default function UserDataPage({
         },
     ];
 
+    console.log(user?.averageEvaluations);
+
     return (
         <>
             <Box>
@@ -173,14 +175,26 @@ export default function UserDataPage({
                             fontWeight={'bold'}
                             fontSize={['sm', 'md', 'xx-large']}
                         >
-                            EXCELENTE
+                            {
+                                user?.averageEvaluations <= 1
+                                ? "RUIM"
+                                : user?.averageEvaluations  <=2
+                                ? "REGULAR"
+                                : user?.averageEvaluations <=3
+                                ?  "BOM"
+                                : user?.averageEvaluations <= 4
+                                ? "ÓTIMO"
+                                : user?.averageEvaluations <= 5
+                                ? "EXCELENTE" 
+                                : "N/A"
+                            }
                         </Flex>
                     </Flex>
                     <Box w="10%"></Box>
                     <StarRatings
-                        rating={2}
+                        rating={user?.averageEvaluations}
                         starRatedColor="#F2D63F"
-                        numberOfStars={user?.averageEvaluations}
+                        numberOfStars={5}
                         name="rating"
                     />
                     <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />

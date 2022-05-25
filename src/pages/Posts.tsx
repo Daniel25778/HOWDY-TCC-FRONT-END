@@ -48,8 +48,17 @@ export default function Posts(props: PostsProps) {
     const api = apiFunction();
 
     const [posts, setPosts] = useState<any>([]);
+    
 
     const [category, setCategory] = useState<any>('popular');
+    const [clickCategorySport, setClickCategorySport] = useState<boolean>(false);
+    const [clickCategoryNews, setClickCategoryNews] = useState<boolean>(false);
+    const [clickCategoryPopular, setClickCategoryPopular] = useState<boolean>(false);
+    const [clickCategoryFriends, setClickCategoryFriends] = useState<boolean>(false);
+    const [clickCategoryGames, setClickCategoryGames] = useState<boolean>(false);
+    const [clickCategoryFashion, setClickCategoryFashion] = useState<boolean>(false);
+    const [clickCategoryMovies, setClickCategoryMovies] = useState<boolean>(false);
+    const [clickCategoryQuestions, setClickCategoryQuestions] = useState<boolean>(false);
 
     const [categoryList, setCategoryList] = useState<any[]>([]);
 
@@ -158,8 +167,92 @@ export default function Posts(props: PostsProps) {
     function handleAccessStore() {
         router.push('/StorePage');
     }
+
+    function handleSetCategory(idCategory: number) {
+        setCategory(idCategory);
+        if(idCategory === 1) {
+            setClickCategoryFriends(false);
+            setClickCategoryQuestions(false);
+            setClickCategoryGames(false);
+            setClickCategoryMovies(false);
+            setClickCategoryNews(false);
+            setClickCategoryPopular(false);
+            setClickCategorySport(true);
+        }else if (idCategory === 2) {
+            setClickCategoryFriends(false);
+            setClickCategoryQuestions(false);
+            setClickCategoryGames(false);
+            setClickCategoryMovies(false);
+            setClickCategoryNews(true);
+            setClickCategoryPopular(false);
+            setClickCategorySport(false);
+            setClickCategoryFashion(false);
+        }else if (idCategory === 3) {
+            setClickCategoryFriends(false);
+            setClickCategoryQuestions(false);
+            setClickCategoryGames(true);
+            setClickCategoryMovies(false);
+            setClickCategoryNews(false);
+            setClickCategoryPopular(false);
+            setClickCategorySport(false);
+            setClickCategoryFashion(false);
+            setClickCategoryNews(false);
+        }else if (idCategory === 4) {
+            setClickCategoryFriends(false);
+            setClickCategoryQuestions(false);
+            setClickCategoryGames(false);
+            setClickCategoryMovies(true);
+            setClickCategoryNews(false);
+            setClickCategoryPopular(false);
+            setClickCategorySport(false);
+            setClickCategoryFashion(false);
+            setClickCategoryNews(false);
+        } else if (idCategory === 5) {
+            setClickCategoryFriends(false);
+            setClickCategoryQuestions(false);
+            setClickCategoryGames(false);
+            setClickCategoryMovies(false);
+            setClickCategoryNews(false);
+            setClickCategoryPopular(false);
+            setClickCategorySport(false);
+            setClickCategoryFashion(true);
+            setClickCategoryNews(false);
+        }else{
+            setClickCategoryFriends(false);
+            setClickCategoryQuestions(true);
+            setClickCategoryGames(false);
+            setClickCategoryMovies(false);
+            setClickCategoryNews(false);
+            setClickCategoryPopular(false);
+            setClickCategorySport(false);
+            setClickCategoryFashion(false);
+            setClickCategoryNews(false);
+        }
+    }
+
+
+    function setColorCategoryPopular() {
+        setCategory('popular')
+        setClickCategoryPopular(true);
+        setClickCategoryFriends(false);
+        setClickCategoryQuestions(false);
+        setClickCategoryGames(false);
+        setClickCategoryMovies(false);
+        setClickCategoryNews(false);
+        setClickCategorySport(false);
+        setClickCategoryFashion(false);
+    }
     
-    
+    function setColorCategoryFriends() {
+        setCategory('myFriends')
+        setClickCategoryPopular(false);
+        setClickCategoryFriends(true);
+        setClickCategoryQuestions(false);
+        setClickCategoryGames(false);
+        setClickCategoryMovies(false);
+        setClickCategoryNews(false);
+        setClickCategorySport(false);
+    }
 
     return (
         <>
@@ -176,8 +269,8 @@ export default function Posts(props: PostsProps) {
                             Categorias
                         </Text>
                         <Button
-                            width="90%"
-                            onClick={() => setCategory('myFriends')}
+                            width="100%"
+                            onClick={setColorCategoryFriends}
                             marginBottom={5}
                             bgColor={'white'}
                             textColor="#303135"
@@ -185,32 +278,56 @@ export default function Posts(props: PostsProps) {
                             fontSize={['x-small', 'medium', 'x-large']}
                             leftIcon={<FaHeart color="#FA383E" size="2rem"/>}
                             paddingBottom="1rem"
+                            bgColor={
+                                clickCategoryFriends ? "howdyColors.mainRedTransparent" : "howdyColors.mainWhite"
+                            }
+                            py="2rem"
+                            pb="2rem"
                             justifyContent="space-around"
-                            marginStart="1rem"
                         >
                             Amigos
                         </Button>
                         <Button
-                            width="90%"
-                            onClick={() => setCategory('popular')}
+                            width="100%"
+                            onClick={setColorCategoryPopular}
                             marginBottom={5}
-                            bgColor={'white'}
                             color="#303135"
                             fontWeight="medium"
+                            bgColor={
+                                clickCategoryPopular ? "howdyColors.mainYellowTransparent" : "howdyColors.mainWhite"
+                            }
+                            py="2rem"
+                            pb="2rem"
+                            alignItems="center"
                             fontSize={['x-small', 'medium', 'x-large']}
                             leftIcon={<AiFillStar color="#FFD700" size="2.6rem"/>}
-                            paddingBottom="1rem"
                             justifyContent="space-around"
-                            marginStart="1rem"
                         >
-                            Popular
+                           <Text >Popular</Text>
                         </Button>
                         {categoryList.length > 0 &&
                             categoryList.map((category) => (
                                 <Button
-                                    onClick={() => setCategory(category.idPostCategory)}
+                                    onClick={() => handleSetCategory(category.idPostCategory)}
                                     marginBottom="10%"
                                     bgColor={'white'}
+                                    bgColor={
+                                        clickCategorySport && category.idPostCategory == '1'
+                                        ? "howdyColors.mainGreenTransparent"
+                                        : clickCategoryNews && category.idPostCategory == '2'
+                                        ? "howdyColors.mainBlueTransparent"
+                                        : clickCategoryGames && category.idPostCategory == '3'
+                                        ?  "howdyColors.masterTransparent"
+                                        : clickCategoryMovies && category.idPostCategory == '4'
+                                        ? "howdyColors.mainOrangeTransparent"
+                                        : clickCategoryFashion && category.idPostCategory == '5'
+                                        ? "howdyColors.mainBlueTransparent"
+                                        : clickCategoryQuestions && category.idPostCategory == '6'
+                                        ? "howdyColors.mainOrangeTransparent" 
+                                        : "howdyColors.mainWhite"
+                                    }
+                                    py="2rem"
+                                    pb="2rem"
                                     textColor="#303135"
                                     fontWeight="light"
                                     w="100%"

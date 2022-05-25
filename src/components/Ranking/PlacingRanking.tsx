@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { BiTargetLock } from 'react-icons/bi';
 import { FaBaby } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import Router from 'next/router';
 
 interface PlacingRankingProps {
     ranking: any;
@@ -10,6 +11,12 @@ interface PlacingRankingProps {
 
 export default function PlacingRanking({ ranking }: PlacingRankingProps) {
     const MotionFlex = motion(Flex);
+
+
+    function handleAccessProfile() {
+        Router.push(`/UserPage/Post/${ranking.idUser}`);
+    }
+
 
     return (
         <>
@@ -79,27 +86,29 @@ export default function PlacingRanking({ ranking }: PlacingRankingProps) {
                     </Flex>
                 </Flex>
                 <Flex w="35%">
-                    <Flex w="50%">
+                    <Flex align="center" w="50%">
                         <Image
                             objectFit={'cover'}
                             borderRadius="100%"
-                            width="80%"
-                            maxWidth={500}
+                            width="60%"
+                            h="50%"
+                            cursor={'pointer'}
+                            onClick={handleAccessProfile}
                             src={ranking.profilePhoto}
                         />
                     </Flex>
 
-                    <Flex py="10%" justify="space-between" flexDir="column" w="50%">
-                        <Text fontWeight="bold" fontSize={['medium', 'large', 'xx-large']}>
+                    <Flex  py="10%" justify="space-between" flexDir="column" w="95%">
+                        <Text  fontWeight="bold" fontSize={['medium', 'large', 'xx-large']}>
                             {ranking.userName}
                         </Text>
-                        <Flex gap="4%">
+                        <Flex mt="7%" gap="4%">
                             <Icon as={BiTargetLock} color="howdyColors.mainBlue" fontSize="xx-large" />
-                            <Text width="100%" fontSize={['medium', 'medium', 'large']} color="howdyColors.mainBlue">
+                            <Text alignSelf="center"  width="98%" fontSize={['small', 'small', 'small']} color="howdyColors.mainBlue">
                                 {ranking.targetLanguageName}
                             </Text>
                             <Icon as={FaBaby} color="howdyColors.mainBlue" fontSize="xx-large" />
-                            <Text fontSize={['medium', 'medium', 'large']} color="howdyColors.mainBlue">
+                            <Text alignSelf="center"  width="98%"  flexDir="row-reverse" fontSize={['small', 'small', 'small']} color="howdyColors.mainBlue">
                                 {ranking.nativeLanguageName}
                             </Text>
                         </Flex>

@@ -72,7 +72,7 @@ export default function FriendsPage(props: FriendPageProps) {
                 </Grid>
                 <Flex width="100%" mt="5%" flexDir="column">
                     <Text color="howdyColors.mainBlack" fontWeight={'bold'} fontSize={['sm', 'xx-large', 'xxx-large']}>
-                        Total : {userFriends.length} amigos
+                        Total : {userFriends.length} amigo{userFriends.length > 1 ? 's' : ''}
                     </Text>
                     <SimpleGrid mt="4%" justifyItems="center" spacing={20} templateColumns="repeat(3, 1fr)">
                         {userFriends !== 'nulo' &&

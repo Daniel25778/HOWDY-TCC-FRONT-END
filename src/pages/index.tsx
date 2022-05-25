@@ -208,7 +208,7 @@ const monthlyXpSeries = [
                         }
                         <Flex justify="center" gap={10} flexDir={'column'} w="70%">
                             <Heading>Somos mais de {userCadaster - 1} sonhador{
-                                userCadaster == 1 ? 'es' : ''
+                                userCadaster > 10 ? 'es' : ''
                             } .</Heading>
                             <Text fontSize={['sm', 'medium', 'xx-large']}>O mundo afora requer que tenhamos cada vez mais conhecimentos sobre outras línguas. Não vá sozinho!</Text>
                         </Flex>

@@ -169,8 +169,6 @@ export default function PageUserConfig() {
         const selectTargetLanguage = document.getElementById('targetLanguage')?.value;
         const selectNativeLanguageFormatted = JSON.parse(selectNativeLanguage);
         const selectTargetLanguageFormatted = JSON.parse(selectTargetLanguage);
-        console.log("ssss"+inputNewPassword);
-        console.log("ssss"+selectTargetLanguageFormatted.idTargetLanguage);
         const newTargetLanguage = selectTargetLanguageFormatted.idTargetLanguage
         const newNativeLanguage = selectNativeLanguageFormatted.idNativeLanguage
         const formData = new FormData();

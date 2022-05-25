@@ -42,7 +42,7 @@ export default function Filter({ orderByList,maxPriceFilterList,difficultyList,s
         <Text fontWeight="bold">Filtros e ordem </Text>
             <Menu size="100%">
                 
-                <MenuButton>
+                <MenuButton >
                     <Button  w="100%" color="#303135" fontWeight="medium" leftIcon={<FaRegStar color="#FFD700" size="1.5rem"/>} justifyContent="space-between" rightIcon={<IoMdArrowDropdown/>}>Ordenar por</Button>
                 </MenuButton>
 

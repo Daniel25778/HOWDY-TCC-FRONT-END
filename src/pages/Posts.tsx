@@ -279,7 +279,7 @@ export default function Posts(props: PostsProps) {
                             leftIcon={<FaHeart color="#FA383E" size="2rem"/>}
                             paddingBottom="1rem"
                             bgColor={
-                                clickCategoryFriends ? "howdyColors.mainRedTransparent" : "howdyColors.mainWhite"
+                                clickCategoryFriends ? "howdyColors.mainRedTransparent" : "white"
                             }
                             py="2rem"
                             pb="2rem"
@@ -294,7 +294,7 @@ export default function Posts(props: PostsProps) {
                             color="#303135"
                             fontWeight="medium"
                             bgColor={
-                                clickCategoryPopular ? "howdyColors.mainYellowTransparent" : "howdyColors.mainWhite"
+                                clickCategoryPopular ? "howdyColors.mainYellowTransparent" : "white"
                             }
                             py="2rem"
                             pb="2rem"
@@ -324,7 +324,7 @@ export default function Posts(props: PostsProps) {
                                         ? "howdyColors.mainBlueTransparent"
                                         : clickCategoryQuestions && category.idPostCategory == '6'
                                         ? "howdyColors.mainOrangeTransparent" 
-                                        : "howdyColors.mainWhite"
+                                        : "white"
                                     }
                                     py="2rem"
                                     pb="2rem"

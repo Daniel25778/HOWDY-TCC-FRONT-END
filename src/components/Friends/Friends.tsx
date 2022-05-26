@@ -2,7 +2,7 @@ import { Flex, Icon, Image, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { BiTargetLock } from "react-icons/bi";
 import ProfilePhotoAndPatent from "../ProfilePhotoAndPatent/ProfilePhotoAndPatent";
-import { Router } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 interface FriendsProps {
     userFriends?: number;
@@ -19,9 +19,7 @@ export default function Friends(props: FriendsProps){
         setHaveFriends(props.userFriends == undefined);  
     })
 
-    function handleAccessToProfile(){
-        Router.push(`UserDataPage/Post/${user.id}'`)
-    }
+ 
      
    //
     return(
@@ -49,7 +47,7 @@ export default function Friends(props: FriendsProps){
                 </Flex>
                 :
                 <Flex>
-                    <ProfilePhotoAndPatent onClick={} size="15rem" user={props.userFriends}></ProfilePhotoAndPatent>
+                    <ProfilePhotoAndPatent  size="15rem" user={props.userFriends}></ProfilePhotoAndPatent>
                     <Flex justify="center" ml="30px" flexDir={'column'} gap="8%">
                         <Text fontSize={['sm', 'md', 'x-large']} fontWeight="bold">
                             {props.friendName}

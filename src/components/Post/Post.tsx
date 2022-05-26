@@ -21,6 +21,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     const [displayTextContentPostTraduct, setDisplayTextContentPostTraduct] = useState<any>("none");
 
     const [comments, setComments] = useState<any>([]);
+    const [sentenceNotTraduct, setSentenceNotTraduct] = useState<any>(post.textContent);
     const [wasTraduct, setWasTraduct] = useState<boolean>(true);
     const [totalComments, setTotalComments] = useState<number>(post.totalComments);
     const [display, setDisplay] = useState<any>("none");
@@ -38,7 +39,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
     const [liked, setLiked] = useState<boolean>(post.liked);
     const [colorBoxMessage, setColorBoxMessage] = useState<any>("#fff");
     const [totalLikes, setTotalLikes] = useState<any>(post.totalLikes);
-    const [postTextContentTraduct, setPostTextContentTraduct] = useState<any>(null);
+    const [postTextContentTraduct, setPostTextContentTraduct] = useState<any>(sentenceNotTraduct);
 
     const [languageTraduct, setLanguageTraduct] = useState<string>("");
 
@@ -127,44 +128,57 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
 
     function handleTranslate() {
 
-        setWasTraduct(true)
+        
         const nativeLanguageTranslatorName = userLogged.nativeLanguageTranslatorName;
+
+        console.log(nativeLanguageTranslatorName);
+        console.log(sentenceNotTraduct)
+        
        
         if (!router.isFallback) {
-            if(post.textContent == postTextContentTraduct){
-                api.post(`traductions`, {
-                    toLanguage: nativeLanguageTranslatorName,
-                    texts: [post.textContent]
-                })
-                    .then((response: any) => {
-                        setPostTextContentTraduct(response.data)
-                        setDisplayTextContentPostTraduct("flex")
-                        setDisplayTextContentPost("none")
+            if(wasTraduct){
+                if(sentenceNotTraduct == postTextContentTraduct){
+                    console.log("A")
+                    api.post(`traductions`, {
+                        toLanguage: nativeLanguageTranslatorName,
+                        texts: [sentenceNotTraduct]
+                    })
+                        .then((response: any) => {
+                            setPostTextContentTraduct(response.data[0])
+                            setDisplayTextContentPostTraduct("flex")
+                            setDisplayTextContentPost("none")
+                            toast({
+                                title: 'TRADUÇÃO REALIZADA COM SUCESSO!',
+                                status: 'success',
+                                isClosable: true,
+                                position: 'top',
+                            });
+        
                        
-    
-                        toast({
-                            title: 'TRADUÇÃO REALIZADA COM SUCESSO!',
-                            status: 'success',
-                            isClosable: true,
-                            position: 'top',
+                        }).catch((error: any) => {
+                            toast({
+                                title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
+                                status: 'error',
+                                isClosable: true,
+                                position: 'top',
+                            });
                         });
-    
-                   
-                    }).catch((error: any) => {
-                        toast({
-                            title: 'OPS... ALGO DE ERRADO OCORREU, TENTE NOVAMENTE.',
-                            status: 'error',
-                            isClosable: true,
-                            position: 'top',
-                        });
-                    });
+                }else{
+                    console.log("B")
+                    setSentenceNotTraduct(post.textContent)
+                    setDisplayTextContentPostTraduct("none")
+                    setDisplayTextContentPost("flex")
+                    console.log(sentenceNotTraduct)
+                    setWasTraduct(true)
+                }
             }
+            
             
         }
     }
 
     function handleTranslateAgain() {
-        setWasTraduct(false)
+        setWasTraduct(true)
 
         const targetLanguageTranslatorName = userLogged.targetLanguageTranslatorName;
 
@@ -234,7 +248,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                             </Flex>
                             <Text display={displayTextContentPostTraduct}>{postTextContentTraduct}</Text>
                             <Text display={displayTextContentPost} color="howdyColors.mainBlack" fontSize={['sm', 'md', 'md']}>
-                                {post.textContent}
+                                {sentenceNotTraduct}
                             </Text>
                             <IconButton
                                 w="10%"
@@ -246,7 +260,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                                         opacity="2"
                                         as={MdTranslate}
                                         onClick={
-                                        wasTraduct ? handleTranslate : handleTranslateAgain
+                                            handleTranslate
                                         }
                                         color="howdyColors.mainWhite"
                                         fontSize={'x-large'}

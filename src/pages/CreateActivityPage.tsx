@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, Icon, IconButton, Image, Input, InputGroup, InputLeftElement, Link, Select, SimpleGrid, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Icon, IconButton, Image, Input, InputGroup, InputLeftElement, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, SimpleGrid, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -16,7 +16,12 @@ import { BiTargetLock } from "react-icons/bi";
 import { AiOutlineFile, AiOutlinePlus } from "react-icons/ai";
 import { GiPadlock } from "react-icons/gi";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { BsCheckCircle, BsCheckLg } from "react-icons/bs";
+import { BsCheckCircle, BsCheckLg, BsFillShareFill } from "react-icons/bs";
+import Router from 'next/router';
+import { VscChromeClose } from "react-icons/vsc";
+import { FiShare } from "react-icons/fi";
+import CreatePost from "../components/CreatePost/CreatePost";
+
 
 interface ActivityBreakdownProps {
     idActivity: string;
@@ -69,6 +74,9 @@ interface ActivityImages {
 
 export default function ActivityBreakdown(props: ActivityBreakdownProps) {
 
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen: isOpenShareModal, onOpen: onOpenShareModal , onClose: onCloseShareModal } = useDisclosure()
+
     const [userLogged, setUserLogged] = useState<any>(null);
 
     const [activityContent, setActivityContent] = useState<any>(null);
@@ -77,6 +85,8 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
     const [isAlternativeCorrect, setIsAlternativeCorrect] = useState<boolean>(false);
     const [attachedPostImage, setAttachedPostImage] = useState<boolean>(false);
     const [selectedAlternatives, setSelectedAlternatives] = useState<number[]>([0]);
+    const [modalShareDisplay, setModalShareDisplay] = useState<any>();
+
     
     const [topicsLearn, setTopicsLearn] = useState<TeachingTopic[]>([]);
     
@@ -133,9 +143,11 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
             setAttachedPostImage(true);
         };
     }
+    const [wasMade, setWasRead] = useState<boolean>(false);
 
 
     function sendActivity(){
+                setWasRead(true);
                 const formData = new FormData();
                 //@ts-ignore
                 const nameTeaching = document.getElementById('nameTeaching')?.value;
@@ -178,7 +190,9 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
     
                 api.post(`/activities`, formData).then(response => {
                     const responseData = response.data;
-                    console.log("ffffffffff" + responseData);
+                    console.log(responseData)
+                    onOpen()
+                    // Router.push(`/activity/${responseData.idActivity}`);
                 }
                 ).catch(err => console.log(err.message))
         }
@@ -196,6 +210,11 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
         setTopicsLearn(newTopicsLearn);
     }
 
+
+    function handleFinishedActivity(){
+        Router.push(`/Posts`);
+    }
+
     
     
     return (
@@ -205,6 +224,43 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
             </Head>
 
             <Input type="file" display="none" ref={theoricalBlockImageRef} onChange={uploadImage} />
+
+            <Modal isCentered  isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay bgColor="#3030303" />
+                    <ModalContent   bgColor="howdyColors.mainWhite" >
+                        <ModalHeader justifyContent='center'  display="flex">
+                            <img width="50%" src="/images/default-images/check.gif" alt="Check gif" />
+                        </ModalHeader>
+                        <ModalCloseButton />
+                        {/* @ts-ignore */}
+                        <ModalBody  justifyContent="center" align="center">
+                            <Text color="howdyColors.mainBlack" mb="5%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Atividade postada!</Text>
+                            <Text  color="howdyColors.mainBlack" fontSize={['sm', 'medium', 'large']} >Você já está pronto para compartilhar sua experiência em sua rede social! Vamos lá?</Text>
+                        </ModalBody>
+
+                        <ModalFooter display="flex" justifyContent='center' gap="5%">
+                            <Button onClick={onOpenShareModal} color="howdyColors.mainBlue" bgColor='#B9C2FD' gap="4%" > <FiShare size="2rem"  color="#6A7DFF"/> COMPARTILHAR</Button>
+                            <Button bgColor="howdyColors.mainRedTransparent" onClick={onClose} mr={3} >
+                                <VscChromeClose color="#FA383E"/>
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+            </Modal>
+
+            <Modal  isCentered size={"6xl"} isOpen={isOpenShareModal} onClose={onCloseShareModal}>
+                    <ModalOverlay bgColor="#3030303" />
+                    <ModalContent w="100%"  bgColor="howdyColors.mainWhite" >
+                        <ModalHeader justifyContent='center'  display="flex">
+                            <BsFillShareFill size="10rem" color="#6A7DFF"/>
+                        </ModalHeader>
+                        <ModalCloseButton />
+                        {/* @ts-ignore */}
+                        <ModalBody flexDir="column" display="flex" align="center"  w="100%">
+                            <Text color="howdyColors.mainBlack" mb="3%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Compartilhe com o mundo as suas conquistas!</Text>
+                            <CreatePost setModalShareDisplay={setModalShareDisplay}/>
+                        </ModalBody>
+                    </ModalContent>
+            </Modal>
            
             <Flex w="100%" bg="howdyColors.mainBlue" justifyContent={'center'} align="center" padding="2%">
                 <Flex w="50%" bg="white"   borderRadius={8} flexDir="column">
@@ -415,7 +471,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                     onChange={(e) =>{
                                         let requirementsModified = [...topicsLearn]
                                         //@ts-ignore
-                                        requirementsModified[index] = e.target.value
+                                        requirementsModified[0] = e.target.value
                                         setTopicsLearn(requirementsModified)
                                         }
                                     }
@@ -760,16 +816,27 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                         </Text>
                     </Flex>
                     <Flex px='10%' py='5%' w="100%" justifyContent="flex-end">
-                        <Button
-                            _hover={{ bg: '#B9C2FD' }}
-                            w="20%"
-                            bg="#CBD2FF"
-                            color="howdyColors.mainBlue"
-                            type="submit"
-                            onClick={sendActivity}
-                        >
-                            <Text>CONCLUIR</Text>
-                        </Button>
+                            {wasMade  ? (
+                                <Button
+                                    w="30%"
+                                    _hover={{ bg: '#B9C2FD' }}
+                                    color="howdyColors.mainBlue"
+                                    type="submit"
+                                    onClick={handleFinishedActivity}
+                                >
+                                   FINALIZAR
+                                </Button>) : (
+                                    <Button
+                                    w="30%"
+                                    _hover={{ bg: '#B9C2FD' }}
+                                    color="howdyColors.mainBlue"
+                                    type="submit"
+                                    onClick={sendActivity}
+                                >
+                                    CONCLUIR
+                                </Button>
+                                )
+                            }
                     </Flex>
                 </Flex>
             </Flex>

@@ -58,7 +58,7 @@ export default function PageCadastro(props: PageCadastroProps) {
                                 color="howdyColors.mainGreenLight"
                             >
                                 {userCadaster - 1} sonhador{
-                                userCadaster == 1 ? 'es' : ''
+                                userCadaster > 2 ? 'es' : ''
                             }
                             </Text>
                             <Text fontWeight="bold" fontSize={35}>

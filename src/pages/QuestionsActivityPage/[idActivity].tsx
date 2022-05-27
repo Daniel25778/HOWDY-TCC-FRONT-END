@@ -61,7 +61,7 @@ export default function ActivityBreakdown(props: QuestionsPageProps) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { isOpen: isOpenShareModal, onOpen: onOpenShareModal , onClose: onCloseShareModal } = useDisclosure()
     const { isOpen: isOpenAvaliationModal, onOpen: onOpenAvaliationModal , onClose: onCloseAvaliationModal } = useDisclosure()
-    const [modalShareDisplay, setModalShareDisplay] = useState<any>(onOpenShareModal);
+    const [modalShareDisplay, setModalShareDisplay] = useState<any>();
 
     const [rating, setRating] = useState<number>(5);
 

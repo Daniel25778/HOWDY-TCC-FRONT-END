@@ -69,8 +69,6 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
 
     const api = apiFunction();
 
-
-
     useEffect(() => {
         if (!router.isFallback) {
             getUserLogged(api).then((userLogged) => {

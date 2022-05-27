@@ -101,6 +101,9 @@ export default function CreatePost({modalShareDisplay, setModalShareDisplay}: Cr
             .then((response) => {
                 toast({
                     title: 'POSTAGEM ENVIADA COM SUCESSO!',
+                    status: 'success',
+                    isClosable: true,
+                    position: 'top',
                 })
             })
             .catch((error) => {

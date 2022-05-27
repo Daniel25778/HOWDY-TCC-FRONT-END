@@ -72,7 +72,7 @@ console.log(responseResult)
                                         fontWeight={'bold'}
                                         fontSize={['sm', 'md', 'large']}
                                         >
-                                            + {responseResult.totalXpGained}XP
+                                            + {responseResult.xpPerHit} XP
                                     </Text>
                                 </Flex>
                                 : ""

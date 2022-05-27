@@ -15,7 +15,6 @@ interface ActivityProps {
 }
 
 export function ResultActivity({ user, ResultActivities }: ActivityProps) {
-    console.log('aaaa', ResultActivities);
     return (
         <>
             <Flex borderRadius="20px" width="100%" mt="5%" flexDir="column" bgColor="howdyColors.mainWhite">

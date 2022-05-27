@@ -99,7 +99,7 @@ export default function SearchPage({ userSearch }: SearchPageProps) {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Flex>
+                        <Flex flexDir="column">
                             {searchActivities !== 'nulo' &&
                                 searchActivities.map((search) => (
                                     <ResultActivity key={search.id} user={search} ResultActivities={search} />

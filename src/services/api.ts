@@ -8,7 +8,7 @@ export function api() {
         const cookies = parseCookies();
 
         const api = axios.create({
-            baseURL: 'http://localhost:3333/',
+            baseURL: 'http://10.107.144.29:3333/',
             headers: {
                 Authorization: `${cookies['firebaseAccount']}`,
             },

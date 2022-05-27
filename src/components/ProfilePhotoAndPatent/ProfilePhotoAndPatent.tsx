@@ -5,11 +5,12 @@ interface ProfilePhotoAndPatentProps {
     size: string;
     whiteBorder?: boolean;
     user?: any;
+    sizePatent?: string;
 }
 
-export default function ProfilePhotoAndPatent({user, size, whiteBorder = false }: ProfilePhotoAndPatentProps) {
+export default function ProfilePhotoAndPatent({ sizePatent,user, size, whiteBorder = false }: ProfilePhotoAndPatentProps) {
     function handleAccessToProfile(){
-        Router.push(`UserDataPage/Post/${user.id}'`)
+        Router.push(`/UserPage/Post/${user.idUser}`)
     }
     return (
         <Center position="relative" borderRadius="100%" w={size} h={size} bg="white">
@@ -21,12 +22,12 @@ export default function ProfilePhotoAndPatent({user, size, whiteBorder = false }
                 src={ user?.profilePhoto
                     ? user.profilePhoto
                     : '/images/default-images/default-profile-photo.svg'}
-                onClick={() => {handleAccessToProfile}}
+                onClick={handleAccessToProfile}
                 _hover={{cursor: 'pointer'}}    
             />
 
             <Flex role="group" position="absolute" bottom="0" right="0">
-            {user?.patent && <Image cursor="pointer" zIndex="1" w="4vw" src={`/images/howdy-images/class/${user.patent}.svg`} />}
+            {user?.patent && <Image cursor="pointer" zIndex="1" w={sizePatent} src={`/images/howdy-images/class/${user.patent}.svg`} />}
                 <Text
                     px="15px"
                     py="2px"

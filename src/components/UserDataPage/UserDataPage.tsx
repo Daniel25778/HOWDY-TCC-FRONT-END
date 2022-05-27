@@ -73,7 +73,7 @@ export default function UserDataPage({
                     src={user?.backgroundImage ? user.backgroundImage : '/images/Tests/backgroundImage.png'}
                 />
                 <Flex w="100%" position="relative" bottom="4vw" pl="8vw">
-                    <ProfilePhotoAndPatent user={user} whiteBorder={true} size="12.5vw" />
+                    <ProfilePhotoAndPatent sizePatent="8rem" user={user} whiteBorder={true} size="12.5vw" />
                     <Box color="howdyColors.mainBlack" flex="1" ml="10%" mt="5vw">
                         <Heading wordBreak="break-word" fontSize="4xl">
                             {user.userName}

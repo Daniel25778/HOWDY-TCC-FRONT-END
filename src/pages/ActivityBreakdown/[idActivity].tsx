@@ -14,6 +14,7 @@ import ProfilePhotoAndPatent from "../../components/ProfilePhotoAndPatent/Profil
 import { IoMdAdd } from "react-icons/io";
 import { BiTargetLock } from "react-icons/bi";
 import { AiOutlineFile } from "react-icons/ai";
+import Router from 'next/router';
 
 interface ActivityBreakdownProps {
     idActivity: string;
@@ -60,7 +61,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
 
     const toast = useToast();
     const [userLogged, setUserLogged] = useState<any>(null);
-
+    const [wasBought, setWasBought] = useState<boolean>(false);
     const { idActivity } = props;
     const [activity, setActivity] = useState<Activity>(null);
     const createdAt = new Date(activity?.createdAt).toLocaleDateString('pt-BR',{
@@ -95,6 +96,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
     console.log(activity);
 
     function handleBuyActivity() {
+        setWasBought(true);
         api.post(`/activities/buy/${idActivity}`).then(response => {
             toast({
                 title: 'COMPRA REALIZADA COM SUCESSO!',
@@ -105,6 +107,10 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
             console.log(response.data);
         }
         ).catch(err => console.log(err))
+    }
+
+    function handleAccessActivity(){
+        Router.push(`/DoActivityPage/${idActivity}`);
     }
 
     return (
@@ -136,21 +142,28 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                 </Flex>
 
                 <Flex align="center" flexDir="column" w="100%" justifyContent="center">
-                    <Button
-                        _hover={{ bg: '#B9C2FD' }}
-                        width="50%"
-                        marginTop="6"
-                        bg="#CBD2FF"
-                        color="howdyColors.mainBlue"
-                        type="submit"
-                        onClick={() => handleBuyActivity()}
-                        >
-                            <Text fontSize={['sm', 'medium', 'x-large']} fontWeight="semibold" color="howdyColors.mainBlue">
-                                COMPRAR
-                            </Text>
-                    </Button>
-
-                    
+                    {wasBought  ? (
+                                <Button
+                                    w="30%"
+                                    _hover={{ bg: '#B9C2FD' }}
+                                    color="howdyColors.mainBlue"
+                                    type="submit"
+                                    onClick={handleAccessActivity} 
+                                >
+                                    ACESSAR
+                                </Button>) : (
+                                    <Button
+                                    w="30%"
+                                    bgColor="#6A7DFF33"
+                                    _hover={{ bg: '#B9C2FD' }}
+                                    color="howdyColors.mainBlue"
+                                    type="submit"
+                                    onClick={() => handleBuyActivity()}
+                                >
+                                    COMPRAR
+                                </Button>
+                                )
+                    }
                 </Flex>
                 <Flex flexDir="column" w="100%" p="3%">
                     <Text mt="5%" mb="3%" fontWeight="medium" fontSize={['medium', 'large', 'x-large']} color="howdyColors.mainBlack">Dificuldade</Text>

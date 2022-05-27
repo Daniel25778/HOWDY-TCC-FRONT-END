@@ -9,12 +9,13 @@ interface ResultSearchPeopleProps {
 //eae
 
 export default function ResultSearchPeople(props: ResultSearchPeopleProps) {
+    
      return (
         <>
             <Tr>
             <Box mt="70px" pl="50px">
                 <Flex>
-                    <ProfilePhotoAndPatent user={props.ResultSearchPeople} size="8rem" /> 
+                    <ProfilePhotoAndPatent sizePatent="110%" user={props.ResultSearchPeople} size="8rem" /> 
                     <Box ml="30px">
                     
                         <Text color="howdyColors.mainBlack" fontSize="1.5rem" fontWeight="500">

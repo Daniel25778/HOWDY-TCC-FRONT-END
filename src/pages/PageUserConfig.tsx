@@ -167,10 +167,13 @@ export default function PageUserConfig() {
         const selectNativeLanguage = document.getElementById('nativeLanguage')?.value;
         //@ts-ignore
         const selectTargetLanguage = document.getElementById('targetLanguage')?.value;
-        const selectNativeLanguageFormatted = JSON.parse(selectNativeLanguage);
-        const selectTargetLanguageFormatted = JSON.parse(selectTargetLanguage);
-        const newTargetLanguage = selectTargetLanguageFormatted.idTargetLanguage
-        const newNativeLanguage = selectNativeLanguageFormatted.idNativeLanguage
+        //declarando constante que recebera valor depois
+        
+          const  selectNativeLanguageFormatted = selectNativeLanguage
+          const  selectTargetLanguageFormatted = selectTargetLanguage;
+          const  newTargetLanguage = selectTargetLanguageFormatted
+          const  newNativeLanguage = selectNativeLanguageFormatted
+       
         const formData = new FormData();
 
         const userFirebase = auth.currentUser;
@@ -187,12 +190,12 @@ export default function PageUserConfig() {
             formData.append('description', inputDescriptionUser);
             formData.append('userName', inputUserName);
             formData.append('birthDate', inputUserDate);
-            formData.append('idTargetLanguage', newTargetLanguage);
-            formData.append('idNativeLanguage', newNativeLanguage);
+            newTargetLanguage && formData.append('idTargetLanguage', newTargetLanguage);
+            newNativeLanguage && formData.append('idNativeLanguage', newNativeLanguage);
 
         api.put(`users`, formData)
             .then((response) => {
-                console.log('res', response);
+                console.log (response.data);
                 toast({
                     title: 'EDIÇÃO REALIZADA COM SUCESSO!',
                     status: 'success',
@@ -403,7 +406,7 @@ export default function PageUserConfig() {
                                 nativeLanguages.map((nativeLanguage) => (
                                     <option
                                         key={nativeLanguage.idNativeLanguage}
-                                        value={JSON.stringify(nativeLanguage)}
+                                        value={nativeLanguage.idNativeLanguage}
                                     >
                                         {nativeLanguage.nativeLanguageName}
                                     </option>
@@ -432,7 +435,7 @@ export default function PageUserConfig() {
                                 targetLanguages.map((targetLanguage) => (
                                     <option
                                         key={targetLanguage.idTargetLanguage}
-                                        value={JSON.stringify(targetLanguage)}
+                                        value={targetLanguage.idTargetLanguage}
                                     >
                                         {targetLanguage.targetLanguageName}
                                     </option>

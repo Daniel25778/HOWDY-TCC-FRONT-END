@@ -15,15 +15,19 @@ interface ActivityProps {
 }
 
 export function ResultActivity({ user, ResultActivities }: ActivityProps) {
+    const createdAt = new Date(ResultActivities.createdAt).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'short',
+    });
     return (
         <>
             <Flex borderRadius="20px" width="100%" mt="5%" flexDir="column" bgColor="howdyColors.mainWhite">
                 <Flex mb="2%" width="100%">
                     <Flex width="70%" gap="3%" align="center">
-                        <ProfilePhotoAndPatent user={user} size="9rem"></ProfilePhotoAndPatent>
+                        <ProfilePhotoAndPatent user={user} sizePatent="5%" size="9rem"/>
                         <Heading>{ResultActivities?.userCreator?.userName}</Heading>
                         <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>
-                            ● 19 Nov
+                            ● {createdAt}
                         </Text>
                     </Flex>
 
@@ -33,7 +37,7 @@ export function ResultActivity({ user, ResultActivities }: ActivityProps) {
                                 <BiTargetLock />
                             </Icon>
                             <Text fontSize={['sm', 'md', 'xx-large']} color="howdyColors.mainBlack" opacity="60%">
-                                Inglês
+                                {ResultActivities.targetLanguageName}
                             </Text>
                         </Flex>
                     </Flex>
@@ -46,7 +50,7 @@ export function ResultActivity({ user, ResultActivities }: ActivityProps) {
                             objectFit="cover"
                             w="100%"
                             h="26rem"
-                            src="/images/Tests/image 22.png"
+                            src={ResultActivities.activityCoverPhoto}
                         ></Image>
                     </Flex>
 
@@ -54,20 +58,20 @@ export function ResultActivity({ user, ResultActivities }: ActivityProps) {
                         <Heading color="howdyColors.mainWhite">{ResultActivities?.activityTitle}</Heading>
                         <Text color="howdyColors.mainWhite">{ResultActivities?.activityTitle}</Text>
 
-                        <Flex width="20%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
+                        <Flex width="15%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
                             <Image
                                 height="2.5rem"
                                 src="/images/howdy-images/howdy-coin/Howdy coin.svg"
                                 alt="howdy coin"
                             ></Image>
                             <Text fontWeight="semibold" color="howdyColors.brownHowdyCoin">
-                                0
+                                {ResultActivities.priceHowdyCoin}
                             </Text>
                         </Flex>
                         <Flex width="90%" flexDir="column" align="center" justify="center">
                             <StarRatings
                                 starDimension="40px"
-                                rating={2}
+                                rating={ResultActivities.rating}
                                 starRatedColor="#F2D63F"
                                 numberOfStars={5}
                                 name="rating"

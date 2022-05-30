@@ -46,7 +46,7 @@ export default function TeachPage(props: TeachUserPageProps) {
 
            //Pegar postagens do usuario atraves do id
 
-           api.get(`activities/${idUser}`).then(response => {
+           api.get(`activities/user?idUserCreator=${idUser}&maxPrice=200&idDifficulty=2&orderBy=rating`).then(response => {
             if(response.data?.error) setUserActivitys([]);
             else if(response.data) {
                 setUserActivitys(response.data);

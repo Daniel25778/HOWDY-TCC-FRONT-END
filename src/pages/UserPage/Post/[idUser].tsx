@@ -90,7 +90,7 @@ export default function PostPage(props: PostUserPageProps) {
             </Head>
 
             <Header user={userLogged} />
-            <Box pt="7rem" as="main" px="100px" bg="red" bgImg="/images/background.png">
+            <Box pt="7rem" as="main" px="100px"  bgImg="/images/background.png">
                 <UserDataPage
                     idUser={idUser}
                     stateFlexButton={stateFlexButton}

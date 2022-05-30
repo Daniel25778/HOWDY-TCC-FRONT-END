@@ -355,7 +355,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                 </Flex>
                 <Flex p="1%" flexDir="column" borderRadius="12" bgColor="howdyColors.mainBlue" display={display} justifyContent="center" width="50%">
                     {
-                        comments.length > 0 && comments?.map(commentary => (
+                        comments.length > 0 && comments?.reverse()?.map(commentary => (
                             <Commentary key={commentary.idPostCommentary} commentary={commentary} />
                         ))
                     }

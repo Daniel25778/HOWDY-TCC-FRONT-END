@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 
 const cookies = parseCookies();
 
-const socket = io('http://10.107.144.29:3333');
+const socket = io('http://localhost:3333');
 
 //CONECTANDO-SE AO SOCKET.IO
 socket.emit('authenticate', cookies['firebaseAccount']);

@@ -5,8 +5,28 @@ import { api as apiFunction } from '../services/api';
 import { useEffect, useRef, useState } from 'react';
 import { getUserLogged } from '../functions/getUserLogged';
 import Loading from '../components/Loading/Loading';
-import { Box, Button, Flex, Icon, IconButton, Image, Input, InputGroup, InputLeftElement, List, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useDisclosure, useToast } from '@chakra-ui/react';
-import { BsCamera, BsPeople } from 'react-icons/bs';
+import {
+    Box,
+    Button,
+    Flex,
+    Icon,
+    IconButton,
+    Image,
+    Input,
+    InputGroup,
+    List,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Text,
+    useDisclosure,
+    useToast,
+} from '@chakra-ui/react';
+import { BsPeople } from 'react-icons/bs';
 import Head from 'next/head';
 
 import ListFriends from '../components/Friends/ListFriends';
@@ -16,10 +36,8 @@ import { parseCookies } from 'nookies';
 import socket from '../services/sockeio';
 import Message from '../components/Message/Message';
 import { AiFillStar, AiOutlineSend } from 'react-icons/ai';
-import { log } from 'console';
-import { FaHeart, FaRegStar } from 'react-icons/fa';
-import  IoCloseSharp, { IoMdClose }  from 'react-icons/io';
-import { GrClose } from 'react-icons/gr';
+import { FaHeart } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
 import { VscChromeClose } from 'react-icons/vsc';
 import CreatePost from '../components/CreatePost/CreatePost';
 
@@ -48,7 +66,6 @@ export default function Posts(props: PostsProps) {
     const api = apiFunction();
 
     const [posts, setPosts] = useState<any>([]);
-    
 
     const [category, setCategory] = useState<any>('popular');
     const [clickCategorySport, setClickCategorySport] = useState<boolean>(false);
@@ -66,9 +83,7 @@ export default function Posts(props: PostsProps) {
     const [dysplayBoxChat, setDysplayBoxChat] = useState<string>('none');
     const [friendForChat, setFriendForChat] = useState<any>(null);
     const [isChatBlockOpen, setIsChatBlockOpen] = useState<boolean>(false);
-    const { isOpen, onOpen, onClose } = useDisclosure()
-
-    
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const [messages, setMessages] = useState<Message[]>([]);
 
@@ -92,7 +107,6 @@ export default function Posts(props: PostsProps) {
         });
     }, []);
 
-    
     useEffect(() => {
         if (!router.isFallback) {
             getUserLogged(api).then((res) => {
@@ -110,45 +124,41 @@ export default function Posts(props: PostsProps) {
 
             api.get(`posts/category/${category}`)
                 .then((response) => {
+                    setPosts([])
                     setPosts(response.data);
                 })
                 .catch((err) => console.log(err));
         }
     }, [category, router.isFallback]);
-    
-
-    
 
     function handleOpenChatBox(selectedFriend) {
-
-        console.log(userLogged)
+        console.log(userLogged);
         //@ts-ignore
-        if(userLogged.isPro) {
-            setFriendForChat(selectedFriend)
+        if (userLogged.isPro) {
+            setFriendForChat(selectedFriend);
             setDysplayBoxChat('flex');
-            setIsChatBlockOpen(true)
+            setIsChatBlockOpen(true);
             console.log(selectedFriend);
-    
+
             api.get(`messages/${selectedFriend.idUser}`)
-            .then((response) => {
-                setMessages(response.data);
-    
-                console.log("MESSAGE")
-                console.log(response.data)
-                console.log(messages)
-            })
-            .catch((err) => console.log(err));
-        }else{
-            onOpen()
-        } 
+                .then((response) => {
+                    setMessages(response.data);
+
+                    console.log('MESSAGE');
+                    console.log(response.data);
+                    console.log(messages);
+                })
+                .catch((err) => console.log(err));
+        } else {
+            onOpen();
+        }
     }
 
-    function handleSendMessage(friend){
+    function handleSendMessage(friend) {
         const cookies = parseCookies();
         //@ts-ignore
         const valueTypedByUser = document.getElementById('sendMessage-input')?.value;
 
-        
         var messageObject: any = {
             idUserReceiver: friend.idUser,
             message: valueTypedByUser,
@@ -156,12 +166,11 @@ export default function Posts(props: PostsProps) {
         };
 
         socket.emit('sendMessage', messageObject);
-        
     }
 
     function handleCloseChat() {
-        setIsChatBlockOpen(false)
-        setDysplayBoxChat("none");
+        setIsChatBlockOpen(false);
+        setDysplayBoxChat('none');
     }
 
     function handleAccessStore() {
@@ -170,7 +179,7 @@ export default function Posts(props: PostsProps) {
 
     function handleSetCategory(idCategory: number) {
         setCategory(idCategory);
-        if(idCategory === 1) {
+        if (idCategory === 1) {
             setClickCategoryFriends(false);
             setClickCategoryQuestions(false);
             setClickCategoryGames(false);
@@ -178,7 +187,7 @@ export default function Posts(props: PostsProps) {
             setClickCategoryNews(false);
             setClickCategoryPopular(false);
             setClickCategorySport(true);
-        }else if (idCategory === 2) {
+        } else if (idCategory === 2) {
             setClickCategoryFriends(false);
             setClickCategoryQuestions(false);
             setClickCategoryGames(false);
@@ -187,7 +196,7 @@ export default function Posts(props: PostsProps) {
             setClickCategoryPopular(false);
             setClickCategorySport(false);
             setClickCategoryFashion(false);
-        }else if (idCategory === 3) {
+        } else if (idCategory === 3) {
             setClickCategoryFriends(false);
             setClickCategoryQuestions(false);
             setClickCategoryGames(true);
@@ -197,7 +206,7 @@ export default function Posts(props: PostsProps) {
             setClickCategorySport(false);
             setClickCategoryFashion(false);
             setClickCategoryNews(false);
-        }else if (idCategory === 4) {
+        } else if (idCategory === 4) {
             setClickCategoryFriends(false);
             setClickCategoryQuestions(false);
             setClickCategoryGames(false);
@@ -217,7 +226,7 @@ export default function Posts(props: PostsProps) {
             setClickCategorySport(false);
             setClickCategoryFashion(true);
             setClickCategoryNews(false);
-        }else{
+        } else {
             setClickCategoryFriends(false);
             setClickCategoryQuestions(true);
             setClickCategoryGames(false);
@@ -230,9 +239,8 @@ export default function Posts(props: PostsProps) {
         }
     }
 
-
     function setColorCategoryPopular() {
-        setCategory('popular')
+        setCategory('popular');
         setClickCategoryPopular(true);
         setClickCategoryFriends(false);
         setClickCategoryQuestions(false);
@@ -242,9 +250,9 @@ export default function Posts(props: PostsProps) {
         setClickCategorySport(false);
         setClickCategoryFashion(false);
     }
-    
+
     function setColorCategoryFriends() {
-        setCategory('myFriends')
+        setCategory('myFriends');
         setClickCategoryPopular(false);
         setClickCategoryFriends(true);
         setClickCategoryQuestions(false);
@@ -272,15 +280,12 @@ export default function Posts(props: PostsProps) {
                             width="100%"
                             onClick={setColorCategoryFriends}
                             marginBottom={5}
-                            bgColor={'white'}
                             textColor="#303135"
                             fontWeight="medium"
                             fontSize={['x-small', 'medium', 'x-large']}
-                            leftIcon={<FaHeart color="#FA383E" size="2rem"/>}
+                            leftIcon={<FaHeart color="#FA383E" size="2rem" />}
                             paddingBottom="1rem"
-                            bgColor={
-                                clickCategoryFriends ? "howdyColors.mainRedTransparent" : "white"
-                            }
+                            bgColor={clickCategoryFriends ? 'howdyColors.mainRedTransparent' : 'white'}
                             py="2rem"
                             pb="2rem"
                             justifyContent="space-around"
@@ -293,38 +298,35 @@ export default function Posts(props: PostsProps) {
                             marginBottom={5}
                             color="#303135"
                             fontWeight="medium"
-                            bgColor={
-                                clickCategoryPopular ? "howdyColors.mainYellowTransparent" : "white"
-                            }
+                            bgColor={clickCategoryPopular ? 'howdyColors.mainYellowTransparent' : 'white'}
                             py="2rem"
                             pb="2rem"
                             alignItems="center"
                             fontSize={['x-small', 'medium', 'x-large']}
-                            leftIcon={<AiFillStar color="#FFD700" size="2.6rem"/>}
+                            leftIcon={<AiFillStar color="#FFD700" size="2.6rem" />}
                             justifyContent="space-around"
                         >
-                           <Text >Popular</Text>
+                            <Text>Popular</Text>
                         </Button>
                         {categoryList.length > 0 &&
                             categoryList.map((category) => (
                                 <Button
                                     onClick={() => handleSetCategory(category.idPostCategory)}
                                     marginBottom="10%"
-                                    bgColor={'white'}
                                     bgColor={
                                         clickCategorySport && category.idPostCategory == '1'
-                                        ? "howdyColors.mainGreenTransparent"
-                                        : clickCategoryNews && category.idPostCategory == '2'
-                                        ? "howdyColors.mainBlueTransparent"
-                                        : clickCategoryGames && category.idPostCategory == '3'
-                                        ?  "howdyColors.masterTransparent"
-                                        : clickCategoryMovies && category.idPostCategory == '4'
-                                        ? "howdyColors.mainOrangeTransparent"
-                                        : clickCategoryFashion && category.idPostCategory == '5'
-                                        ? "howdyColors.mainBlueTransparent"
-                                        : clickCategoryQuestions && category.idPostCategory == '6'
-                                        ? "howdyColors.mainOrangeTransparent" 
-                                        : "white"
+                                            ? 'howdyColors.mainGreenTransparent'
+                                            : clickCategoryNews && category.idPostCategory == '2'
+                                            ? 'howdyColors.mainBlueTransparent'
+                                            : clickCategoryGames && category.idPostCategory == '3'
+                                            ? 'howdyColors.masterTransparent'
+                                            : clickCategoryMovies && category.idPostCategory == '4'
+                                            ? 'howdyColors.mainOrangeTransparent'
+                                            : clickCategoryFashion && category.idPostCategory == '5'
+                                            ? 'howdyColors.mainBlueTransparent'
+                                            : clickCategoryQuestions && category.idPostCategory == '6'
+                                            ? 'howdyColors.mainOrangeTransparent'
+                                            : 'white'
                                     }
                                     py="2rem"
                                     pb="2rem"
@@ -339,43 +341,56 @@ export default function Posts(props: PostsProps) {
                     </List>
                 </Flex>
 
-                <Modal  isCentered  isOpen={isOpen} onClose={onClose}>
+                <Modal isCentered isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay bgColor="#3030303" />
                     <ModalContent bgColor="howdyColors.mainBlack" alignItems="center">
-                        <ModalHeader >
-                        <Image
-                            width={100}
-                            objectFit="cover"
-                            
-                            src="/images/illustrations/Vector.svg"
-                            alt="howdy logo"
-                        />
+                        <ModalHeader>
+                            <Image
+                                width={100}
+                                objectFit="cover"
+                                src="/images/illustrations/Vector.svg"
+                                alt="howdy logo"
+                            />
                         </ModalHeader>
                         <ModalCloseButton />
                         {/* @ts-ignore */}
-                        <ModalBody  justifyContent="center" align="center">
-                            <Text color="howdyColors.mainWhite" mb="5%" fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']} >Apenas quem é PRO pode acessar!</Text>
-                            <Text  color="howdyColors.mainWhite" fontSize={['sm', 'medium', 'large']} >Desbloqueie esta função adquirindo a assinatura!</Text>
+                        <ModalBody justifyContent="center" align="center">
+                            <Text
+                                color="howdyColors.mainWhite"
+                                mb="5%"
+                                fontWeight="medium"
+                                fontSize={['sm', 'medium', 'xx-large']}
+                            >
+                                Apenas quem é PRO pode acessar!
+                            </Text>
+                            <Text color="howdyColors.mainWhite" fontSize={['sm', 'medium', 'large']}>
+                                Desbloqueie esta função adquirindo a assinatura!
+                            </Text>
                         </ModalBody>
 
                         <ModalFooter gap="5%">
-                            <Button onClick={handleAccessStore} color="howdyColors.mainGreen" bgColor='howdyColors.mainGreenTransparent' >DESBLOQUEAR</Button>
-                            <Button bgColor="howdyColors.mainRedTransparent" onClick={onClose} mr={3} >
-                                <VscChromeClose color="#FA383E"/>
+                            <Button
+                                onClick={handleAccessStore}
+                                color="howdyColors.mainGreen"
+                                bgColor="howdyColors.mainGreenTransparent"
+                            >
+                                DESBLOQUEAR
+                            </Button>
+                            <Button bgColor="howdyColors.mainRedTransparent" onClick={onClose} mr={3}>
+                                <VscChromeClose color="#FA383E" />
                             </Button>
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
 
                 <Flex width="70%" align="center" flexDir="column">
-                    
                     <Flex justifyContent="center" align="center" width="100%">
-                        <CreatePost/>
+                        <CreatePost />
                     </Flex>
 
                     {/* we are young */}
 
-                    <Flex  width="100%" flexDir="column">
+                    <Flex width="100%" flexDir="column">
                         {posts.length > 0 &&
                             posts.map((post) => {
                                 return (
@@ -390,40 +405,44 @@ export default function Posts(props: PostsProps) {
                     </Flex>
                 </Flex>
 
-                <Flex bottom="0" right="20%" boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)" flexDir="column" borderRadius="50px"  p="1.5%"  w="21%" bgColor="howdyColors.mainWhite" position="fixed" display={dysplayBoxChat}>
-                    <Flex justifyContent="flex-end" width="100%"> 
-                        <Button
-                        
-                            onClick={handleCloseChat}
-                            >
-                            {<IoMdClose  size="2rem" />}
-                        </Button>
+                <Flex
+                    bottom="0"
+                    right="20%"
+                    boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+                    flexDir="column"
+                    borderRadius="50px"
+                    p="1.5%"
+                    w="21%"
+                    bgColor="howdyColors.mainWhite"
+                    position="fixed"
+                    display={dysplayBoxChat}
+                >
+                    <Flex justifyContent="flex-end" width="100%">
+                        <Button onClick={handleCloseChat}>{<IoMdClose size="2rem" />}</Button>
                     </Flex>
-                    
+
                     <Flex gap="5%" align="center" w="50%">
-                        <Image 
+                        <Image
                             borderRadius="100%"
                             h="4rem"
                             w="4rem"
-                            objectFit="cover" src={friendForChat?.profilePhoto}>
-                        </Image>
-                        <Text fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']}>{friendForChat?.userName}</Text>
+                            objectFit="cover"
+                            src={friendForChat?.profilePhoto}
+                        ></Image>
+                        <Text fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']}>
+                            {friendForChat?.userName}
+                        </Text>
                     </Flex>
                     <Box bg="howdyColors.divider" h="1px" w="100%" mb="10" mt="5" />
-                    <Flex  w="100%" >
+                    <Flex w="100%">
                         <Flex align={'flex-end'} w="100%" flexDir="column">
-                            {
-                                messages.length > 0 && messages.map((message) => 
-                                    
-                                    <Message userLogged={userLogged} message={message} />
-                                    
-                            )}
+                            {messages.length > 0 &&
+                                messages.map((message) => <Message userLogged={userLogged} message={message} />)}
                         </Flex>
                     </Flex>
-                    
 
-                    <Flex justifyContent='space-between' width="100%">
-                        <InputGroup  width="90%" variant="filled">
+                    <Flex justifyContent="space-between" width="100%">
+                        <InputGroup width="90%" variant="filled">
                             <Input
                                 px="2%"
                                 borderColor="howdyColors.mainBlack"
@@ -433,11 +452,8 @@ export default function Posts(props: PostsProps) {
                                 focusBorderColor="howdyColors.mainWhite"
                                 borderRadius="100px 100px 100px 100px"
                                 id="sendMessage-input"
-                                
                                 variant={'outline'}
-                            >
-                            </Input>
-
+                            ></Input>
                         </InputGroup>
 
                         <IconButton
@@ -449,17 +465,17 @@ export default function Posts(props: PostsProps) {
                             color="howdyColors.mainBlue"
                             icon={<Icon opacity="2" as={AiOutlineSend} fontWeight="black" />}
                         />
-                    </Flex>       
+                    </Flex>
                 </Flex>
 
-                <Flex flexDir="column" p="1%"  boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"  h="70%" width="15%">
+                <Flex flexDir="column" p="1%" boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)" h="70%" width="15%">
                     <Flex alignItems="center" width="50%" h="20%" justify="center">
                         <Text fontWeight="medium" fontSize={['sm', 'medium', 'xx-large']}>
                             Amigos{' '}
                         </Text>
                         <BsPeople size="40%" />
-                    </Flex> 
-                    
+                    </Flex>
+
                     {friendsList.length > 0 &&
                         friendsList.map((friend) => (
                             <ListFriends

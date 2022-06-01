@@ -38,7 +38,9 @@ export default function () {
 	}
 
 	function handleAddSubscription(monthSubscription) {
+
 		onClose();
+
 		api
 			.put(`subscription/add/${monthSubscription}`)
 			.then((response) => {
@@ -102,7 +104,7 @@ export default function () {
 				<Flex justifyContent='center' width='100%'>
 					<Flex
 						as='form'
-						action='http://localhost:3333/buyHowdyCoin'
+						action='http://10.107.144.8:3333/buyHowdyCoin'
 						method='POST'
 						h='100%'
 						w='26%'
@@ -164,7 +166,7 @@ export default function () {
 
 					<Flex
 						as='form'
-						action='http://localhost:3333/buyHowdyCoin'
+						action='http://10.107.144.8:3333/buyHowdyCoin'
 						method='POST'
 						h='100%'
 						w='25%'
@@ -225,7 +227,7 @@ export default function () {
 
 					<Flex
 						as='form'
-						action='http://localhost:3333/buyHowdyCoin'
+						action='http://10.107.144.8:3333/buyHowdyCoin'
 						method='POST'
 						h='100%'
 						w='25%'
@@ -287,7 +289,7 @@ export default function () {
 
 					<Flex
 						as='form'
-						action='http://localhost:3333/buyHowdyCoin'
+						action='http://10.107.144.8:3333/buyHowdyCoin'
 						method='POST'
 						h='0%'
 						w='25%'

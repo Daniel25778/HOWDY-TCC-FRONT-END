@@ -55,6 +55,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
         api.get(`posts/commentary/${post.idPost}`)
             .then((response) => {
                 setComments(response.data);
+                console.log({comments: response.data})
             })
             .catch((err) => console.log(err));
     }
@@ -382,7 +383,7 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                 >
                     {comments.length > 0 &&
                         comments
-                            ?.reverse()
+                            ?.sort((a, b) => new Date(a.postCommentaryCreatedAt) - new Date(b.postCommentaryCreatedAt))
                             ?.map((commentary) => (
                                 <Commentary key={commentary.idPostCommentary} commentary={commentary} />
                             ))}

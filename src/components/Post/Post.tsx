@@ -209,12 +209,12 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
         <>
             <Flex width="100%" align={'center'} mt="5%" flexDir="column">
                 <Flex mb="1%" gap="3%" width="40%">
-                    <Flex>
+                    <Flex width="20%">
                         {userCreator?.profilePhoto && (
                             <Image
                                 borderRadius="100%"
-                                width="5rem"
-                                height="5rem"
+                                width="11rem"
+                                height="8rem"
                                 objectFit="cover"
                                 src={userCreator?.profilePhoto}
                                 alt="profilePhoto"
@@ -223,10 +223,11 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                             ></Image>
                         )}
                     </Flex>
-                    <Flex width="15rem">
+                    <Flex width="90%">
                         <Flex w="100%" flexDir="column">
-                            <Flex align="center" gap="1%">
+                            <Flex  align="center" gap="1%">
                                 <Text
+                                    w="8rem"
                                     color="howdyColors.mainBlack"
                                     fontWeight={'bold'}
                                     fontSize={['sm', 'md', 'x-large']}
@@ -235,11 +236,11 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                                 </Text>
                                 <Text
                                     width="100%"
+                                    
                                     color="howdyColors.mainBlack"
                                     opacity="60%"
                                     fontSize={['sm', 'md', 'md']}
                                 >
-                                    {' '}
                                     ● {datePost}
                                 </Text>
                             </Flex>

@@ -88,7 +88,7 @@ export default function Home(props) {
                             <Heading fontSize="4xl" wordBreak="break-word">
                                 idiomas interagindo!
                             </Heading>
-                            <Heading>Come on, baby!</Heading>
+                            <Heading>Come on!</Heading>
                             <Text mt="4%" w="65%">
                                 Acesse exercícios e interações com pessoas do mundo inteiro que carregam o mesmo
                                 objetivo.
@@ -196,19 +196,19 @@ export default function Home(props) {
                                 <Flex align="center" gap="7%">
                                     <SiVerizon color="#29B995"></SiVerizon>
                                     <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>
-                                        NIVÉL FACIO,MEDIO DESBLOQUEADO
+                                        NÍVEL FÁCIL, E MÉDIO DESBLOQUEADO
                                     </Text>
                                 </Flex>
                                 <Flex align="center" gap="7%">
                                     <SiVerizon color="#29B995"></SiVerizon>
                                     <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>
-                                        GRAFICO DE DESEMPENHO
+                                        GRÁFICO DE DESEMPENHO
                                     </Text>
                                 </Flex>
                                 <Flex align="center" gap="7%">
                                     <SiVerizon color="#29B995"></SiVerizon>
                                     <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>
-                                        PARTICIPAÇÃO DO RANKINGS
+                                        PARTICIPAÇÃO NOS RANKINGS
                                     </Text>
                                 </Flex>
                             </Grid>
@@ -247,7 +247,7 @@ export default function Home(props) {
                                 <Flex align="center" gap="7%">
                                     <SiVerizon color="#29B995"></SiVerizon>
                                     <Text color="howdyColors.mainWhite" fontWeight="medium" fontSize={['medium']}>
-                                        NIVEL AVANÇADO DESBLOQUEADO
+                                        NÍVEL AVANÇADO DESBLOQUEADO
                                     </Text>
                                 </Flex>
                                 <Flex align="center" gap="7%">

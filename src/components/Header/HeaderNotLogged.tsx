@@ -35,7 +35,7 @@ interface HeaderProps {
 export function HeaderNotLogged({ user }: HeaderProps) {
     const handleSubmit = () => {
         Router.push('/LoginPage');
-    }
+    };
     return (
         <Flex
             position="fixed"
@@ -50,7 +50,7 @@ export function HeaderNotLogged({ user }: HeaderProps) {
         >
             <Flex position="relative" top="0" left="0" w="100%" pl="15%" pr="15%" h="5rem" align="center">
                 <Flex width="100%" align="center" px="10" justify="space-between">
-                    <Flex mr="auto">
+                    {/* <Flex mr="auto">
                         <Box marginRight="5">
                             <FiSearch size={30} color="#F2F2F2" />
                         </Box>
@@ -62,17 +62,17 @@ export function HeaderNotLogged({ user }: HeaderProps) {
                             borderRadius="0px 100px 100px 0px"
                             width="35vw"
                         ></Input>
-                    </Flex>
-                    <Flex align="center" width="10%" justify="space-between">
+                    </Flex> */}
+                    <Flex ml="auto" align="center" width="10%" justify="space-between">
                         <Text color="howdyColors.mainWhite">Logar</Text>
                         <IconButton
                             onClick={handleSubmit}
-                                variant="unstyled"
-                                aria-label="Open navigation"
-                                fontSize="2rem"
-                                color="#f2f2f2"
-                                icon={<Icon opacity="2" as={VscSignIn} fontWeight="black" />}
-                            />
+                            variant="unstyled"
+                            aria-label="Open navigation"
+                            fontSize="2rem"
+                            color="#f2f2f2"
+                            icon={<Icon opacity="2" as={VscSignIn} fontWeight="black" />}
+                        />
                     </Flex>
                 </Flex>
 
@@ -88,6 +88,7 @@ export function HeaderNotLogged({ user }: HeaderProps) {
                     justify="space-between"
                 >
                     <Image
+                        mx="auto"
                         my="auto"
                         height="3rem"
                         src="/images/howdy-images/logo/logo-blue-howdy-row.svg"

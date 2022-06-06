@@ -1,13 +1,7 @@
 import {
     Button,
     Flex,
-    Grid,
-    Icon,
-    IconButton,
     Image,
-    InputGroup,
-    InputLeftElement,
-    Link,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -15,27 +9,17 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    SimpleGrid,
     Text,
     useDisclosure,
     useToast,
 } from '@chakra-ui/react';
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Header } from '../../components/Header/Header';
 import Loading from '../../components/Loading/Loading';
-import { getUserLogged } from '../../functions/getUserLogged';
 import { api as apiFunction } from '../../services/api';
-import { FcCheckmark } from 'react-icons/fc';
-import Footer from '../../components/Footer/Footer';
-import StarRating from 'react-star-rating'
-import ProfilePhotoAndPatent from '../../components/ProfilePhotoAndPatent/ProfilePhotoAndPatent';
-import { IoMdAdd, IoMdTrophy } from 'react-icons/io';
-import { BiTargetLock } from 'react-icons/bi';
-import { AiOutlineFile } from 'react-icons/ai';
-import { GiPadlock } from 'react-icons/gi';
+import { IoMdTrophy } from 'react-icons/io';
 import Question from '../../components/Question/Question';
 import { VscChromeClose } from 'react-icons/vsc';
 import { FiShare } from 'react-icons/fi';

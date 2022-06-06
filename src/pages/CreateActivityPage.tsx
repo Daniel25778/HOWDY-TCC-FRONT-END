@@ -527,7 +527,7 @@ export default function ActivityBreakdown(props: ActivityBreakdownProps) {
                                 variant="filled"
                                 id="descriptionActivity"
                                 type="text"
-                                value="Nesta aula, iremos aprender como e quando utilizar os verbos modais. Ao utilizá-los, é possível expressar intenções diferentes. Por isso, é importante saber quais são eles e em que situação devemos usá-los."
+                                value="Nesta aula, iremos aprender como e quando utilizar os verbos modais. Ao utilizá-los, é possível expressar intenções diferentes."
                             />
                         </Flex>
 

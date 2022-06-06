@@ -146,7 +146,7 @@ export default function UserDataPage({
                     </Flex>
                 </Flex>
                 <SimpleGrid pl="10%" flex="1" gap="4" minChildWidth="320px">
-                    <WeeklyChart title="DESEMPENHO MENSAL" series={weeklyXpSeries} />
+                    <WeeklyChart title="DESEMPENHO SEMANAL" series={weeklyXpSeries} />
                     <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />
                 </SimpleGrid>
                 <Box bg="howdyColors.divider" h="1px" w="100%" mt="10" mb="70" />

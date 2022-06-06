@@ -1,5 +1,6 @@
 import { Box, Center, Flex, Icon, Text, Tr } from "@chakra-ui/react";
 import { BiTargetLock } from "react-icons/bi";
+import { FaBaby } from "react-icons/fa";
 import ProfilePhotoAndPatent from "../ProfilePhotoAndPatent/ProfilePhotoAndPatent";
 
 
@@ -24,7 +25,7 @@ export default function ResultSearchPeople(props: ResultSearchPeopleProps) {
                         <Flex mt="2rem">
                             <Center>
                                 <Icon
-                                    as={BiTargetLock}
+                                    as={FaBaby }
                                     color="howdyColors.mainBlue"
                                     w="30px"
                                     h="30px"

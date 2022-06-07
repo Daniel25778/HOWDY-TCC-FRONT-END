@@ -214,8 +214,8 @@ export default function Post({ userCreator, post, userLogged }: PostProps) {
                         {userCreator?.profilePhoto && (
                             <Image
                                 borderRadius="100%"
-                                width="11rem"
-                                height="8rem"
+                                width="5vw"
+                                height="5vw"
                                 objectFit="cover"
                                 src={userCreator?.profilePhoto}
                                 alt="profilePhoto"

@@ -45,7 +45,7 @@ export default {
                 .then((response) => {
                     const { data } = response;
                     if (data?.length === 0) {
-                        Router.push('/register/isLogged');
+                        
                     } else {
                         Router.push('/Posts');
                     }

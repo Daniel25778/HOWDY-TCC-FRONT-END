@@ -9,8 +9,6 @@ import {
     Flex,
     Grid,
     Heading,
-    Icon,
-    IconButton,
     Image,
     Text,
     useDisclosure,
@@ -18,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { parseCookies } from 'nookies';
 import Loading from '../components/Loading/Loading';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 import { getUserLogged } from '../functions/getUserLogged';
 import React, { useEffect, useState } from 'react';
@@ -78,10 +76,15 @@ export default function () {
     const idToken = cookies['firebaseAccount'];
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
+
     return (
         <Flex flexDir="column" w="100%">
             <Flex justifyContent="center" p="3%" bgColor="howdyColors.mainBlue" width="100%">
-                <Image w="25%" src="/images/howdy-images/logo/logo-white-howdyStore.svg"></Image>
+                <Image
+                    onClick={() => Router.push('/Posts')}
+                    w="25%"
+                    src="/images/howdy-images/logo/logo-white-howdyStore.svg"
+                ></Image>
             </Flex>
             <Flex flexDir="column" width="100%">
                 <Flex justifyContent="center" width="100%">
@@ -109,7 +112,7 @@ export default function () {
                         >
                             150
                         </Text>
-                        <Image w="45%" mb="20%" src="/images/howdy-images/howdy-coin/Howdy coin.svg"></Image>
+                        <Image  h="9.5rem" mb="20%" src="/images/howdy-images/howdy-coin/Howdy coin.svg"></Image>
                         <Heading mb="15%" fontWeight="medium" fontSize={['sm', 'x-large', '7xl']}>
                             R$9,90
                         </Heading>
@@ -160,7 +163,7 @@ export default function () {
                         >
                             450
                         </Text>
-                        <Image w="100%" mb="20%" src="/images/howdy-images/howdy-coin/howdyCoin3coins.svg"></Image>
+                        <Image h="10rem" mb="20%" src="/images/howdy-images/howdy-coin/howdyCoin3coins.svg"></Image>
                         <Heading mb="15%" fontWeight="medium" fontSize={['sm', 'x-large', '6xl']}>
                             R$ 24,90
                         </Heading>
@@ -211,7 +214,7 @@ export default function () {
                             650
                         </Text>
                         <Image
-                            w="65%"
+                            h="10rem"
                             mb="20%"
                             src="/images/howdy-images/howdy-coin/howdyCoin6coins.svg"
                             objectFit="cover"
@@ -265,7 +268,7 @@ export default function () {
                         >
                             1000
                         </Text>
-                        <Image w="55%" mb="20%" src="/images/howdy-images/howdy-coin/howdyCoinChest.svg"></Image>
+                        <Image h="10rem" mb="20%" src="/images/howdy-images/howdy-coin/howdyCoinChest.svg"></Image>
                         <Heading mb="15%" fontWeight="medium" fontSize={['sm', 'x-large', '6xl']}>
                             R$ 44,90
                         </Heading>
@@ -434,7 +437,7 @@ export default function () {
                     </Flex>
 
                     <Flex gap="7%" w="100%" justifyContent={'center'}>
-                        <Flex width="10%" borderRadius="5px" bg="howdyColors.mainYellow" align="center">
+                        <Flex width="15%" borderRadius="5px" bg="howdyColors.mainYellow" align="center">
                             <Button
                                 width="80%"
                                 h="5rem"
@@ -477,7 +480,7 @@ export default function () {
                             </Flex>
                         </Flex>
 
-                        <Flex width="10%" borderRadius="5px" bg="howdyColors.mainYellow" align="center">
+                        <Flex width="15%" borderRadius="5px" bg="howdyColors.mainYellow" align="center">
                             <Button
                                 width="80%"
                                 h="5rem"
@@ -520,7 +523,7 @@ export default function () {
                             </Flex>
                         </Flex>
 
-                        <Flex width="10%" borderRadius="5px" bg="howdyColors.mainYellow" align="center">
+                        <Flex width="16%" borderRadius="5px" bg="howdyColors.mainYellow" align="center">
                             <Button
                                 width="80%"
                                 h="5rem"

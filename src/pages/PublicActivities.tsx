@@ -125,7 +125,7 @@ export default function PublicActivities(props: PostsProps) {
 
                 <Flex width="100%" align="center" flexDir="column">
                     <Flex gap="15%" width="50%" align="center">
-                        <Text fontWeight="bold" fontSize={['sm', 'medium', 'xx-large']}>Atividades</Text>
+                        <Text fontWeight="bold" fontSize={['sm', 'x-large', 'xx-large']}>Atividades</Text>
                         <Button onClick={handleAccessCreateActivity} bgColor="howdyColors.mainBlue" textColor={'howdyColors.mainWhite'} px="5%">
                             ENSINE
                         </Button>

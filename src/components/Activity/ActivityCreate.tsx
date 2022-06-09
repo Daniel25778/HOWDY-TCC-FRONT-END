@@ -64,11 +64,11 @@ export function ActivityCreate({ rating, userActivitys, user = null }: ActivityC
                     bgColor="howdyColors.mainWhite"
                 >
                     <Flex mb="2%" width="100%">
-                        <Flex width="70%" gap="3%" align="center">
-                            <ProfilePhotoAndPatent user={user} size="11rem" />
+                        <Flex width="80%" gap="3%" align="center">
+                            <ProfilePhotoAndPatent user={user} size="5vw" />
                             <Heading>{user ? user.userName : userActivitys.userCreator.userName}</Heading>
                             {console.log(userActivitys.userCreator.userName)}
-                            <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>
+                            <Text w="40%" color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>
                                 ● {createdAt}
                             </Text>
                         </Flex>
@@ -78,7 +78,7 @@ export function ActivityCreate({ rating, userActivitys, user = null }: ActivityC
                                 <Icon w="40%" height="40%" color="howdyColors.mainBlue" fontSize="larger">
                                     <BiTargetLock />
                                 </Icon>
-                                <Text fontSize={['sm', 'md', 'x-large']} color="howdyColors.mainBlack" opacity="60%">
+                                <Text  fontSize={['sm', 'md', 'x-large']} color="howdyColors.mainBlack" opacity="60%">
                                     {userActivitys.targetLanguageName}
                                 </Text>
                             </Flex>
@@ -106,7 +106,7 @@ export function ActivityCreate({ rating, userActivitys, user = null }: ActivityC
                                 {userActivitys.activityTitle}
                             </Text>
 
-                            <Flex width="20%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
+                            <Flex width="35%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
                                 <Image
                                     height="2.5rem"
                                     src="/images/howdy-images/howdy-coin/Howdy coin.svg"
@@ -120,7 +120,7 @@ export function ActivityCreate({ rating, userActivitys, user = null }: ActivityC
                                     {userActivitys.priceHowdyCoin}
                                 </Text>
                             </Flex>
-                            <Flex width="80%" flexDir="column" align="center" justify="center">
+                            <Flex gap={16} width="100%" flexDir="column" align="center" justify="center">
                                 <StarRatings
                                     starDimension="40px"
                                     rating={rating}
@@ -131,16 +131,14 @@ export function ActivityCreate({ rating, userActivitys, user = null }: ActivityC
                                 <Button
                                     onClick={handleAccessActivityBreakdown}
                                     _hover={{ bg: '#B9C2FD' }}
-                                    width={300}
-                                    h="70px"
-                                    maxWidth={300}
-                                    marginTop="6"
+                                    width="100%"
+                                    h="3rem"
                                     bg="#CBD2FF"
                                     color="howdyColors.mainWhite"
                                     type="submit"
                                     borderRadius="50px"
                                 >
-                                    <Text fontSize={['sm', 'md', 'x-large']}>ACESSAR</Text>
+                                    <Text fontSize={['sm', 'large', 'x-large']}>ACESSAR</Text>
                                 </Button>
                             </Flex>
                         </Flex>

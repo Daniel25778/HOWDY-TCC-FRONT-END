@@ -65,7 +65,7 @@ export function ActivityCreate({ rating, userActivitys, user = null }: ActivityC
                 >
                     <Flex mb="2%" width="100%">
                         <Flex width="80%" gap="3%" align="center">
-                            <ProfilePhotoAndPatent user={user} size="5vw" />
+                            <ProfilePhotoAndPatent sizePatent="2.5vw" user={user} size="5vw" />
                             <Heading>{user ? user.userName : userActivitys.userCreator.userName}</Heading>
                             {console.log(userActivitys.userCreator.userName)}
                             <Text w="40%" color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>
@@ -103,7 +103,7 @@ export function ActivityCreate({ rating, userActivitys, user = null }: ActivityC
                         <Flex gap="7%" flexDir="column" p="2%" width="50%" bgColor="howdyColors.mainBlue">
                             <Heading color="howdyColors.mainWhite">{userActivitys.activityTitle}</Heading>
                             <Text fontSize={['sm', 'md', 'large']} color="howdyColors.mainWhite">
-                                {userActivitys.activityTitle}
+                                {userActivitys.activitySubtitle}
                             </Text>
 
                             <Flex width="35%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">

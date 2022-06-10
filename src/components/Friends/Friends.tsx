@@ -47,7 +47,7 @@ export default function Friends(props: FriendsProps){
                 </Flex>
                 :
                 <Flex>
-                    <ProfilePhotoAndPatent sizePatent="8rem"  size="15rem" user={props.userFriends}></ProfilePhotoAndPatent>
+                    <ProfilePhotoAndPatent sizePatent="4rem"  size="8rem" user={props.userFriends}></ProfilePhotoAndPatent>
                     <Flex justify="center" ml="30px" flexDir={'column'} gap="8%">
                         <Text fontSize={['sm', 'md', 'x-large']} fontWeight="bold">
                             {props.friendName}

@@ -66,7 +66,6 @@ export default function SearchPage({ userSearch }: SearchPageProps) {
                 pt="15rem"
                 as="main"
                 px="100px"
-                bg="red"
                 bgImg="/images/background.png"
             >
                 {console.log(searchActivities)}

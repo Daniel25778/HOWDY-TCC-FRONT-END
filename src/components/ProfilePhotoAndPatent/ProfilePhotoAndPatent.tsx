@@ -31,11 +31,11 @@ export default function ProfilePhotoAndPatent({ sizePatent,user, size, whiteBord
                 <Text
                     px="15px"
                     py="2px"
-                    w="90px"
+                    w="100px"
                     fontWeight="black"
                     color="white"
                     bg={`howdyColors.${user?.patent}`}
-                    borderRadius="0 10px 10px 0"
+                    borderRadius="100px 100px 100px 0px"
                     position="absolute"
                     bottom=".5vw"
                     zIndex="-1"
@@ -45,7 +45,7 @@ export default function ProfilePhotoAndPatent({ sizePatent,user, size, whiteBord
                     wordBreak="keep-all"
                     textAlign="right"
                     _groupHover={{
-                        left: '3vw',
+                        left: '5vw',
                         zIndex: '0',
                     }}
                 >

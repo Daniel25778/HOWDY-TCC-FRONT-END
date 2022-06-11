@@ -44,6 +44,7 @@ export default function LearnPage(props: LearnPageProps) {
             api.get(`activities/unlocked/${idUser}`).then((response) => {
                 if (response.data?.error == null) {
                     setUnlockedAndCompletedActivities(response.data);
+                  
                 }
             });
         }

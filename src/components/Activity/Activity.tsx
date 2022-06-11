@@ -35,6 +35,8 @@ export function Activity({ userUnlockedActivities: userUnlockedActivitys, user }
         router.push(`/DoActivityPage/${userUnlockedActivitys.idActivity}`);
     }
 
+    console.log("ddddd",userUnlockedActivitys);
+
     return (
         <>
             {haveActivitys ? (
@@ -57,22 +59,22 @@ export function Activity({ userUnlockedActivities: userUnlockedActivitys, user }
                     ></Image>
                 </Flex>
             ) : (
-                <Flex borderRadius="20px" width="50%" mt="5%" flexDir="column" bgColor="howdyColors.mainWhite">
-                    <Flex mb="2%" width="100%">
-                        <Flex width="70%" gap="3%" align="center">
-                            <ProfilePhotoAndPatent user={user} size="9rem"></ProfilePhotoAndPatent>
+                <Flex borderRadius="20px" width="60%" mt="5%" flexDir="column" bgColor="howdyColors.mainWhite">
+                    <Flex p="1%" mb="2%" width="100%">
+                        <Flex   width="40vw" gap="3%" align="center">
+                            <ProfilePhotoAndPatent user={user} size="4rem"/>
                             <Heading>{userUnlockedActivitys.userCreator.userName}</Heading>
-                            <Text color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>
+                            <Text w="30%" color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>
                                 ● {createdAt}
                             </Text>
                         </Flex>
 
-                        <Flex>
-                            <Flex width="50%" gap="5%" ml="6%" justify={'center'} align={'center'}>
-                                <Icon w="40%" height="40%" color="howdyColors.mainBlue" fontSize="larger">
+                        <Flex >
+                            <Flex width="100%" gap="5%"  justify={'center'} align={'center'}>
+                                <Icon  w="10%" height="40%" color="howdyColors.mainBlue" fontSize="larger">
                                     <BiTargetLock />
                                 </Icon>
-                                <Text fontSize={['sm', 'md', 'xx-large']} color="howdyColors.mainBlack" opacity="60%">
+                                <Text  w="90%" fontSize={['sm', 'md', 'xx-large']} color="howdyColors.mainBlack" opacity="60%">
                                     {userUnlockedActivitys.targetLanguageName}
                                 </Text>
                             </Flex>
@@ -92,9 +94,9 @@ export function Activity({ userUnlockedActivities: userUnlockedActivitys, user }
 
                         <Flex gap="7%" flexDir="column" p="2%" width="50%" bgColor="howdyColors.mainBlue">
                             <Heading color="howdyColors.mainWhite">{userUnlockedActivitys.activityTitle}</Heading>
-                            <Text color="howdyColors.mainWhite">{userUnlockedActivitys.activityTitle}</Text>
+                            <Text color="howdyColors.mainWhite">{userUnlockedActivitys.activitySubtitle}</Text>
 
-                            <Flex width="20%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
+                            <Flex width="40%" gap="5" borderRadius="60px" bg="howdyColors.mainYellow" align="center">
                                 <Image
                                     height="2.5rem"
                                     src="/images/howdy-images/howdy-coin/Howdy coin.svg"
@@ -109,14 +111,13 @@ export function Activity({ userUnlockedActivities: userUnlockedActivitys, user }
                                     starDimension="40px"
                                     rating={userUnlockedActivitys.totalRating}
                                     starRatedColor="#F2D63F"
-                                    numberOfStars={userUnlockedActivitys.totalStars}
+                                    numberOfStars={5}
                                     name="rating"
                                 />
                                 <Button
                                     _hover={{ bg: '#B9C2FD' }}
-                                    width={300}
+                                    width="100%"
                                     h="70px"
-                                    maxWidth={300}
                                     marginTop="6"
                                     bg="#CBD2FF"
                                     color="howdyColors.mainWhite"

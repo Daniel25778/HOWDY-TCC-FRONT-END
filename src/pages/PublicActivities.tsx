@@ -131,7 +131,7 @@ export default function PublicActivities(props: PostsProps) {
                         </Button>
                     </Flex>
 
-                    <Flex justifyContent="center" width="50%" flexDir="column">
+                    <Flex justifyContent="center" width="60%" flexDir="column">
                         {activities.length > 0 &&
                             activities.map((activity) => (
                                 <ActivityCreate

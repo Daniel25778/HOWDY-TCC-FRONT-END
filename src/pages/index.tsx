@@ -303,7 +303,7 @@ export default function Home(props) {
                 </Flex>
                 <Flex w="80%" align={'center'} justify={'space-between'}>
                     <SimpleGrid alignContent="center" justifyContent={'center'} flex="1" gap="5%" minChildWidth="100px">
-                        {registerChart && <MonthlyChart title="DESEMPENHO MENSAL" series={monthlyXpSeries} />}
+                        {registerChart && <MonthlyChart title="USUÁRIOS CADASTRADOS" series={monthlyXpSeries} />}
                         <Flex justify="center" gap={10} flexDir={'column'} w="70%">
                             <Heading>
                                 Somos mais de {userCadaster - 1} sonhador{userCadaster > 1 ? 'es' : ''}.

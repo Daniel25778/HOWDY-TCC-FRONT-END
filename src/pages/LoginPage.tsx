@@ -35,7 +35,7 @@ export default function PageLogin(props: any) {
                         alt="howdy logo"
                     />
 
-                    <Text fontWeight="medium" fontSize={50} color="howdyColors.mainWhite">
+                    <Text fontWeight="medium" fontSize={40} color="howdyColors.mainWhite">
                         Realize seu login
                     </Text>
                 </Flex>

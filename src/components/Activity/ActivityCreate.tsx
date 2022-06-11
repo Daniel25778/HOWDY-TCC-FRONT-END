@@ -36,7 +36,7 @@ export function ActivityCreate({ rating, userActivitys, user = null }: ActivityC
     return (
         <>
             {haveActivitys ? (
-                <Flex align="center" flexDir="column" p="5%" width="100%" justify="center">
+                <Flex align="center" flexDir="column" p="5%" width="50vw" justify="center">
                     <Flex borderRadius="15" w="80%" h="10vh" justify="center" align="center">
                         <Text
                             color="howdyColors.mainBlack"
@@ -58,24 +58,23 @@ export function ActivityCreate({ rating, userActivitys, user = null }: ActivityC
                 <Flex
                     borderRadius="20px"
                     justifyContent="center"
-                    width="100%"
+                    width="50vw"
                     mt="5%"
                     flexDir="column"
                     bgColor="howdyColors.mainWhite"
                 >
-                    <Flex mb="2%" width="100%">
-                        <Flex width="80%" gap="3%" align="center">
+                    <Flex mb="2%" width="45vw">
+                        <Flex p="1%" width="30vw" gap="4%" align="center">
                             <ProfilePhotoAndPatent sizePatent="2.5vw" user={user} size="5vw" />
                             <Heading>{user ? user.userName : userActivitys.userCreator.userName}</Heading>
-                            {console.log(userActivitys.userCreator.userName)}
-                            <Text w="40%" color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>
+                            <Text w="8vw" color="howdyColors.mainBlack" opacity="60%" fontSize={['sm', 'md', 'xx-large']}>
                                 ● {createdAt}
                             </Text>
                         </Flex>
 
                         <Flex>
-                            <Flex width="50%" gap="5%" ml="6%" justify={'center'} align={'center'}>
-                                <Icon w="40%" height="40%" color="howdyColors.mainBlue" fontSize="larger">
+                            <Flex width="20vw" gap="5%" ml="6%" justify={'center'} align={'center'}>
+                                <Icon w="20%" height="40%" color="howdyColors.mainBlue" fontSize="larger">
                                     <BiTargetLock />
                                 </Icon>
                                 <Text  fontSize={['sm', 'md', 'x-large']} color="howdyColors.mainBlack" opacity="60%">
